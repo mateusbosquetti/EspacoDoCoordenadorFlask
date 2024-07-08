@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        {%include 'nave.html' %}
+        <div class="row mt-4">
+            <h3>Adicionar Turma</h3>
+        </div>
+        <form action="" method="post" class="row mt-4 p-4 round border shadow">
+            {{form.csrf_token}}
+
+            {{form.turma.label()}}
+            {{form.turma(class="form-control")}}
+
+            {{form.nome.label()}}
+            {{form.nome(class="form-control")}}
+
+            {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
+        </form>
+    </div>
+{% endblock %}

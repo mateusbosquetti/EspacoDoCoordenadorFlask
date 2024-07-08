@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        {%include 'nave.html' %}
+            <div class="row mt-4">
+                <h3>Lista de Atividades</h3>
+
+                <form method="get" class="row">
+                    <div class="col-9">
+                        <input type="text" name="pesquisa" class="form-control">
+                    </div>
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-primary">Pesquisar</button>
+                    </div>
+                    
+                </form>
+
+                <div class="col-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nome da Atividade</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <body>
+                            <tr>
+                                {% for linha in context['dados'] %}
+                                <tr>
+                                    <td>{{linha.nomeAtv}}</td>
+                                    <td>{{linha.descricao}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tr>
+                        </body>
+                    </table>
+                </div>
+            </div>
+    </div>
+{% endblock %}
