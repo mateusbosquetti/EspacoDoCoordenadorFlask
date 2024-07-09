@@ -13,20 +13,24 @@
     <section>
         <h2>Contato</h2>
         <form action="https://api.staticforms.xyz/submit" method="post">
-            <label>Nome</label>
-            <input type="text" name="name" placeholder="Digite seu nome" autocomplete="off" required>
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Digite seu email" autocomplete="off" required>
-            <label>Mensagem</label>
-            <textarea name="message" cols="30" rows="10" placeholder="Digite sua mensagem" required></textarea>
+            <label for="name">Nome</label>
+            <input type="text" id="name" name="name" placeholder="Digite seu nome" autocomplete="off" required>
+        
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Digite seu email" autocomplete="off" required>
+        
+            <label for="message">Mensagem</label>
+            <textarea id="message" name="message" cols="30" rows="10" placeholder="Digite sua mensagem" required></textarea>
+        
             <div class="botao">
-                <button type="submit" onclick="alert('Enviado com sucesso!')">Enviar</button>
+                <button type="submit" onclick="alert('Enviado com sucesso!')">Enviar</button>  
                 <button type="button" onclick="location.href='{{ url_for('contatoLista') }}'">Inicio</button>
             </div>
-            
+        
             <input type="hidden" name="accessKey" value="c9e5c3a3-07ee-4249-8818-e89aab33b38f">
-            <input type="hidden" name="redirectTo" value="http://127.0.0.1:5000" >
+            <input type="hidden" name="redirectTo" value="{{ current_url }}">
         </form>
+        
     </section>
 </body>
 

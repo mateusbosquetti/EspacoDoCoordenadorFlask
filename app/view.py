@@ -74,4 +74,4 @@ def atividadeLista():
 
 @app.route('/suporte')
 def suporte():
-    return render_template('suporte.html')
+    return render_template('suporte.html', current_url=request.url)
