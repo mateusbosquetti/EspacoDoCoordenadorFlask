@@ -13,7 +13,7 @@ def homepage():
         user = form.login()
         login_user(user, remember=True)
 
-    return render_template('suporte.html', form = form)
+    return render_template('index.html', form = form)
 
 @app.route('/cadastro/', methods=['GET', 'POST'])
 def cadastro():
@@ -71,3 +71,7 @@ def atividadeLista():
         dados = dados.filter_by(nome=pesquisa)
     context = {'dados': dados.all()}
     return render_template('atividade_lista.html', context=context)
+
+@app.route('/suporte')
+def suporte():
+    return render_template('suporte.html')
