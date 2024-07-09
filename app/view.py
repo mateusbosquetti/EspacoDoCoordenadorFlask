@@ -13,7 +13,7 @@ def homepage():
         user = form.login()
         login_user(user, remember=True)
 
-    return render_template('index.html', form = form)
+    return render_template('suporte.html', form = form)
 
 @app.route('/cadastro/', methods=['GET', 'POST'])
 def cadastro():
