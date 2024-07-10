@@ -24,3 +24,8 @@ class Atividade(db.Model):
     nomeAtv  = db.Column(db.String, nullable=True)
     descricao  = db.Column(db.String, nullable=True)
 
+class Suporte(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String, nullable=True)
+    email = db.Column(db.String, nullable=True)
+    mensagem = db.Column(db.String, nullable=True)

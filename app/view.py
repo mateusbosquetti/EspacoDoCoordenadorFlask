@@ -1,18 +1,16 @@
 from app import app, db
-from flask import render_template, url_for, request, redirect
+from flask import render_template, url_for, request, redirect, flash
 from app.forms import AtividadeForm, ContatoForm, UserForm, LoginForm
-from app.models import Atividade, Contato, User
+from app.models import Atividade, Contato, User, Suporte
 from flask_login import login_user, logout_user, current_user
-
+import requests
 
 @app.route('/', methods=['GET','POST'])
 def homepage():
     form = LoginForm()
-
     if form.validate_on_submit():
         user = form.login()
         login_user(user, remember=True)
-
     return render_template('index.html', form = form)
 
 @app.route('/cadastro/', methods=['GET', 'POST'])
@@ -72,6 +70,30 @@ def atividadeLista():
     context = {'dados': dados.all()}
     return render_template('atividade_lista.html', context=context)
 
-@app.route('/suporte')
+@app.route('/suporte', methods=['GET', 'POST'])
 def suporte():
-    return render_template('suporte.html', current_url=request.url)
+    if request.method == 'POST':
+        nome = request.form['name']
+        email = request.form['email']
+        mensagem = request.form['message']
+
+        novo_suporte = Suporte(nome=nome, email=email, mensagem=mensagem)
+        db.session.add(novo_suporte)
+        db.session.commit()
+
+        # Envio de e-mail usando StaticForms
+        staticforms_url = "https://api.staticforms.xyz/submit"
+        data = {
+            "accessKey": "c9e5c3a3-07ee-4249-8818-e89aab33b38f",
+            "name": nome,
+            "email": email,
+            "message": mensagem,
+            "redirectTo": url_for('suporte', _external=True)
+        }
+        requests.post(staticforms_url, data=data)
+
+        flash('Sua mensagem foi enviada com sucesso!')
+
+        return redirect(url_for('suporte'))
+
+    return render_template('suporte.html')
