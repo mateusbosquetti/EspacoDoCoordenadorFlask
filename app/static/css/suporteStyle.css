@@ -78,12 +78,12 @@ form textarea:focus {
     margin: 0 auto;
 }
 
-form button {
+form .sucess {
     padding: 15px;
     cursor: pointer;
     font-size: 16px;
     background-color: #4BB563;
-    border: 2px solid #f5f5f5;
+    border: 1px solid transparent;
     color: #f5f5f5;
     transition: all 1s;
     margin-bottom: 20px;
@@ -92,8 +92,29 @@ form button {
 }
 
 
-form button:hover {
+form .sucess:hover {
     background: #389b4f;
-    color: #101026;
     border-radius: 16px;
+    border-color: #000000;
+}
+
+form .info {
+    padding: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #0556d9;
+    border: 1px solid transparent;
+    color: #f5f5f5;
+    transition: all 1s;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+
+form .info:hover {
+    background: #0047B6;
+    border-radius: 16px;
+    border-color: #000000;
+
 }
