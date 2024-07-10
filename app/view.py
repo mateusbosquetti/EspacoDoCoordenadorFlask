@@ -90,9 +90,13 @@ def suporte():
             "message": mensagem,
             "redirectTo": url_for('suporte', _external=True)
         }
-        requests.post(staticforms_url, data=data)
-
-        flash('Sua mensagem foi enviada com sucesso!')
+        
+        response = requests.post(staticforms_url, data=data)
+        
+        if response.status_code == 200:
+            flash('Sua mensagem foi enviada com sucesso!', 'success')
+        else:
+            flash('Ocorreu um erro ao enviar a mensagem. Tente novamente.', 'error')
 
         return redirect(url_for('suporte'))
 
