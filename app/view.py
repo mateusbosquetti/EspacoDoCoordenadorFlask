@@ -101,3 +101,19 @@ def suporte():
         return redirect(url_for('suporte'))
 
     return render_template('suporte.html')
+
+@app.route('/delete_setor/<int:id>', methods=['POST'])
+def delete_setor(id):
+    setor = Setor.query.get_or_404(id)
+    db.session.delete(setor)
+    db.session.commit()
+    return redirect(url_for('homepage'))
+
+@app.route('/edit_setor/<int:id>', methods=['GET', 'POST'])
+def edit_setor(id):
+    setor = Setor.query.get_or_404(id)
+    if request.method == 'POST':
+        setor.nome = request.form['nome']
+        db.session.commit()
+        return redirect(url_for('homepage'))
+    return render_template('edit_setor.html', setor=setor)
