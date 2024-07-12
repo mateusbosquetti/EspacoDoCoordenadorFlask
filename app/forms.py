@@ -30,7 +30,7 @@ class UserForm(FlaskForm):
         db.session.commit()
         return user
 
-class ContatoForm(FlaskForm):
+class SetorForm(FlaskForm):
     nome = StringField('Nome do setor', validators=[DataRequired()])
     
     btnSubmit = SubmitField('Enviar')
@@ -38,7 +38,7 @@ class ContatoForm(FlaskForm):
     def save(self):
         setor = Setor(
             nome = self.nome.data,
-        )
+        )   
         db.session.add(setor)
         db.session.commit()
 

@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect, flash
-from app.forms import AtividadeForm, ContatoForm, UserForm, LoginForm
+from app.forms import AtividadeForm, SetorForm, UserForm, LoginForm
 from app.models import Atividade, Setor, User, Suporte
 from flask_login import login_user, logout_user, current_user
 import requests
@@ -27,24 +27,24 @@ def logout():
     logout_user()
     return redirect(url_for('homepage'))
 
-@app.route('/contato/', methods=['GET', 'POST'])
-def contato():
-    form = ContatoForm()
+@app.route('/setor/', methods=['GET', 'POST'])
+def setor():
+    form = SetorForm()
     context = {}
     if form.validate_on_submit():
         form.save()
         return redirect(url_for('homepage'))
-    return render_template('contatos.html', context=context, form=form)
+    return render_template('setores.html', context=context, form=form)
 
-@app.route('/contato/lista/')
-def contatoLista():
+@app.route('/setor/lista/')
+def setorLista():
     if request.method == 'GET':
         pesquisa = request.args.get('pesquisa', '')
     dados  = Setor.query.order_by('nome')
     if pesquisa != '':
         dados = dados.filter_by(nome=pesquisa)
     context = {'dados': dados.all()}
-    return render_template('contato_lista.html', context=context)
+    return render_template('setor_lista.html', context=context)
 
 @app.route('/contato/<int:id>')
 def contatoDetail(id):
