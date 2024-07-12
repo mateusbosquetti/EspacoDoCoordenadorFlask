@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect, flash
-from app.forms import AtividadeForm, SetorForm, UserForm, LoginForm
-from app.models import Atividade, Setor, User, Suporte, Professor, Aula
+from app.forms import SetorForm, UserForm, LoginForm
+from app.models import Setor, User, Suporte, Professor, Aula
 from flask_login import login_user, logout_user, current_user
 import requests
 
@@ -50,25 +50,6 @@ def contatoDetail(id):
     obj = Setor.query.get(id)
     return render_template('contato_detail.html', obj=obj)
 
-@app.route('/atividade/', methods=['GET', 'POST'])
-def atividade():
-    form = AtividadeForm()
-    context = {}
-    if form.validate_on_submit():
-        form.save()
-        return redirect(url_for('homepage'))
-    return render_template('atividade.html', context=context, form=form)
-
-@app.route('/atividade/lista/')
-def atividadeLista():
-    if request.method == 'GET':
-        pesquisa = request.args.get('pesquisa', '')
-    dados  = Atividade.query.order_by('nomeAtv')
-    if pesquisa != '':
-        dados = dados.filter_by(nome=pesquisa)
-    context = {'dados': dados.all()}
-    return render_template('atividade_lista.html', context=context)
-
 @app.route('/suporte', methods=['GET', 'POST'])
 def suporte():
     if request.method == 'POST':
@@ -80,7 +61,6 @@ def suporte():
         db.session.add(novo_suporte)
         db.session.commit()
 
-        # Envio de e-mail usando StaticForms
         staticforms_url = "https://api.staticforms.xyz/submit"
         data = {
             "accessKey": "c9e5c3a3-07ee-4249-8818-e89aab33b38f",
@@ -166,6 +146,9 @@ def edit_setor(id):
         return redirect(url_for('setorLista'))
     return render_template('edit_setor.html', setor=setor)
 
+from datetime import datetime
+
+
 @app.route('/professor/<int:professor_id>/aulas', methods=['GET', 'POST'])
 def manage_aulas(professor_id):
     professor = Professor.query.get_or_404(professor_id)
@@ -175,6 +158,7 @@ def manage_aulas(professor_id):
         dia = request.form['dia']
         horario_inicio = request.form['horario_inicio']
         horario_fim = request.form['horario_fim']
+        
         nova_aula = Aula(
             materia=materia,
             sala=sala,
@@ -188,7 +172,6 @@ def manage_aulas(professor_id):
         return redirect(url_for('manage_aulas', professor_id=professor_id))
     aulas = professor.aulas
     return render_template('manage_aulas.html', professor=professor, aulas=aulas)
-
 
 @app.route('/professor/<int:professor_id>/aula/<int:id>/edit', methods=['GET', 'POST'])
 def edit_aula(professor_id, id):

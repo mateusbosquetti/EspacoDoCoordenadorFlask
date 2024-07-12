@@ -6,7 +6,6 @@ from flask_login import UserMixin
 def load_user(user_id):
     return User.query.get(user_id)
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=True)
@@ -14,20 +13,15 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String, nullable=True)
     senha = db.Column(db.String, nullable=True)
 
-class Setor(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String, nullable=True)
-
-class Atividade(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nomeAtv  = db.Column(db.String, nullable=True)
-    descricao  = db.Column(db.String, nullable=True)
-
 class Suporte(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
     mensagem = db.Column(db.String, nullable=True)
+
+class Setor(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String, nullable=True)
 
 class Professor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,8 +36,8 @@ class Aula(db.Model):
     materia = db.Column(db.String, nullable=False)
     sala = db.Column(db.String, nullable=False)
     dia = db.Column(db.String, nullable=False)
-    horario_inicio = db.Column(db.Time, nullable=False)
-    horario_fim = db.Column(db.Time, nullable=False)
+    horario_inicio = db.Column(db.String, nullable=False)
+    horario_fim = db.Column(db.String, nullable=False)
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
     professor = db.relationship('Professor', back_populates='aulas')
 
