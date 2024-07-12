@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect, flash
 from app.forms import AtividadeForm, ContatoForm, UserForm, LoginForm
-from app.models import Atividade, Contato, User, Suporte
+from app.models import Atividade, Setor, User, Suporte
 from flask_login import login_user, logout_user, current_user
 import requests
 
@@ -40,7 +40,7 @@ def contato():
 def contatoLista():
     if request.method == 'GET':
         pesquisa = request.args.get('pesquisa', '')
-    dados  = Contato.query.order_by('nome')
+    dados  = Setor.query.order_by('nome')
     if pesquisa != '':
         dados = dados.filter_by(nome=pesquisa)
     context = {'dados': dados.all()}
@@ -48,7 +48,7 @@ def contatoLista():
 
 @app.route('/contato/<int:id>')
 def contatoDetail(id):
-    obj = Contato.query.get(id)
+    obj = Setor.query.get(id)
     return render_template('contato_detail.html', obj=obj)
 
 @app.route('/atividade/', methods=['GET', 'POST'])

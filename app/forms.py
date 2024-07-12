@@ -3,7 +3,7 @@ from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 
 from app import db, bcrypt
-from app.models import Contato, User, Atividade
+from app.models import Setor, User, Atividade
 
 
 class UserForm(FlaskForm):
@@ -31,17 +31,15 @@ class UserForm(FlaskForm):
         return user
 
 class ContatoForm(FlaskForm):
-    turma = StringField('Nome da Turma', validators=[DataRequired()])
-    nome = StringField('Nome do professor', validators=[DataRequired()])
+    nome = StringField('Nome do setor', validators=[DataRequired()])
     
     btnSubmit = SubmitField('Enviar')
 
     def save(self):
-        contato = Contato(
+        setor = Setor(
             nome = self.nome.data,
-            turma = self.turma.data,
         )
-        db.session.add(contato)
+        db.session.add(setor)
         db.session.commit()
 
 class AtividadeForm(FlaskForm):

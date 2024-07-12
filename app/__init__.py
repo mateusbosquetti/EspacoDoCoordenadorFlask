@@ -20,4 +20,4 @@ login_manager.login_view = 'Login'
 bcrypt = Bcrypt(app)
 
 from app.view import homepage 
-from app.models import Contato
+from app.models import Setor

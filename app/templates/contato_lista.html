@@ -4,7 +4,7 @@
     <div class="container">
         {%include 'nave.html' %}
             <div class="row mt-4">
-                <h3>Lista de Turmas</h3>
+                <h3>Lista de Setores</h3>
 
                 <form method="get" class="row">
                     <div class="col-9">
@@ -20,9 +20,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Nome da Turma</th>
-                                <th>Nome do Professor</th>
-                                
+                                <th>Nome do Setor</th>
                                 
                             </tr>
                         </thead>
@@ -30,7 +28,6 @@
                             <tr>
                                 {% for linha in context['dados'] %}
                                 <tr>
-                                    <td>{{linha.turma}}</td>
                                     <td>{{linha.nome}}</td>
                                     <td>
                                         <a href="{{url_for('contatoDetail', id=linha.id)}}"class="btn btn-danger">Excluir</a>

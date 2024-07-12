@@ -14,9 +14,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String, nullable=True)
     senha = db.Column(db.String, nullable=True)
 
-class Contato(db.Model):
+class Setor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    turma = db.Column(db.String, nullable=True)
     nome = db.Column(db.String, nullable=True)
 
 class Atividade(db.Model):
