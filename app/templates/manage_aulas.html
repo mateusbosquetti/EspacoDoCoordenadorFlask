@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h3>Grade Horária do Professor: {{ professor.nome }}</h3>
+        <form method="post">
+            <div class="mb-3">
+                <label for="materia" class="form-label">Matéria</label>
+                <input type="text" class="form-control" id="materia" name="materia" required>
+            </div>
+            <div class="mb-3">
+                <label for="sala" class="form-label">Sala</label>
+                <input type="text" class="form-control" id="sala" name="sala" required>
+            </div>
+            <div class="mb-3">
+                <label for="dia" class="form-label">Dia</label>
+                <input type="text" class="form-control" id="dia" name="dia" required>
+            </div>
+            <div class="mb-3">
+                <label for="horario_inicio" class="form-label">Horário de Início</label>
+                <input type="time" class="form-control" id="horario_inicio" name="horario_inicio" required>
+            </div>
+            <div class="mb-3">
+                <label for="horario_fim" class="form-label">Horário de Fim</label>
+                <input type="time" class="form-control" id="horario_fim" name="horario_fim" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar Aula</button>
+        </form>
+        <h4 class="mt-4">Lista de Aulas</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Matéria</th>
+                    <th>Sala</th>
+                    <th>Dia</th>
+                    <th>Horário de Início</th>
+                    <th>Horário de Fim</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aula in aulas %}
+                <tr>
+                    <td>{{ aula.materia }}</td>
+                    <td>{{ aula.sala }}</td>
+                    <td>{{ aula.dia }}</td>
+                    <td>{{ aula.horario_inicio }}</td>
+                    <td>{{ aula.horario_fim }}</td>
+                    <td>
+                        <a href="{{ url_for('edit_aula', professor_id=professor.id, id=aula.id) }}" class="btn btn-warning">Editar</a>
+                        <form action="{{ url_for('delete_aula', professor_id=professor.id, id=aula.id) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('manage_professores', setor_id=professor.setor_id) }}" class="btn btn-secondary">Voltar</a>
+    </div>
+{% endblock %}

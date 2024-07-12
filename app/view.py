@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect, flash
 from app.forms import AtividadeForm, SetorForm, UserForm, LoginForm
-from app.models import Atividade, Setor, User, Suporte
+from app.models import Atividade, Setor, User, Suporte, Professor, Aula
 from flask_login import login_user, logout_user, current_user
 import requests
 
@@ -38,13 +38,12 @@ def setor():
 
 @app.route('/setor/lista/')
 def setorLista():
-    if request.method == 'GET':
-        pesquisa = request.args.get('pesquisa', '')
-    dados  = Setor.query.order_by('nome')
-    if pesquisa != '':
-        dados = dados.filter_by(nome=pesquisa)
-    context = {'dados': dados.all()}
-    return render_template('setor_lista.html', context=context)
+    pesquisa = request.args.get('pesquisa', '')
+    if pesquisa:
+        setores = Setor.query.filter(Setor.nome.ilike(f"%{pesquisa}%")).order_by(Setor.nome).all()
+    else:
+        setores = Setor.query.order_by(Setor.nome).all()
+    return render_template('setor_lista.html', setores=setores)
 
 @app.route('/contato/<int:id>')
 def contatoDetail(id):
@@ -102,18 +101,111 @@ def suporte():
 
     return render_template('suporte.html')
 
-@app.route('/delete_setor/<int:id>', methods=['POST'])
+
+@app.route('/setor/<int:setor_id>/professores', methods=['GET', 'POST'])
+def manage_professores(setor_id):
+    setor = Setor.query.get_or_404(setor_id)
+    if request.method == 'POST':
+        nome = request.form['nome']
+        novo_professor = Professor(nome=nome, setor_id=setor_id)
+        db.session.add(novo_professor)
+        db.session.commit()
+        return redirect(url_for('manage_professores', setor_id=setor_id))
+    professores = setor.professores
+    return render_template('manage_professores.html', setor=setor, professores=professores)
+
+@app.route('/setor/<int:setor_id>/professor/<int:id>/edit', methods=['GET', 'POST'])
+def edit_professor(setor_id, id):
+    professor = Professor.query.get_or_404(id)
+    if request.method == 'POST':
+        professor.nome = request.form['nome']
+        db.session.commit()
+        return redirect(url_for('manage_professores', setor_id=setor_id))
+    return render_template('edit_professor.html', professor=professor)
+
+@app.route('/setor/<int:setor_id>/professor/<int:id>/delete', methods=['POST'])
+def delete_professor(setor_id, id):
+    professor = Professor.query.get_or_404(id)
+    db.session.delete(professor)
+    db.session.commit()
+    return redirect(url_for('manage_professores', setor_id=setor_id))
+
+@app.route('/setor/<int:id>/delete', methods=['POST'])
 def delete_setor(id):
     setor = Setor.query.get_or_404(id)
-    db.session.delete(setor)
-    db.session.commit()
-    return redirect(url_for('homepage'))
+    if setor.professores:
+        return redirect(url_for('confirm_delete_setor', id=id))
+    else:
+        db.session.delete(setor)
+        db.session.commit()
+        return redirect(url_for('setorLista'))
 
-@app.route('/edit_setor/<int:id>', methods=['GET', 'POST'])
+@app.route('/setor/<int:id>/confirm_delete', methods=['GET', 'POST'])
+def confirm_delete_setor(id):
+    setor = Setor.query.get_or_404(id)
+    professores = Professor.query.filter_by(setor_id=id).all()
+    if request.method == 'POST':
+        if 'confirm' in request.form:
+            # Deleta todos os professores associados ao setor
+            for professor in professores:
+                db.session.delete(professor)
+
+            db.session.delete(setor)
+            db.session.commit()
+            return redirect(url_for('setorLista'))
+        return redirect(url_for('setorLista'))
+    return render_template('confirm_delete_setor.html', setor=setor, professores=professores)
+
+
+@app.route('/setor/<int:id>/edit', methods=['GET', 'POST'])
 def edit_setor(id):
     setor = Setor.query.get_or_404(id)
     if request.method == 'POST':
         setor.nome = request.form['nome']
         db.session.commit()
-        return redirect(url_for('homepage'))
+        return redirect(url_for('setorLista'))
     return render_template('edit_setor.html', setor=setor)
+
+@app.route('/professor/<int:professor_id>/aulas', methods=['GET', 'POST'])
+def manage_aulas(professor_id):
+    professor = Professor.query.get_or_404(professor_id)
+    if request.method == 'POST':
+        materia = request.form['materia']
+        sala = request.form['sala']
+        dia = request.form['dia']
+        horario_inicio = request.form['horario_inicio']
+        horario_fim = request.form['horario_fim']
+        nova_aula = Aula(
+            materia=materia,
+            sala=sala,
+            dia=dia,
+            horario_inicio=horario_inicio,
+            horario_fim=horario_fim,
+            professor_id=professor_id
+        )
+        db.session.add(nova_aula)
+        db.session.commit()
+        return redirect(url_for('manage_aulas', professor_id=professor_id))
+    aulas = professor.aulas
+    return render_template('manage_aulas.html', professor=professor, aulas=aulas)
+
+
+@app.route('/professor/<int:professor_id>/aula/<int:id>/edit', methods=['GET', 'POST'])
+def edit_aula(professor_id, id):
+    aula = Aula.query.get_or_404(id)
+    if request.method == 'POST':
+        aula.materia = request.form['materia']
+        aula.sala = request.form['sala']
+        aula.dia = request.form['dia']
+        aula.horario_inicio = request.form['horario_inicio']
+        aula.horario_fim = request.form['horario_fim']
+        db.session.commit()
+        return redirect(url_for('manage_aulas', professor_id=professor_id))
+    return render_template('edit_aula.html', aula=aula)
+
+@app.route('/professor/<int:professor_id>/aula/<int:id>/delete', methods=['POST'])
+def delete_aula(professor_id, id):
+    aula = Aula.query.get_or_404(id)
+    db.session.delete(aula)
+    db.session.commit()
+    return redirect(url_for('manage_aulas', professor_id=professor_id))

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h3>Editar Aula</h3>
+        <form method="post">
+            <div class="mb-3">
+                <label for="materia" class="form-label">Matéria</label>
+                <input type="text" class="form-control" id="materia" name="materia" value="{{ aula.materia }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="sala" class="form-label">Sala</label>
+                <input type="text" class="form-control" id="sala" name="sala" value="{{ aula.sala }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="dia" class="form-label">Dia</label>
+                <input type="text" class="form-control" id="dia" name="dia" value="{{ aula.dia }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="horario_inicio" class="form-label">Horário de Início</label>
+                <input type="time" class="form-control" id="horario_inicio" name="horario_inicio" value="{{ aula.horario_inicio }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="horario_fim" class="form-label">Horário de Fim</label>
+                <input type="time" class="form-control" id="horario_fim" name="horario_fim" value="{{ aula.horario_fim }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{{ url_for('manage_aulas', professor_id=aula.professor_id) }}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+{% endblock %}
