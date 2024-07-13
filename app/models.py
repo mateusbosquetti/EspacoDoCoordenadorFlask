@@ -22,23 +22,21 @@ class Suporte(db.Model):
 class Setor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=True)
+    professores = db.relationship('Professor', back_populates='setor', cascade='all, delete-orphan')
 
 class Professor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=False)
     setor_id = db.Column(db.Integer, db.ForeignKey('setor.id'), nullable=False)
     setor = db.relationship('Setor', back_populates='professores')
-
-Setor.professores = db.relationship('Professor', order_by=Professor.id, back_populates='setor')
+    aulas = db.relationship('Aula', back_populates='professor', cascade='all, delete-orphan')
 
 class Aula(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     materia = db.Column(db.String, nullable=False)
     sala = db.Column(db.String, nullable=False)
     dia = db.Column(db.String, nullable=False)
-    horario_inicio = db.Column(db.String, nullable=False)
-    horario_fim = db.Column(db.String, nullable=False)
+    horario_inicio = db.Column(db.Time, nullable=False)
+    horario_fim = db.Column(db.Time, nullable=False)
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
     professor = db.relationship('Professor', back_populates='aulas')
-
-Professor.aulas = db.relationship('Aula', order_by=Aula.id, back_populates='professor')

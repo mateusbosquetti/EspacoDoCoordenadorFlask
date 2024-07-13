@@ -3,6 +3,7 @@ from flask import render_template, url_for, request, redirect, flash
 from app.forms import SetorForm, UserForm, LoginForm
 from app.models import Setor, User, Suporte, Professor, Aula
 from flask_login import login_user, logout_user, current_user
+from datetime import time
 import requests
 
 @app.route('/', methods=['GET','POST'])
@@ -11,7 +12,7 @@ def homepage():
     if form.validate_on_submit():
         user = form.login()
         login_user(user, remember=True)
-    return render_template('index.html', form = form)
+    return render_template('index.html', form=form)
 
 @app.route('/cadastro/', methods=['GET', 'POST'])
 def cadastro():
@@ -146,8 +147,6 @@ def edit_setor(id):
         return redirect(url_for('setorLista'))
     return render_template('edit_setor.html', setor=setor)
 
-from datetime import datetime
-
 
 @app.route('/professor/<int:professor_id>/aulas', methods=['GET', 'POST'])
 def manage_aulas(professor_id):
@@ -156,22 +155,36 @@ def manage_aulas(professor_id):
         materia = request.form['materia']
         sala = request.form['sala']
         dia = request.form['dia']
-        horario_inicio = request.form['horario_inicio']
-        horario_fim = request.form['horario_fim']
-        
-        nova_aula = Aula(
-            materia=materia,
-            sala=sala,
-            dia=dia,
-            horario_inicio=horario_inicio,
-            horario_fim=horario_fim,
-            professor_id=professor_id
-        )
-        db.session.add(nova_aula)
-        db.session.commit()
-        return redirect(url_for('manage_aulas', professor_id=professor_id))
+        horario_inicio = time.fromisoformat(request.form['horario_inicio'])
+        horario_fim = time.fromisoformat(request.form['horario_fim'])
+
+        # Verificação de conflito de horário na mesma sala
+        conflito = Aula.query.filter(
+            Aula.sala == sala,
+            Aula.dia == dia,
+            Aula.horario_inicio <= horario_fim,
+            Aula.horario_fim >= horario_inicio
+        ).first()
+
+        if conflito:
+            flash('Conflito de horário detectado na sala especificada!', 'error')
+        else:
+            nova_aula = Aula(
+                materia=materia,
+                sala=sala,
+                dia=dia,
+                horario_inicio=horario_inicio,
+                horario_fim=horario_fim,
+                professor_id=professor_id
+            )
+            db.session.add(nova_aula)
+            db.session.commit()
+            flash('Aula adicionada com sucesso!', 'success')
+            return redirect(url_for('manage_aulas', professor_id=professor_id))
+    
     aulas = professor.aulas
     return render_template('manage_aulas.html', professor=professor, aulas=aulas)
+
 
 @app.route('/professor/<int:professor_id>/aula/<int:id>/edit', methods=['GET', 'POST'])
 def edit_aula(professor_id, id):
@@ -180,15 +193,32 @@ def edit_aula(professor_id, id):
         aula.materia = request.form['materia']
         aula.sala = request.form['sala']
         aula.dia = request.form['dia']
-        aula.horario_inicio = request.form['horario_inicio']
-        aula.horario_fim = request.form['horario_fim']
-        db.session.commit()
-        return redirect(url_for('manage_aulas', professor_id=professor_id))
+        aula.horario_inicio = time.fromisoformat(request.form['horario_inicio'])
+        aula.horario_fim = time.fromisoformat(request.form['horario_fim'])
+
+        # Verificação de conflito de horário na mesma sala
+        conflito = Aula.query.filter(
+            Aula.id != id,
+            Aula.sala == aula.sala,
+            Aula.dia == aula.dia,
+            Aula.horario_inicio <= aula.horario_fim,
+            Aula.horario_fim >= aula.horario_inicio
+        ).first()
+
+        if conflito:
+            flash('Conflito de horário detectado na sala especificada!', 'error')
+        else:
+            db.session.commit()
+            flash('Aula atualizada com sucesso!', 'success')
+            return redirect(url_for('manage_aulas', professor_id=professor_id))
+    
     return render_template('edit_aula.html', aula=aula)
+
 
 @app.route('/professor/<int:professor_id>/aula/<int:id>/delete', methods=['POST'])
 def delete_aula(professor_id, id):
     aula = Aula.query.get_or_404(id)
     db.session.delete(aula)
     db.session.commit()
+    flash('Aula deletada com sucesso!', 'success')
     return redirect(url_for('manage_aulas', professor_id=professor_id))
