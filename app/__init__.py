@@ -19,5 +19,5 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'Login'
 bcrypt = Bcrypt(app)
 
-from app.view import homepage 
+from app.view import login 
 from app.models import Setor

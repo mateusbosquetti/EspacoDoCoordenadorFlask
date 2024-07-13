@@ -6,13 +6,18 @@ from flask_login import login_user, logout_user, current_user
 from datetime import time
 import requests
 
-@app.route('/', methods=['GET','POST'])
+@app.route('/home', methods=['GET','POST'])
 def homepage():
+    return render_template('index.html')
+
+@app.route('/', methods=['GET', 'POST'])
+def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = form.login()
         login_user(user, remember=True)
-    return render_template('index.html', form=form)
+        return redirect(url_for('homepage'))
+    return render_template('login.html', form=form)
 
 @app.route('/cadastro/', methods=['GET', 'POST'])
 def cadastro():
@@ -26,7 +31,7 @@ def cadastro():
 @app.route('/sair/')
 def logout():
     logout_user()
-    return redirect(url_for('homepage'))
+    return redirect(url_for('login'))
 
 @app.route('/setor/', methods=['GET', 'POST'])
 def setor():
@@ -35,7 +40,7 @@ def setor():
     if form.validate_on_submit():
         form.save()
         return redirect(url_for('homepage'))
-    return render_template('setores.html', context=context, form=form)
+    return render_template('setor/setores.html', context=context, form=form)
 
 @app.route('/setor/lista/')
 def setorLista():
@@ -44,12 +49,7 @@ def setorLista():
         setores = Setor.query.filter(Setor.nome.ilike(f"%{pesquisa}%")).order_by(Setor.nome).all()
     else:
         setores = Setor.query.order_by(Setor.nome).all()
-    return render_template('setor_lista.html', setores=setores)
-
-@app.route('/contato/<int:id>')
-def contatoDetail(id):
-    obj = Setor.query.get(id)
-    return render_template('contato_detail.html', obj=obj)
+    return render_template('setor/setor_lista.html', setores=setores)
 
 @app.route('/suporte', methods=['GET', 'POST'])
 def suporte():
@@ -93,7 +93,7 @@ def manage_professores(setor_id):
         db.session.commit()
         return redirect(url_for('manage_professores', setor_id=setor_id))
     professores = setor.professores
-    return render_template('manage_professores.html', setor=setor, professores=professores)
+    return render_template('professor/manage_professores.html', setor=setor, professores=professores)
 
 @app.route('/setor/<int:setor_id>/professor/<int:id>/edit', methods=['GET', 'POST'])
 def edit_professor(setor_id, id):
@@ -102,7 +102,7 @@ def edit_professor(setor_id, id):
         professor.nome = request.form['nome']
         db.session.commit()
         return redirect(url_for('manage_professores', setor_id=setor_id))
-    return render_template('edit_professor.html', professor=professor)
+    return render_template('professor/edit_professor.html', professor=professor)
 
 @app.route('/setor/<int:setor_id>/professor/<int:id>/delete', methods=['POST'])
 def delete_professor(setor_id, id):
@@ -135,7 +135,7 @@ def confirm_delete_setor(id):
             db.session.commit()
             return redirect(url_for('setorLista'))
         return redirect(url_for('setorLista'))
-    return render_template('confirm_delete_setor.html', setor=setor, professores=professores)
+    return render_template('setor/confirm_delete_setor.html', setor=setor, professores=professores)
 
 
 @app.route('/setor/<int:id>/edit', methods=['GET', 'POST'])
@@ -145,7 +145,7 @@ def edit_setor(id):
         setor.nome = request.form['nome']
         db.session.commit()
         return redirect(url_for('setorLista'))
-    return render_template('edit_setor.html', setor=setor)
+    return render_template('setor/edit_setor.html', setor=setor)
 
 
 @app.route('/professor/<int:professor_id>/aulas', methods=['GET', 'POST'])
@@ -183,7 +183,7 @@ def manage_aulas(professor_id):
             return redirect(url_for('manage_aulas', professor_id=professor_id))
     
     aulas = professor.aulas
-    return render_template('manage_aulas.html', professor=professor, aulas=aulas)
+    return render_template('aula/manage_aulas.html', professor=professor, aulas=aulas)
 
 
 @app.route('/professor/<int:professor_id>/aula/<int:id>/edit', methods=['GET', 'POST'])
@@ -212,7 +212,7 @@ def edit_aula(professor_id, id):
             flash('Aula atualizada com sucesso!', 'success')
             return redirect(url_for('manage_aulas', professor_id=professor_id))
     
-    return render_template('edit_aula.html', aula=aula)
+    return render_template('aula/edit_aula.html', aula=aula)
 
 
 @app.route('/professor/<int:professor_id>/aula/<int:id>/delete', methods=['POST'])
