@@ -1,44 +1,57 @@
-<!-- manage_aulas.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Aulas</title>
-</head>
-<body>
-    <h1>Gerenciar Aulas para {{ professor.nome }}</h1>
-    <form method="POST">
-        <label for="materia">Matéria:</label>
-        <input type="text" id="materia" name="materia" required><br>
+{% extends 'base.html' %}
 
-        <label for="sala">Sala:</label>
-        <input type="text" id="sala" name="sala" required><br>
+{% block content %}
+    <div class="container mt-4">
+        <h1>Gerenciar Aulas para {{ professor.nome }}</h1>
 
-        <label for="dia">Dia:</label>
-        <input type="text" id="dia" name="dia" required><br>
+        {# Bloco para exibir mensagens flash #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-        <label for="horario_inicio">Horário de Início:</label>
-        <input type="time" id="horario_inicio" name="horario_inicio" required><br>
+        <form method="POST">
+            <div class="form-group">
+                <label for="materia">Matéria:</label>
+                <input type="text" class="form-control" id="materia" name="materia" required>
+            </div>
+            <div class="form-group">
+                <label for="sala">Sala:</label>
+                <input type="text" class="form-control" id="sala" name="sala" required>
+            </div>
+            <div class="form-group">
+                <label for="dia">Dia:</label>
+                <input type="date" class="form-control" id="dia" name="dia" required>
+            </div>
+            <div class="form-group">
+                <label for="horario_inicio">Horário de Início:</label>
+                <input type="time" class="form-control" id="horario_inicio" name="horario_inicio" required>
+            </div>
+            <div class="form-group">
+                <label for="horario_fim">Horário de Fim:</label>
+                <input type="time" class="form-control" id="horario_fim" name="horario_fim" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar Aula</button>
+        </form>
 
-        <label for="horario_fim">Horário de Fim:</label>
-        <input type="time" id="horario_fim" name="horario_fim" required><br>
+        <h2 class="mt-4">Aulas</h2>
+        <ul class="list-group">
+            {% for aula in aulas %}
+                <li class="list-group-item">
+                    {{ aula.materia }} - Sala: {{ aula.sala }} - Dia: {{ aula.dia }} - Horário de Início: {{ aula.horario_inicio.strftime('%H:%M') }} - Horário de Fim: {{ aula.horario_fim.strftime('%H:%M') }}
+                    <a href="{{ url_for('edit_aula', professor_id=professor.id, id=aula.id) }}" class="btn btn-warning btn-sm ml-2">Editar</a>
+                    <form method="POST" action="{{ url_for('delete_aula', professor_id=professor.id, id=aula.id) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm ml-2">Deletar</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
 
-        <button type="submit">Adicionar Aula</button>
-    </form>
-
-    <h2>Aulas</h2>
-    <ul>
-        {% for aula in aulas %}
-            <li>{{ aula.materia }} - {{ aula.sala }} - {{ aula.dia }} - {{ aula.horario_inicio }} - {{ aula.horario_fim }}
-                <a href="{{ url_for('edit_aula', professor_id=professor.id, id=aula.id) }}">Editar</a>
-                <form method="POST" action="{{ url_for('delete_aula', professor_id=professor.id, id=aula.id) }}" style="display:inline;">
-                    <button type="submit">Deletar</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <a href="{{ url_for('manage_professores', setor_id=professor.setor_id) }}">Voltar</a>
-</body>
-</html>
+        <a href="{{ url_for('manage_professores', setor_id=professor.setor_id) }}" class="btn btn-secondary mt-3">Voltar</a>
+    </div>
+{% endblock %}
