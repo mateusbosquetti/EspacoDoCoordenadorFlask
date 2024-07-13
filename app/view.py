@@ -39,7 +39,7 @@ def setor():
     context = {}
     if form.validate_on_submit():
         form.save()
-        return redirect(url_for('homepage'))
+        return redirect(url_for('setorLista'))
     return render_template('setor/setores.html', context=context, form=form)
 
 @app.route('/setor/lista/')
