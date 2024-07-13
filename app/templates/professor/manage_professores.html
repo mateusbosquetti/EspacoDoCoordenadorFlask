@@ -8,7 +8,9 @@
                 <label for="nome" class="form-label">Nome do Professor</label>
                 <input type="text" class="form-control" id="nome" name="nome" required>
             </div>
-            <button type="submit" class="btn btn-primary">Adicionar Professor</button>
+            {% if current_user.nome == 'admin' and current_user.sobrenome == 'admin' and current_user.email == 'admin@gmail.com' %}
+                <button type="submit" class="btn btn-primary">Adicionar Professor</button>
+            {% endif %}
         </form>
         <h4 class="mt-4">Lista de Professores</h4>
         <table class="table">
@@ -23,10 +25,12 @@
                 <tr>
                     <td>{{ professor.nome }}</td>
                     <td>
-                        <a href="{{ url_for('edit_professor', setor_id=setor.id, id=professor.id) }}" class="btn btn-warning">Editar</a>
-                        <form action="{{ url_for('delete_professor', setor_id=setor.id, id=professor.id) }}" method="post" style="display:inline;">
-                            <button type="submit" class="btn btn-danger">Excluir</button>
-                        </form>
+                        {% if current_user.nome == 'admin' and current_user.sobrenome == 'admin' and current_user.email == 'admin@gmail.com' %}
+                            <a href="{{ url_for('edit_professor', setor_id=setor.id, id=professor.id) }}" class="btn btn-warning">Editar</a>
+                            <form action="{{ url_for('delete_professor', setor_id=setor.id, id=professor.id) }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        {% endif %}
                         <a href="{{ url_for('manage_aulas', professor_id=professor.id) }}" class="btn btn-success">Visualizar Grade Horária</a>
                     </td>
                 </tr>
