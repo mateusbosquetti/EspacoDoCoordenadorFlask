@@ -10,13 +10,16 @@ import requests
 def homepage():
     return render_template('index.html')
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = form.login()
-        login_user(user, remember=True)
-        return redirect(url_for('homepage'))
+        try:
+            user = form.login()
+            login_user(user, remember=True)
+            return redirect(url_for('homepage'))
+        except Exception as e:
+            flash(str(e), 'error')
     return render_template('login.html', form=form)
 
 @app.route('/cadastro/', methods=['GET', 'POST'])
