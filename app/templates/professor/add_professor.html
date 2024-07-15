@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h3>Adicionar Professor ao Setor: {{ setor.nome }}</h3>
+        <form method="post" class="row mt-4 p-4 round border shadow">
+            {{ form.csrf_token }}
+
+            <div class="col-12 mb-3">
+                {{ form.nome.label() }}
+                {{ form.nome(class="form-control") }}
+            </div>
+
+            <div class="col-12 mb-3">
+                {{ form.email.label() }}
+                {{ form.email(class="form-control") }}
+            </div>
+
+            <div class="col-12">
+                {{ form.btnSubmit(class="btn btn-primary col-12 mt-3") }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -57,3 +57,8 @@ class LoginForm(FlaskForm):
                 raise Exception('Senha Incorreta!!!')
         else:
             raise Exception('Usuario nao encontrado')
+        
+class ProfessorForm(FlaskForm):
+    nome = StringField('Nome do Professor', validators=[DataRequired()])
+    email = StringField('E-mail do Professor', validators=[DataRequired(), Email()])
+    btnSubmit = SubmitField('Adicionar Professor')

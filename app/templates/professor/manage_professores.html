@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container">
+    <div class="container mt-4">
         <h3>Professores do Setor: {{ setor.nome }}</h3>
-        <form method="post">
-            <div class="mb-3">
-                <label for="nome" class="form-label">Nome do Professor</label>
-                <input type="text" class="form-control" id="nome" name="nome" required>
+        <form method="get" class="row mb-3">
+            <div class="col-9">
+                <input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar por nome do professor">
             </div>
-            {% if current_user.nome == 'admin' and current_user.sobrenome == 'admin' and current_user.email == 'admin@gmail.com' %}
-                <button type="submit" class="btn btn-primary">Adicionar Professor</button>
-            {% endif %}
+            <div class="col-3">
+                <button type="submit" class="btn btn-primary">Pesquisar</button>
+            </div>
         </form>
+        {% if current_user.nome == 'admin' and current_user.sobrenome == 'admin' and current_user.email == 'admin@gmail.com' %}
+            <a href="{{ url_for('add_professor', setor_id=setor.id) }}" class="btn btn-primary mb-3">Adicionar Professor</a>
+        {% endif %}
         <h4 class="mt-4">Lista de Professores</h4>
         <table class="table">
             <thead>

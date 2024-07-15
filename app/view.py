@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect, flash
-from app.forms import SetorForm, UserForm, LoginForm
+from app.forms import SetorForm, UserForm, LoginForm, ProfessorForm
 from app.models import Setor, User, Suporte, Professor, Aula
 from flask_login import login_user, logout_user, current_user
 from datetime import time
@@ -83,16 +83,29 @@ def suporte():
     return render_template('suporte.html')
 
 
-@app.route('/setor/<int:setor_id>/professores', methods=['GET', 'POST'])
-def manage_professores(setor_id):
+@app.route('/setor/<int:setor_id>/add_professor', methods=['GET', 'POST'])
+def add_professor(setor_id):
+    form = ProfessorForm()
     setor = Setor.query.get_or_404(setor_id)
-    if request.method == 'POST':
-        nome = request.form['nome']
-        novo_professor = Professor(nome=nome, setor_id=setor_id)
+    if form.validate_on_submit():
+        novo_professor = Professor(
+            nome=form.nome.data,
+            email=form.email.data,
+            setor_id=setor_id
+        )
         db.session.add(novo_professor)
         db.session.commit()
         return redirect(url_for('manage_professores', setor_id=setor_id))
-    professores = setor.professores
+    return render_template('professor/add_professor.html', form=form, setor=setor)
+
+@app.route('/setor/<int:setor_id>/professores', methods=['GET'])
+def manage_professores(setor_id):
+    setor = Setor.query.get_or_404(setor_id)
+    pesquisa = request.args.get('pesquisa', '')
+    if pesquisa:
+        professores = Professor.query.filter(Professor.nome.ilike(f"%{pesquisa}%"), Professor.setor_id == setor_id).order_by(Professor.nome).all()
+    else:
+        professores = setor.professores
     return render_template('professor/manage_professores.html', setor=setor, professores=professores)
 
 @app.route('/setor/<int:setor_id>/professor/<int:id>/edit', methods=['GET', 'POST'])
@@ -100,6 +113,7 @@ def edit_professor(setor_id, id):
     professor = Professor.query.get_or_404(id)
     if request.method == 'POST':
         professor.nome = request.form['nome']
+        professor.email = request.form['email']
         db.session.commit()
         return redirect(url_for('manage_professores', setor_id=setor_id))
     return render_template('professor/edit_professor.html', professor=professor)

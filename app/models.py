@@ -27,6 +27,7 @@ class Setor(db.Model):
 class Professor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=True)
     setor_id = db.Column(db.Integer, db.ForeignKey('setor.id'), nullable=False)
     setor = db.relationship('Setor', back_populates='professores')
     aulas = db.relationship('Aula', back_populates='professor', cascade='all, delete-orphan')
