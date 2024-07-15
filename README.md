@@ -17,3 +17,9 @@ $ pip install -r requirements.txt
 ```
 $ python main.py
 ```
+
+### Contato
+
+Mateus Henrique Bosquett - mateusbosquetti123@gmail.com
+
+Meu github: https://github.com/mateusbosquetti
