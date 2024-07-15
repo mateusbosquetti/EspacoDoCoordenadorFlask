@@ -12,7 +12,8 @@ class User(db.Model, UserMixin):
     sobrenome = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
     senha = db.Column(db.String, nullable=True)
-
+    adm = db.Column(db.Boolean, nullable=True)
+    
 class Suporte(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=True)

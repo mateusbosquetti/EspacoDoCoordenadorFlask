@@ -12,7 +12,7 @@
             </div>
 
         </form>
-        {% if current_user.nome == 'admin' and current_user.sobrenome == 'admin' and current_user.email == 'admin@gmail.com' %}
+        {% if current_user.adm == 1 %}
             <a href="{{url_for('setor')}}"class="btn btn-primary">Adicionar Setor</a>
         {% endif %}
 

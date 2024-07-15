@@ -14,7 +14,7 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.nome == 'admin' and current_user.sobrenome == 'admin' and current_user.email == 'admin@gmail.com'%}
+        {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1 %}
             <form method="POST">
                 <div class="form-group">
                     <label for="materia">Matéria:</label>
@@ -46,7 +46,7 @@
             {% for aula in aulas %}
                 <li class="list-group-item">
                     {{ aula.materia }} - Sala: {{ aula.sala }} - Dia: {{ aula.dia }} - Horário de Início: {{ aula.horario_inicio.strftime('%H:%M') }} - Horário de Fim: {{ aula.horario_fim.strftime('%H:%M') }}
-                    {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.nome == 'admin' %}
+                    {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1 %}
                         <a href="{{ url_for('edit_aula', professor_id=professor.id, id=aula.id) }}" class="btn btn-warning btn-sm ml-2">Editar</a>
                         <form method="POST" action="{{ url_for('delete_aula', professor_id=professor.id, id=aula.id) }}" style="display:inline;">
                             <button type="submit" class="btn btn-danger btn-sm ml-2">Deletar</button>

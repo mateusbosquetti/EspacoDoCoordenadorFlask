@@ -12,6 +12,7 @@ class UserForm(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(),Email()]) 
     senha = PasswordField('Senha', validators=[DataRequired()])
     confirmacao_senha = PasswordField('Confimar senha', validators=[DataRequired(), EqualTo('senha')])
+    adm = False
     btnSubmit = SubmitField('Cadastrar')
 
     def validade_email(self, email):
@@ -24,7 +25,8 @@ class UserForm(FlaskForm):
             nome = self.nome.data,
             sobrenome = self.sobrenome.data,
             email = self.email.data,
-            senha = senha
+            senha = senha,
+            adm = self.adm
         )
         db.session.add(user)
         db.session.commit()
