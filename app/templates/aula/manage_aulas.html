@@ -43,6 +43,9 @@
 
         <h2 class="mt-4">Aulas</h2>
         <ul class="list-group">
+            {% if not aulas %}
+                <h6>Sem aulas</h6>
+            {% endif %}  
             {% for aula in aulas %}
                 <li class="list-group-item">
                     {{ aula.materia }} - Sala: {{ aula.sala }} - Dia: {{ aula.dia }} - Horário de Início: {{ aula.horario_inicio.strftime('%H:%M') }} - Horário de Fim: {{ aula.horario_fim.strftime('%H:%M') }}
