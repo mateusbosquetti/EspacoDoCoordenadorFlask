@@ -6,7 +6,7 @@ Projeto de gestão de professores e aulas
 ```
 $ Win + R
 $ cmd
-$ git clone https://github.com/mateusbosquetti/ProjetoFinalFlask1.git
+$ git clone https://github.com/mateusbosquetti/EspacoDoCoordenadorFlask.git
 ```
 ### Install
 ```
