@@ -11,7 +11,7 @@
                 <button type="submit" class="btn btn-primary">Pesquisar</button>
             </div>
         </form>
-        {% if current_user.nome == 'admin' and current_user.sobrenome == 'admin' and current_user.email == 'admin@gmail.com' %}
+        {% if current_user.adm == 1 %}
             <a href="{{ url_for('add_professor', setor_id=setor.id) }}" class="btn btn-primary mb-3">Adicionar Professor</a>
         {% endif %}
         <h4 class="mt-4">Lista de Professores</h4>
