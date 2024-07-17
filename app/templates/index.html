@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% include 'nave.html' %}
 {% block content %}
 <div class="container">
 
@@ -10,11 +11,9 @@
     </div>
 
     <div>
-        {% include 'nave.html' %}
         <hr>
         <br>
-        <span class="btn btn-primary">{{current_user.nome}}</span>
-        <a href="{{url_for('logout')}}" class="btn btn-danger">Sair</a>
+        
         <hr>    
     </div>
 </div>

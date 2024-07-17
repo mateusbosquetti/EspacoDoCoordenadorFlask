@@ -1,4 +1,22 @@
-<a href="{{url_for('homepage')}}"class="btn btn-dark">Home</a>
-<a href="{{url_for('setorLista')}}"class="btn btn-info">Ver Setores</a>
-<a href="{{url_for('suporte')}}"class="btn btn-info">Suporte</a>
+<div class="allNav">
+    <div>
+        <a href="{{url_for('homepage')}}" class="btn btn-dark">Home</a>
+        <a href="{{url_for('setorLista')}}" class="btn btn-info">Ver Setores</a>
+        <a href="{{url_for('suporte')}}" class="btn btn-info">Suporte</a>
+    </div>
+    <div>
+        <span class="btn btn-primary">{{current_user.nome}}</span>
+        <a href="{{url_for('logout')}}" class="btn btn-danger">Sair</a>
+    </div>
+</div>
 
+<style>
+    * {
+        margin: 0%;
+        padding: 0%;
+    }
+    .allNav {
+     justify-content: space-between;
+     display: flex;
+    }
+</style>
