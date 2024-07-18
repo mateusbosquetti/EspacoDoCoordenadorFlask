@@ -2,44 +2,47 @@
 {% include 'nave.html' %}
 
 {% block content %}
-    <div class="container mt-4">
-        <h3>Professores do Setor: {{ setor.nome }}</h3>
-        <form method="get" class="row mb-3">
-            <div class="col-9">
-                <input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar por nome do professor">
-            </div>
-            <div class="col-3">
-                <button type="submit" class="btn btn-primary">Pesquisar</button>
-            </div>
-        </form>
-        {% if current_user.adm == 1 %}
-            <a href="{{ url_for('add_professor', setor_id=setor.id) }}" class="btn btn-primary mb-3">Adicionar Professor</a>
-        {% endif %}
-        <h4 class="mt-4">Lista de Professores</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for professor in professores %}
-                <tr>
-                    <td>{{ professor.nome }}</td>
-                    <td>
-                        {% if current_user.adm == 1 %}
-                            <a href="{{ url_for('edit_professor', setor_id=setor.id, id=professor.id) }}" class="btn btn-warning">Editar</a>
-                            <form action="{{ url_for('delete_professor', setor_id=setor.id, id=professor.id) }}" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </form>
-                        {% endif %}
-                        <a href="{{ url_for('manage_aulas', professor_id=professor.id) }}" class="btn btn-success">Visualizar Grade Horária</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="{{ url_for('setorLista') }}" class="btn btn-secondary">Voltar</a>
-    </div>
+<div class="container mt-4">
+    <h3>Professores do Setor: {{ setor.nome }}</h3>
+    <form method="get" class="row mb-3">
+        <div class="col-9">
+            <input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar por nome do professor">
+        </div>
+        <div class="col-3">
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+        </div>
+    </form>
+    {% if current_user.adm == 1 %}
+    <a href="{{ url_for('add_professor', setor_id=setor.id) }}" class="btn btn-primary mb-3">Adicionar Professor</a>
+    {% endif %}
+    <h4 class="mt-4">Lista de Professores</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for professor in professores %}
+            <tr>
+                <td>{{ professor.nome }}</td>
+                <td>
+                    {% if current_user.adm == 1 %}
+                    <a href="{{ url_for('edit_professor', setor_id=setor.id, id=professor.id) }}"
+                        class="btn btn-warning">Editar</a>
+                    <form action="{{ url_for('delete_professor', setor_id=setor.id, id=professor.id) }}" method="post"
+                        style="display:inline;">
+                        <button type="submit" class="btn btn-danger" id="liveToastBtn">Excluir</button>
+                    </form>
+                    {% endif %}
+                    <a href="{{ url_for('manage_aulas', professor_id=professor.id) }}"
+                        class="btn btn-success">Visualizar Grade Horária</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('setorLista') }}" class="btn btn-secondary">Voltar</a>
+</div>
 {% endblock %}
