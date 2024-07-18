@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nave.css') }}">
 <header>
     <img src="{{ url_for('static', filename='img/logoSenai.png') }}" alt="Logo senai" class="imgLogoSenai2">
         <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}" alt="Logo Espaço do Coordenador" class="imgEspaçoCoordenador2">
@@ -10,6 +10,6 @@
     <nav class="userInfo">
         <a href="{{url_for('homepage')}}" class="btn btn-dark">Home</a>
         <a href="{{ url_for('edit_perfil', id=current_user.id) }}" class="btn btn-success">{{ current_user.nome }}</a>
-        <a href="{{url_for('logout')}}" class="btn btn-danger">Sair</a>
+        <a href="{{url_for('logout')}}" class="btn btn-danger ">Sair</a>
     </nav>
 </header>

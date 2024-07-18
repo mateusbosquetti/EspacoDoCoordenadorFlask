@@ -1,20 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+
+            background-color: #0047B6;
+            height: 100%;
+        }
+
+        .forms {
+            background-color: #fff;
+            border: solid 1px black;
+            padding: 2%;
+            margin: 20% 5% 0% 5%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-top: 5%;
+        }
+
+        @media (min-width: 1000px) {
+            body {
+                background-image: url("{{ url_for('static', filename='img/backgroundLogin.png') }}");
+                background-size: cover;
+            }
+
+            .forms {
+                margin: 20% 45% 0% 0%;
+            }
+
+            h1 {
+                display: none;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
-        <form action="" method="post" class="row mt-4 p-4 round border shadow">
+        <h1>Espaço do Coordenador</h1>
+        <form action="" method="post" class="forms">
             <h3>Bem Vindo</h3>
             {{ form.csrf_token }}
-            
+
             {% for category, message in get_flashed_messages(with_categories=true) %}
-                <div class="alert alert-{{ 'danger' if category == 'error' else category }}">{{ message }}</div>
+            <div class="alert alert-{{ 'danger' if category == 'error' else category }}">{{ message }}</div>
             {% endfor %}
 
             {{ form.email.label() }}
@@ -26,9 +64,11 @@
             {{ form.btnSubmit(class="btn btn-primary col-12 mt-3") }}
 
             <div class="col-12 mt-4">
-                tem cadastro? <a href="{{ url_for('cadastro') }}" class="btn-primary">Clique aqui e faça o seu cadastro</a>
+                tem cadastro? <a href="{{ url_for('cadastro') }}" class="btn-primary">Clique aqui e faça o seu
+                    cadastro</a>
             </div>
         </form>
     </div>
 </body>
+
 </html>
