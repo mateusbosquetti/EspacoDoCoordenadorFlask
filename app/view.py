@@ -213,7 +213,6 @@ def edit_aula(professor_id, id):
         aula.horario_inicio = time.fromisoformat(request.form['horario_inicio'])
         aula.horario_fim = time.fromisoformat(request.form['horario_fim'])
 
-        # Verificação de conflito de horário na mesma sala
         conflito = Aula.query.filter(
             Aula.id != id,
             Aula.sala == aula.sala,

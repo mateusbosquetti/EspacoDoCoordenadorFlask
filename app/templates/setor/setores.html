@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
+{%include 'nave.html' %}
 
 {% block content %}
-    <div class="container">
-        {%include 'nave.html' %}
-        <div class="row mt-4">
-            <h3>Adicionar Setor</h3>
-        </div>
-        <form action="" method="post" class="row mt-4 p-4 round border shadow">
-            {{form.csrf_token}}
-
-            {{form.nome.label()}}
-            {{form.nome(class="form-control")}}
-
-            {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
-        </form>
+<div class="container">
+    <div class="row mt-4">
+        <h3>Adicionar Setor</h3>
     </div>
+    <form action="" method="post" class="row mt-4 p-4 round border shadow">
+        {{form.csrf_token}}
+
+        {{form.nome.label()}}
+        {{form.nome(class="form-control")}}
+
+        {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
+    </form>
+    <a href="{{ url_for('setorLista') }}" class="btn btn-secondary mt-4">Voltar</a>
+</div>
 {% endblock %}
