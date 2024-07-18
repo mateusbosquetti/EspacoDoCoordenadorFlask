@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h3>Editar Perfil</h3>
+    <form method="post">
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome Usuário</label>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ perfil.nome }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{{ url_for('homepage') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

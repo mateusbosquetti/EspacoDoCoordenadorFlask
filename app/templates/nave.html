@@ -8,7 +8,8 @@
             class="imgEspaçoCoordenador">
     </div>
     <nav class="userInfo">
-        <span class="btn btn-success">{{current_user.nome}}</span>
+        <a href="{{url_for('homepage')}}" class="btn btn-dark">Home</a>
+        <a href="{{ url_for('edit_perfil', id=current_user.id) }}" class="btn btn-success">{{ current_user.nome }}</a>
         <a href="{{url_for('logout')}}" class="btn btn-danger">Sair</a>
     </nav>
 </header>

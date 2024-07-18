@@ -239,3 +239,12 @@ def delete_aula(professor_id, id):
     db.session.commit()
     flash('Aula deletada com sucesso!', 'success')
     return redirect(url_for('manage_aulas', professor_id=professor_id))
+
+@app.route('/editarPerfil/<int:id>/edit', methods=['GET', 'POST'])
+def edit_perfil(id):
+    perfil = User.query.get_or_404(id)
+    if request.method == 'POST':
+        perfil.nome = request.form['nome']
+        db.session.commit()
+        return redirect(url_for('homepage'))
+    return render_template('edit_perfil.html', perfil=perfil)  # Passa o perfil para o template
