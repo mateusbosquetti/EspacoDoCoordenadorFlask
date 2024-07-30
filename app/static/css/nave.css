@@ -22,15 +22,11 @@ img {
     display: flex;
     gap: 5%;
     align-items: center;
-    margin-top: 3%;
-}
-
-.imgLogoSenai {
-
+    margin-top: 1.5%;
 }
 
 .imgEspaçoCoordenador {
-    width: 40%;
+    width: 55%;
 }
 
 .imgLogoSenai2{
