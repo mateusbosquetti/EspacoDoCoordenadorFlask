@@ -28,6 +28,7 @@
             <tr>
                 <td>{{ professor.nome }}</td>
                 <td>
+                    <a href="{{ url_for('manage_aulas', professor_id=professor.id) }}" class="btn btn-success">Visualizar Grade Horária</a>
                     {% if current_user.adm == 1 %}
                     <a href="{{ url_for('edit_professor', setor_id=setor.id, id=professor.id) }}"
                         class="btn btn-warning">Editar</a>
@@ -36,8 +37,6 @@
                         <button type="submit" class="btn btn-danger" id="liveToastBtn">Excluir</button>
                     </form>
                     {% endif %}
-                    <a href="{{ url_for('manage_aulas', professor_id=professor.id) }}"
-                        class="btn btn-success">Visualizar Grade Horária</a>
                 </td>
             </tr>
             {% endfor %}

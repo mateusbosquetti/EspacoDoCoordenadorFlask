@@ -230,7 +230,6 @@ def edit_aula(professor_id, id):
     
     return render_template('aula/edit_aula.html', aula=aula)
 
-
 @app.route('/professor/<int:professor_id>/aula/<int:id>/delete', methods=['POST'])
 def delete_aula(professor_id, id):
     aula = Aula.query.get_or_404(id)
@@ -243,7 +242,15 @@ def delete_aula(professor_id, id):
 def edit_perfil(id):
     perfil = User.query.get_or_404(id)
     if request.method == 'POST':
-        perfil.nome = request.form['nome']
+        nome_antigo = perfil.nome
+        nome_novo = request.form['nome']
+        perfil.nome = nome_novo
+
+        professor = Professor.query.filter_by(nome=nome_antigo).first()
+        if professor:
+            professor.nome = nome_novo
+        
         db.session.commit()
         return redirect(url_for('homepage'))
-    return render_template('edit_perfil.html', perfil=perfil)  # Passa o perfil para o template
+    
+    return render_template('edit_perfil.html', perfil=perfil)
