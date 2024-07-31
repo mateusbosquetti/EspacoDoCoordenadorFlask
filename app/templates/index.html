@@ -3,16 +3,9 @@
 {% include 'nave.html' %}
 {% block content %}
 
-<hr>
-<div>
-    <h3>Sistema de Gerenciamento Escolar</h3>
-</div>
-
-<div>
-    <br>
-    <a href="{{url_for('setorLista')}}" class="btn btn-info">Ver Setores</a>
-    <a href="{{url_for('suporte')}}" class="btn btn-info">Suporte</a>
-    <hr>
+<div class="container btn-container">
+    <a href="{{url_for('setorLista')}}" class="btnBlue">Setores</a>
+    <a href="{{url_for('suporte')}}" class="btnBlue">Suporte</a>
 </div>
 
 <section class="aboutUs">
@@ -22,26 +15,30 @@
         <img src="{{ url_for('static', filename='img/Rectangle 103.png') }}" alt="" class="img1">
         <div class="textContent">
             <h4>A Equipe</h4>
-            <p>Composta por Enzo Tulio Wagner, Johan Peter Follmann Steckling e Mateus Henrique Bosqueti. nossa equipe
-                fez este projeto como um trabalho escolar para a matéria de Desenvolvimento de Sistemas.</p>
+            <p>Composta por Mateus Henrique Bosquetti, Enzo Tulio Wagner e Johan Peter Follmann Steckling, nossa equipe
+                fez este projeto para sanar uma necessidade em nossa escola, o projeto foi proposto pelo nosso professor
+                Fabiano da Silva Luiz junto do nosso Coordenador. Elaborado como um trabalho escolar para a matéria de
+                Desenvolvimento de Sistemas.</p>
         </div>
     </div>
     <div class="content2">
         <img src="{{ url_for('static', filename='img/Rectangle 103.png') }}" alt="img1" class="img1">
         <div class="textContent">
-            <h4>A Elaboração</h4>
-            <p>Neste trabalho tivemos que passar por várias etapas, algumas que podemos citar foram o debate para ver as
-                melhores ideias para a criação do site, após isso definimos as páginas do site e como elas funcionariam
-                e por fim a programação do site em si. </p>
+            <h4>A Equipe</h4>
+            <p>Composta por Mateus Henrique Bosquetti, Enzo Tulio Wagner e Johan Peter Follmann Steckling, nossa equipe
+                fez este projeto para sanar uma necessidade em nossa escola, o projeto foi proposto pelo nosso professor
+                Fabiano da Silva Luiz junto do nosso Coordenador. Elaborado como um trabalho escolar para a matéria de
+                Desenvolvimento de Sistemas. </p>
         </div>
     </div>
     <div class="content3">
 
         <div class="textContent">
-            <h4>A Elaboração</h4>
-            <p>Neste trabalho tivemos que passar por várias etapas, algumas que podemos citar foram o debate para ver as
-                melhores ideias para a criação do site, após isso definimos as páginas do site e como elas funcionariam
-                e por fim a programação do site em si. </p>
+            <h4>A Equipe</h4>
+            <p>Composta por Mateus Henrique Bosquetti, Enzo Tulio Wagner e Johan Peter Follmann Steckling, nossa equipe
+                fez este projeto para sanar uma necessidade em nossa escola, o projeto foi proposto pelo nosso professor
+                Fabiano da Silva Luiz junto do nosso Coordenador. Elaborado como um trabalho escolar para a matéria de
+                Desenvolvimento de Sistemas.</p>
         </div>
         <img src="{{ url_for('static', filename='img/Rectangle 103.png') }}" alt="img1" class="img1">
 
@@ -50,6 +47,47 @@
 </section>
 
 <style>
+    .btn-container {
+        margin-top: 5%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10%;
+    }
+
+    .btnBlue {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 250px;
+        height: 250px;
+        background-color: #0047B6;
+        color: white;
+        text-decoration: none;
+        margin: 10px 0;
+        font-size: 2rem;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    }
+
+    .btnBlue:hover {
+        color: #0047B6;
+        background-color: transparent;
+        border: solid 2px #0047B6;
+        transition: 0.2s;
+    }
+
+
+    @media (min-width: 800px) {
+        .btn-container {
+            flex-direction: row;
+        }
+
+        .btnBlue {
+            margin: 0 10px;
+        }
+    }
+
     .aboutUs {
         margin: 5%;
     }
