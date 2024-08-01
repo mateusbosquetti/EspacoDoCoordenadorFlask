@@ -1,0 +1,37 @@
+:root {
+    --body-bg: #fff;
+    --body-bgHover: transparent;
+    --body-color: #000000;
+    --body-line: rgb(0, 0, 0);
+    --button-bg: #fff;
+    --button-color: #000;
+}
+
+.dark-mode {
+    --body-bg: #3C3C3C;
+    --body-bgHover: #fff;
+    --body-color: #fff;
+    --body-line: rgb(255, 255, 255);
+    --button-bg: #000;
+    --button-color: #fff;
+}
+
+body {
+    background-color: var(--body-bg);
+    color: var(--body-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode-toggle {
+    background-color: var(--button-bg);
+    color: var(--button-color);
+    border: 1px solid var(--button-color);
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode-toggle:hover {
+    background-color: var(--button-color);
+    color: var(--button-bg);
+}

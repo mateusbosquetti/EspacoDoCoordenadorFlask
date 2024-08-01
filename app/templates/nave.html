@@ -1,12 +1,14 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/nave.css') }}">
 <header>
     <img src="{{ url_for('static', filename='img/logoSenai.png') }}" alt="Logo senai" class="imgLogoSenai2">
-        <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}" alt="Logo Espaço do Coordenador" class="imgEspaçoCoordenador2">
+    <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}" alt="Logo Espaço do Coordenador"
+        class="imgEspaçoCoordenador2">
     <div class="headerImgs">
         <img src="{{ url_for('static', filename='img/logoSenai.png') }}" alt="Logo senai" class="imgLogoSenai">
         <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}" alt="Logo Espaço do Coordenador"
             class="imgEspaçoCoordenador">
     </div>
+        
     <nav class="userInfo">
         <a href="{{url_for('homepage')}}" class="btn btn-dark">Home</a>
         <a href="{{ url_for('edit_perfil', id=current_user.id) }}" class="btn btn-success">{{ current_user.nome }}</a>
@@ -14,69 +16,90 @@
     </nav>
 </header>
 <style>
+    :root {
+        --body-bg: #fafafa;
+        --body-color: #555;
+        --link-color: #222;
+        --link-color-hover: #ec5840;
+    }
+
+    body {
+        background-color: var(--body-bg);
+        color: var(--body-color);
+    }
+
+    a {
+        color: var(--link-color);
+    }
+
+    a:hover {
+        color: var(--link-color-hover);
+    }
+
     * {
-    margin: 0%;
-    padding: 0;;
-}
+        margin: 0%;
+        padding: 0;
+        ;
+    }
 
-header {
-    padding: 2% 2%;
-    background-color: #0047B6;
-}
-
-img {
-    width: 10%;
-}
-
-.headerImgs  {
-    justify-content: space-between;
-    display: flex;
-}
-
-.userInfo {
-    justify-content: center;
-    display: flex;
-    gap: 5%;
-    align-items: center;
-    margin-top: 1.5%;
-}
-
-.imgEspaçoCoordenador {
-    width: 55%;
-}
-
-.imgLogoSenai2{
-    display: none;
-}
-
-.imgEspaçoCoordenador2{
-    display: none;
-}
-
-
-@media (min-width: 800px){
     header {
-        display: flex;
+        padding: 2% 2%;
+        background-color: #0047B6;
+    }
+
+    img {
+        width: 10%;
+    }
+
+    .headerImgs {
         justify-content: space-between;
-        padding: 0.5% 2% ;
-    }
-
-    .headerImgs  {
-        display: none;
-    }
-
-    .imgLogoSenai2{
         display: flex;
-        width: 4%;
-    }
-    
-    .imgEspaçoCoordenador2{
-        display: flex;
-        width: 26%;
     }
 
     .userInfo {
-        margin: 0%;
+        justify-content: center;
+        display: flex;
+        gap: 5%;
+        align-items: center;
+        margin-top: 1.5%;
     }
-}
+
+    .imgEspaçoCoordenador {
+        width: 55%;
+    }
+
+    .imgLogoSenai2 {
+        display: none;
+    }
+
+    .imgEspaçoCoordenador2 {
+        display: none;
+    }
+
+
+    @media (min-width: 800px) {
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5% 2%;
+        }
+
+        .headerImgs {
+            display: none;
+        }
+
+        .imgLogoSenai2 {
+            display: flex;
+            width: 4%;
+        }
+
+        .imgEspaçoCoordenador2 {
+            display: flex;
+            width: 26%;
+        }
+
+        .userInfo {
+            margin: 0%;
+        }
+    }
 </style>
