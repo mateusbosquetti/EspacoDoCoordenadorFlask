@@ -8,7 +8,7 @@
 }
 
 .dark-mode {
-    --body-bg: #3C3C3C;
+    --body-bg: #222;
     --body-bgHover: #fff;
     --body-color: #fff;
     --body-line: rgb(255, 255, 255);

@@ -11,8 +11,6 @@
     {% else %}
     <a href="{{ url_for('download_excel_professor') }}" class="btnBlue">Relatório de Aulas</a>
     {% endif %}
-    <a href="{{ url_for('create_chat') }}" class="btnBlue">Criar chat</a>
-    <a href="{{ url_for('chats') }}" class="btnBlue">Chats</a>
 </div>
 
 <section class="aboutUs">
@@ -51,9 +49,36 @@
 
     </div>
 
+    <div class="absoluta">
+        <a href="{{ url_for('chats') }}" class="fas fa-solid fa-message"></a>
+    </div>
+
+
 </section>
 
 <style>
+    .aboutUs {
+        position: relative;
+    }
+
+    .absoluta a {
+        text-decoration: none;
+        font-size: 1.75vw;
+        color: white;
+        padding: 1.5%;
+        position: fixed;
+        right: 30px;
+        bottom: 30px;
+        background-color: #0047B6;
+        border-radius: 100px;
+    }
+
+    .absoluta :hover {
+        scale: 1.2;
+        transition: .3s;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    }
+
     .btn-container {
         margin-top: 5%;
         display: flex;

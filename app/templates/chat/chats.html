@@ -2,6 +2,7 @@
 {% block content %}
 <h1>Chats</h1>
 <a href="{{ url_for('create_chat') }}">Criar Novo Chat</a>
+<a href="{{ url_for('homepage') }}">Voltar</a>
 <ul>
     {% for chat in chats %}
     <li>
