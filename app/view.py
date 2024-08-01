@@ -59,8 +59,8 @@ def setorLista():
 @app.route('/suporte', methods=['GET', 'POST'])
 def suporte():
     if request.method == 'POST':
-        nome = request.form['name']
-        email = request.form['email']
+        nome = current_user.nome
+        email =  current_user.email
         mensagem = request.form['message']
 
         novo_suporte = Suporte(nome=nome, email=email, mensagem=mensagem)
@@ -79,7 +79,7 @@ def suporte():
         response = requests.post(staticforms_url, data=data)
         
         if response.status_code == 200:
-            flash('Sua mensagem foi enviada com sucesso!', 'success')
+            flash('Sua mensagem foi enviada com sucesso! Fique atento no seu email', 'success')
         else:
             flash('Ocorreu um erro ao enviar a mensagem. Tente novamente.', 'error')
 
