@@ -13,7 +13,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String, nullable=True)
     senha = db.Column(db.String, nullable=True)
     adm = db.Column(db.Boolean, nullable=True)
-    
+    chats = db.relationship('Chat', secondary='user_chats', back_populates='users')
+
 class Suporte(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=True)
@@ -42,3 +43,23 @@ class Aula(db.Model):
     horario_fim = db.Column(db.Time, nullable=False)
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
     professor = db.relationship('Professor', back_populates='aulas')
+
+class Chat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    users = db.relationship('User', secondary='user_chats', back_populates='chats')
+    messages = db.relationship('Message', back_populates='chat', cascade='all, delete-orphan')
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'), nullable=False)
+    sender = db.relationship('User')
+    chat = db.relationship('Chat', back_populates='messages')
+
+user_chats = db.Table('user_chats',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('chat_id', db.Integer, db.ForeignKey('chat.id'), primary_key=True)
+)

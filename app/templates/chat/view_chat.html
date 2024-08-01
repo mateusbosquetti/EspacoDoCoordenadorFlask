@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Chat</h1>
+<div>
+    {% for message in chat.messages %}
+    <p><strong>{{ message.sender.nome }} {{ message.sender.sobrenome }}:</strong> {{ message.content }}</p>
+    {% endfor %}
+</div>
+<form method="POST" action="{{ url_for('send_message', chat_id=chat.id) }}">
+    <textarea name="content" required></textarea>
+    <button type="submit">Enviar</button>
+</form>
+<a href="{{ url_for('chats') }}">Voltar aos Chats</a>
+{% endblock %}

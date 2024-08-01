@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Criar Novo Chat</h1>
+<form method="POST">
+    <label for="user_id">Usuário:</label>
+    <select name="user_id" id="user_id">
+        {% for user in users %}
+        <option value="{{ user.id }}">{{ user.nome }} {{ user.sobrenome }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Criar Chat</button>
+</form>
+{% endblock %}

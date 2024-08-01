@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Chats</h1>
+<a href="{{ url_for('create_chat') }}">Criar Novo Chat</a>
+<ul>
+    {% for chat in chats %}
+    <li>
+        <a href="{{ url_for('view_chat', chat_id=chat.id) }}">
+            Chat com 
+            {% for user in chat.users %}
+                {% if user != current_user %}
+                    {{ user.nome }} {{ user.sobrenome }}
+                {% endif %}
+            {% endfor %}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

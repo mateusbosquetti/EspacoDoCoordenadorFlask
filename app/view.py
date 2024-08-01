@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect, flash, send_file
 from app.forms import SetorForm, UserForm, LoginForm, ProfessorForm
-from app.models import Setor, User, Suporte, Professor, Aula
+from app.models import Setor, User, Suporte, Professor, Aula, Chat, Message
 from flask_login import login_user, logout_user, current_user
 from datetime import time
 from io import BytesIO
@@ -325,3 +325,51 @@ def download_excel_professor():
 
     # Enviar o arquivo para o cliente
     return send_file(output, download_name="aulas_professor.xlsx", as_attachment=True, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+@app.route('/chats')
+def chats():
+    chats = current_user.chats
+    return render_template('chat/chats.html', chats=chats)
+
+@app.route('/chats/create', methods=['GET', 'POST'])
+def create_chat():
+    if request.method == 'POST':
+        user_id = request.form.get('user_id')
+        if user_id:
+            user = User.query.get(user_id)
+            if user and user != current_user:
+                # Verificar se o chat já existe
+                existing_chat = Chat.query.filter(Chat.users.any(id=current_user.id)).filter(Chat.users.any(id=user.id)).first()
+                if existing_chat:
+                    flash('Chat já existe.')
+                    return redirect(url_for('chats'))
+                # Criar um novo chat
+                new_chat = Chat(users=[current_user, user])
+                db.session.add(new_chat)
+                db.session.commit()
+                return redirect(url_for('view_chat', chat_id=new_chat.id))
+            else:
+                flash('Usuário inválido.')
+    users = User.query.filter(User.id != current_user.id).all()
+    return render_template('chat/create_chat.html', users=users)
+
+@app.route('/chats/<int:chat_id>')
+def view_chat(chat_id):
+    chat = Chat.query.get_or_404(chat_id)
+    if current_user not in chat.users:
+        flash('Você não tem permissão para acessar este chat.')
+        return redirect(url_for('chats'))
+    return render_template('chat/view_chat.html', chat=chat)
+
+@app.route('/chats/<int:chat_id>/send', methods=['POST'])
+def send_message(chat_id):
+    chat = Chat.query.get_or_404(chat_id)
+    if current_user not in chat.users:
+        flash('Você não tem permissão para acessar este chat.')
+        return redirect(url_for('chats'))
+    content = request.form.get('content')
+    if content:
+        new_message = Message(content=content, sender=current_user, chat=chat)
+        db.session.add(new_message)
+        db.session.commit()
+    return redirect(url_for('view_chat', chat_id=chat.id))
