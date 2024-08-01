@@ -1,9 +1,11 @@
 from app import app, db
-from flask import render_template, url_for, request, redirect, flash
+from flask import render_template, url_for, request, redirect, flash, send_file
 from app.forms import SetorForm, UserForm, LoginForm, ProfessorForm
 from app.models import Setor, User, Suporte, Professor, Aula
 from flask_login import login_user, logout_user, current_user
 from datetime import time
+from io import BytesIO
+import pandas as pd
 import requests
 
 @app.route('/home', methods=['GET','POST'])
@@ -254,3 +256,72 @@ def edit_perfil(id):
         return redirect(url_for('homepage'))
     
     return render_template('edit_perfil.html', perfil=perfil)
+
+@app.route('/download-excel')
+def download_excel():
+    # Consultar dados dos setores
+    setores = Setor.query.all()
+    setores_list = [{'Nome': setor.nome} for setor in setores]
+
+    # Consultar dados dos professores
+    professores = Professor.query.all()
+    professores_list = [{'Nome': professor.nome, 'Email': professor.email, 'Setor': professor.setor.nome} for professor in professores]
+
+    # Consultar dados das aulas
+    aulas = Aula.query.all()
+    aulas_list = [{'Matéria': aula.materia, 'Sala': aula.sala, 'Dia': aula.dia, 'Horário Início': aula.horario_inicio, 'Horário Fim': aula.horario_fim, 'Professor': aula.professor.nome} for aula in aulas]
+
+    # Consultar dados do suporte
+    suportes = Suporte.query.all()
+    suportes_list = [{'Nome': suporte.nome, 'Email': suporte.email, 'Mensagem': suporte.mensagem} for suporte in suportes]
+    
+    # Converter os dados em DataFrames do pandas
+    df_setores = pd.DataFrame(setores_list)
+    df_professores = pd.DataFrame(professores_list)
+    df_aulas = pd.DataFrame(aulas_list)
+    df_suportes = pd.DataFrame(suportes_list)
+
+    # Salvar os DataFrames em um arquivo Excel na memória, cada um em uma aba
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df_setores.to_excel(writer, index=False, sheet_name='Setores')
+        df_professores.to_excel(writer, index=False, sheet_name='Professores')
+        df_aulas.to_excel(writer, index=False, sheet_name='Aulas')
+        df_suportes.to_excel(writer, index=False, sheet_name='Suportes')
+    output.seek(0)
+
+    # Enviar o arquivo para o cliente
+    return send_file(output, download_name="dados.xlsx", as_attachment=True, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+@app.route('/download-excel-professor')
+def download_excel_professor():
+    # Consultar o professor com o mesmo email do usuário logado
+    professor = Professor.query.filter_by(email=current_user.email).first()
+    if not professor:
+        return "Usuário logado não é um professor", 403
+
+    # Consultar dados das aulas do professor logado
+    aulas = Aula.query.filter_by(professor_id=professor.id).all()
+    
+    # Debug: verificar os dados retornados
+    print("Aulas do professor logado:", aulas)
+
+    aulas_list = [{'Matéria': aula.materia, 'Sala': aula.sala, 'Dia': aula.dia, 'Horário Início': aula.horario_inicio, 'Horário Fim': aula.horario_fim} for aula in aulas]
+    
+    # Debug: verificar a lista de aulas
+    print("Lista de aulas formatada:", aulas_list)
+
+    # Converter os dados em um DataFrame do pandas
+    df_aulas = pd.DataFrame(aulas_list)
+    
+    # Debug: verificar o DataFrame
+    print("DataFrame das aulas:", df_aulas)
+
+    # Salvar o DataFrame em um arquivo Excel na memória
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df_aulas.to_excel(writer, index=False, sheet_name='Aulas')
+    output.seek(0)
+
+    # Enviar o arquivo para o cliente
+    return send_file(output, download_name="aulas_professor.xlsx", as_attachment=True, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')

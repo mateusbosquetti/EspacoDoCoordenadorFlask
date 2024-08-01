@@ -6,6 +6,11 @@
 <div class="container btn-container">
     <a href="{{url_for('setorLista')}}" class="btnBlue">Setores</a>
     <a href="{{url_for('suporte')}}" class="btnBlue">Suporte</a>
+    {% if current_user.adm == 1 %}
+    <a href="{{ url_for('download_excel') }}" class="btnBlue">Relatório Geral</a>
+    {% else %}
+    <a href="{{ url_for('download_excel_professor') }}" class="btnBlue">Relatório de Aulas</a>
+    {% endif %}
 </div>
 
 <section class="aboutUs">
@@ -68,6 +73,7 @@
         margin: 10px 0;
         font-size: 2rem;
         box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+        text-align: center;
     }
 
     .btnBlue:hover {
