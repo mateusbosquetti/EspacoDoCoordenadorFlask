@@ -1,9 +1,14 @@
+<!-- view_chat.html -->
 {% extends "base.html" %}
 {% block content %}
-<h1>Chat</h1>
+<h1>{{ chat.name if chat.is_group else 'Chat' }}</h1>
 <div>
     {% for message in chat.messages %}
-    <p><strong>{{ message.sender.nome }} {{ message.sender.sobrenome }}:</strong> {{ message.content }}</p>
+    <p>
+        <strong>{{ message.sender.nome }} {{ message.sender.sobrenome }}:</strong> 
+        {{ message.content }}
+        <span style="font-size: small; color: gray;">({{ message.timestamp.strftime('%d/%m/%Y %H:%M:%S') }})</span>
+    </p>
     {% endfor %}
 </div>
 <form method="POST" action="{{ url_for('send_message', chat_id=chat.id) }}">

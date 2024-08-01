@@ -334,24 +334,42 @@ def chats():
 @app.route('/chats/create', methods=['GET', 'POST'])
 def create_chat():
     if request.method == 'POST':
-        user_id = request.form.get('user_id')
-        if user_id:
-            user = User.query.get(user_id)
-            if user and user != current_user:
-                # Verificar se o chat já existe
-                existing_chat = Chat.query.filter(Chat.users.any(id=current_user.id)).filter(Chat.users.any(id=user.id)).first()
-                if existing_chat:
-                    flash('Chat já existe.')
-                    return redirect(url_for('chats'))
-                # Criar um novo chat
-                new_chat = Chat(users=[current_user, user])
-                db.session.add(new_chat)
-                db.session.commit()
-                return redirect(url_for('view_chat', chat_id=new_chat.id))
-            else:
-                flash('Usuário inválido.')
+        user_ids = request.form.getlist('user_ids')
+        chat_name = request.form.get('chat_name')
+        
+        if user_ids:
+            users = User.query.filter(User.id.in_(user_ids)).all()
+            if len(users) == 1 and users[0] == current_user:
+                flash('Não é possível criar um chat consigo mesmo.')
+                return redirect(url_for('chats'))
+            
+            if not chat_name and len(users) > 1:
+                flash('Nome do grupo é obrigatório.')
+                return redirect(url_for('create_chat'))
+            
+            is_group = len(users) > 1
+
+            # Verificar se o nome do grupo já existe
+            if is_group and Chat.query.filter_by(name=chat_name).first():
+                flash('Já existe um grupo com esse nome.')
+                return redirect(url_for('create_chat'))
+
+            existing_chat = None
+            if not is_group:
+                existing_chat = Chat.query.filter(Chat.users.any(id=current_user.id)).filter(Chat.users.any(id=users[0].id)).first()
+            
+            if existing_chat:
+                flash('Chat já existe.')
+                return redirect(url_for('chats'))
+            
+            new_chat = Chat(users=[current_user] + users, is_group=is_group, name=chat_name if is_group else None)
+            db.session.add(new_chat)
+            db.session.commit()
+            return redirect(url_for('view_chat', chat_id=new_chat.id))
+    
     users = User.query.filter(User.id != current_user.id).all()
     return render_template('chat/create_chat.html', users=users)
+
 
 @app.route('/chats/<int:chat_id>')
 def view_chat(chat_id):
