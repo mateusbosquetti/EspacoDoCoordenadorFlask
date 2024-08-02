@@ -329,7 +329,12 @@ def download_excel_professor():
 @app.route('/chats')
 def chats():
     chats = current_user.chats
-    return render_template('chat/chats.html', chats=chats)
+    chats_with_last_message = []
+    for chat in chats:
+        last_message = Message.query.filter_by(chat_id=chat.id).order_by(Message.timestamp.desc()).first()
+        chats_with_last_message.append((chat, last_message))
+    return render_template('chat/chats.html', chats=chats_with_last_message)
+
 
 @app.route('/chats/create', methods=['GET', 'POST'])
 def create_chat():

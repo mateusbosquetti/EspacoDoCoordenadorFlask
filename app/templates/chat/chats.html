@@ -1,11 +1,11 @@
 <!-- chats.html -->
-{% extends "base.html" %}
+{% extends "base.html" %} 
 {% block content %}
 <h1>Chats</h1>
 <a href="{{ url_for('create_chat') }}">Criar Novo Chat</a>
 <a href="{{ url_for('homepage') }}">Voltar</a>
 <ul>
-    {% for chat in chats %}
+    {% for chat, last_message in chats %}
     <li>
         <a href="{{ url_for('view_chat', chat_id=chat.id) }}">
             {% if chat.is_group %}
@@ -19,6 +19,13 @@
                 {% endfor %}
             {% endif %}
         </a>
+        {% if last_message %}
+        <p>
+            <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong> 
+            {{ last_message.content }} 
+            <span style="font-size: small; color: gray;">({{ last_message.timestamp.strftime('%d/%m/%Y %H:%M:%S') }})</span>
+        </p>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>
