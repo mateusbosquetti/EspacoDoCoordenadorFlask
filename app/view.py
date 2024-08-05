@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, url_for, request, redirect, flash, send_file
+from flask import jsonify, render_template, url_for, request, redirect, flash, send_file
 from app.forms import SetorForm, UserForm, LoginForm, ProfessorForm
 from app.models import Setor, User, Suporte, Professor, Aula, Chat, Message
 from flask_login import login_user, logout_user, current_user
@@ -326,6 +326,11 @@ def download_excel_professor():
     # Enviar o arquivo para o cliente
     return send_file(output, download_name="aulas_professor.xlsx", as_attachment=True, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
+from flask import render_template, request, redirect, url_for, flash, jsonify
+from flask_login import current_user
+from .models import Chat, Message, User, db
+from . import app
+
 @app.route('/chats')
 def chats():
     chats = current_user.chats
@@ -333,66 +338,73 @@ def chats():
     for chat in chats:
         last_message = Message.query.filter_by(chat_id=chat.id).order_by(Message.timestamp.desc()).first()
         chats_with_last_message.append((chat, last_message))
-    return render_template('chat/chats.html', chats=chats_with_last_message)
+
+    users = User.query.filter(User.id != current_user.id).all()  # Buscar todos os usuários, exceto o atual
+    return render_template('chat/chats.html', chats=chats_with_last_message, users=users)
 
 
-@app.route('/chats/create', methods=['GET', 'POST'])
-def create_chat():
-    if request.method == 'POST':
-        user_ids = request.form.getlist('user_ids')
-        chat_name = request.form.get('chat_name')
-        
-        if user_ids:
-            users = User.query.filter(User.id.in_(user_ids)).all()
-            if len(users) == 1 and users[0] == current_user:
-                flash('Não é possível criar um chat consigo mesmo.')
-                return redirect(url_for('chats'))
-            
-            if not chat_name and len(users) > 1:
-                flash('Nome do grupo é obrigatório.')
-                return redirect(url_for('create_chat'))
-            
-            is_group = len(users) > 1
 
-            # Verificar se o nome do grupo já existe
-            if is_group and Chat.query.filter_by(name=chat_name).first():
-                flash('Já existe um grupo com esse nome.')
-                return redirect(url_for('create_chat'))
-
-            existing_chat = None
-            if not is_group:
-                existing_chat = Chat.query.filter(Chat.users.any(id=current_user.id)).filter(Chat.users.any(id=users[0].id)).first()
-            
-            if existing_chat:
-                flash('Chat já existe.')
-                return redirect(url_for('chats'))
-            
-            new_chat = Chat(users=[current_user] + users, is_group=is_group, name=chat_name if is_group else None)
-            db.session.add(new_chat)
-            db.session.commit()
-            return redirect(url_for('view_chat', chat_id=new_chat.id))
-    
-    users = User.query.filter(User.id != current_user.id).all()
-    return render_template('chat/create_chat.html', users=users)
-
-
-@app.route('/chats/<int:chat_id>')
-def view_chat(chat_id):
+@app.route('/chats/<int:chat_id>/json')
+def chat_json(chat_id):
     chat = Chat.query.get_or_404(chat_id)
     if current_user not in chat.users:
-        flash('Você não tem permissão para acessar este chat.')
-        return redirect(url_for('chats'))
-    return render_template('chat/view_chat.html', chat=chat)
+        return jsonify({'error': 'Você não tem permissão para acessar este chat.'}), 403
+    messages = [{
+        'sender_nome': msg.sender.nome,
+        'sender_sobrenome': msg.sender.sobrenome,
+        'content': msg.content,
+        'timestamp': msg.timestamp.strftime('%d/%m/%Y %H:%M:%S')
+    } for msg in chat.messages]
+    return jsonify({
+        'chat_name': chat.name if chat.is_group else 'Chat',
+        'messages': messages
+    })
+
+
+@app.route('/chats/create', methods=['POST'])
+def create_chat():
+    user_ids = request.form.getlist('user_ids')
+    chat_name = request.form.get('chat_name')
+
+    if user_ids:
+        users = User.query.filter(User.id.in_(user_ids)).all()
+        if len(users) == 1 and users[0] == current_user:
+            return jsonify({'error': 'Não é possível criar um chat consigo mesmo.'}), 400
+        
+        if not chat_name and len(users) > 1:
+            return jsonify({'error': 'Nome do grupo é obrigatório.'}), 400
+        
+        is_group = len(users) > 1
+
+        if is_group and Chat.query.filter_by(name=chat_name).first():
+            return jsonify({'error': 'Já existe um grupo com esse nome.'}), 400
+
+        existing_chat = None
+        if not is_group:
+            existing_chat = Chat.query.filter(Chat.users.any(id=current_user.id)).filter(Chat.users.any(id=users[0].id)).first()
+        
+        if existing_chat:
+            return jsonify({'error': 'Chat já existe.'}), 400
+        
+        new_chat = Chat(users=[current_user] + users, is_group=is_group, name=chat_name if is_group else None)
+        db.session.add(new_chat)
+        db.session.commit()
+        return jsonify({'success': True, 'chat_id': new_chat.id})
+
+    return jsonify({'error': 'Usuários não selecionados.'}), 400
+
 
 @app.route('/chats/<int:chat_id>/send', methods=['POST'])
 def send_message(chat_id):
     chat = Chat.query.get_or_404(chat_id)
     if current_user not in chat.users:
-        flash('Você não tem permissão para acessar este chat.')
-        return redirect(url_for('chats'))
+        return jsonify({'error': 'Você não tem permissão para acessar este chat.'}), 403
+
     content = request.form.get('content')
     if content:
         new_message = Message(content=content, sender=current_user, chat=chat)
         db.session.add(new_message)
         db.session.commit()
-    return redirect(url_for('view_chat', chat_id=chat.id))
+        return jsonify({'success': True})
+
+    return jsonify({'error': 'Conteúdo da mensagem vazio.'}), 400

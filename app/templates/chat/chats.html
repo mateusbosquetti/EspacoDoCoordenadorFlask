@@ -1,32 +1,236 @@
-<!-- chats.html -->
-{% extends "base.html" %} 
+<!-- main.html -->
+{% extends "base.html" %}
 {% block content %}
-<h1>Chats</h1>
-<a href="{{ url_for('create_chat') }}">Criar Novo Chat</a>
-<a href="{{ url_for('homepage') }}">Voltar</a>
-<ul>
-    {% for chat, last_message in chats %}
-    <li>
-        <a href="{{ url_for('view_chat', chat_id=chat.id) }}">
-            {% if chat.is_group %}
-                Grupo: {{ chat.name }}
-            {% else %}
-                Chat com 
-                {% for user in chat.users %}
-                    {% if user != current_user %}
+<style>
+    * {
+        margin: 0%;
+        padding: 0%;
+    }
+
+    .col-md-3 {
+        background-color: #0047B6;
+        height: 100vh;
+        color: #fff;
+    }
+
+    .header412 {
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1%;
+    }
+
+    .header412 img {
+        width: 55%;
+    }
+
+    .header412 a {
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        font-size: 1.5vw;
+    }
+
+    .modalBotoes {
+        text-align: center;
+        justify-content: space-evenly;
+        display: flex;
+    }
+
+    ol, ul {
+        padding: 0%;
+    }
+
+    a {
+        text-decoration: none;
+        color: var();
+    }
+
+    .menu-options {
+        text-align: center;
+        display: flex;
+        justify-content: space-evenly;
+        gap: 10%;
+    }
+
+
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="header412">
+                <a href="{{ url_for('homepage') }}" class="fa-solid fa-arrow-left"></a>
+                <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}"
+                    alt="Logo Espaço do Coordenador">
+                <div class="menu-hamburguer">
+                    <a class="fa-solid fa-bars" onclick="toggleMenu()"></a>
+                    
+                </div>
+            </div>
+            <ul>
+                <div id="menu-options" class="menu-options" style="display: none;">
+                    <a href="#" onclick="showCreateChatModal('chat')">Criar Chat</a>
+                    <a href="#" onclick="showCreateChatModal('group')">Criar Grupo</a>
+                </div>
+                {% for chat, last_message in chats %}
+                <hr>
+                    <a href="#" class="chat-link" data-chat-id="{{ chat.id }}">
+                        {% if chat.is_group %}
+                        {{ chat.name }}
+                        {% else %}
+                        {% for user in chat.users %}
+                        {% if user != current_user %}
                         {{ user.nome }} {{ user.sobrenome }}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </a>
+                    {% if last_message %}
+                    <p>
+                        <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong>
+                        {{ last_message.content }}
+                        <span style="font-size: small; color: gray;">({{ last_message.timestamp.strftime('%d/%m/%Y
+                            %H:%M:%S') }})</span>
+                    </p>
                     {% endif %}
-                {% endfor %}
-            {% endif %}
-        </a>
-        {% if last_message %}
-        <p>
-            <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong> 
-            {{ last_message.content }} 
-            <span style="font-size: small; color: gray;">({{ last_message.timestamp.strftime('%d/%m/%Y %H:%M:%S') }})</span>
-        </p>
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
+                    {% endfor %}
+            </ul>
+            <!-- Modal para criação de chat/grupo -->
+            <div id="createChatModal" style="display: none;">
+                <h2 id="modalTitle"></h2>
+                <form id="createChatForm">
+                    <label for="user_ids">Usuários:</label>
+                    <select name="user_ids" id="user_ids" multiple>
+                        {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.nome }} {{ user.sobrenome }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <label for="chat_name" id="chatNameLabel" style="display: none;">Nome do Grupo:</label>
+                    <input type="text" name="chat_name" id="chat_name" style="display: none;">
+                    <button type="submit">Criar</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div id="chat-view">
+                <p>Selecione um chat para visualizar.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var chatLinks = document.querySelectorAll('.chat-link');
+        chatLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                var chatId = this.dataset.chatId;
+                fetchChat(chatId);
+            });
+        });
+    });
+
+    function fetchChat(chatId) {
+        fetch(`/chats/${chatId}/json`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                var chatView = document.getElementById('chat-view');
+                chatView.innerHTML = `
+                    <h1>${data.chat_name}</h1>
+                    <div>
+                        ${data.messages.map(msg => `
+                            <p>
+                                <strong>${msg.sender_nome} ${msg.sender_sobrenome}:</strong> 
+                                ${msg.content}
+                                <span style="font-size: small; color: gray;">(${msg.timestamp})</span>
+                            </p>
+                        `).join('')}
+                    </div>
+                    <form id="send-message-form">
+                        <textarea name="content" required></textarea>
+                        <button type="submit">Enviar</button>
+                    </form>
+                `;
+                document.getElementById('send-message-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    sendMessage(chatId);
+                });
+            });
+    }
+
+    function sendMessage(chatId) {
+        var form = document.getElementById('send-message-form');
+        var formData = new FormData(form);
+        fetch(`/chats/${chatId}/send`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                fetchChat(chatId);
+            } else {
+                alert(data.error);
+            }
+        });
+    }
+
+    function showCreateChatModal(type) {
+        var modal = document.getElementById('createChatModal');
+        var modalTitle = document.getElementById('modalTitle');
+        var userIdsSelect = document.getElementById('user_ids');
+        var chatNameLabel = document.getElementById('chatNameLabel');
+        var chatNameInput = document.getElementById('chat_name');
+
+        if (type === 'chat') {
+            modalTitle.textContent = 'Criar Novo Chat';
+            userIdsSelect.multiple = false;
+            chatNameLabel.style.display = 'none';
+            chatNameInput.style.display = 'none';
+        } else if (type === 'group') {
+            modalTitle.textContent = 'Criar Novo Grupo';
+            userIdsSelect.multiple = true;
+            chatNameLabel.style.display = 'block';
+            chatNameInput.style.display = 'block';
+        }
+
+        modal.style.display = 'block';
+    }
+
+    function toggleMenu() {
+        var menu = document.getElementById('menu-options');
+        if (menu.style.display === 'none' || menu.style.display === '') {
+            menu.style.display = 'block';
+        } else {
+            menu.style.display = 'none';
+        }
+    }
+
+    document.getElementById('createChatForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var form = document.getElementById('createChatForm');
+        var formData = new FormData(form);
+        fetch('/chats/create', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                var modal = document.getElementById('createChatModal');
+                modal.style.display = 'none';
+                location.reload();
+            } else {
+                alert(data.error);
+            }
+        });
+    });
+</script>
 {% endblock %}
