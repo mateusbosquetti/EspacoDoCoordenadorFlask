@@ -326,10 +326,8 @@ def download_excel_professor():
     # Enviar o arquivo para o cliente
     return send_file(output, download_name="aulas_professor.xlsx", as_attachment=True, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
-from flask import render_template, request, redirect, url_for, flash, jsonify
-from flask_login import current_user
+
 from .models import Chat, Message, User, db
-from . import app
 
 @app.route('/chats')
 def chats():
@@ -339,10 +337,8 @@ def chats():
         last_message = Message.query.filter_by(chat_id=chat.id).order_by(Message.timestamp.desc()).first()
         chats_with_last_message.append((chat, last_message))
 
-    users = User.query.filter(User.id != current_user.id).all()  # Buscar todos os usuários, exceto o atual
+    users = User.query.filter(User.id != current_user.id).all()
     return render_template('chat/chats.html', chats=chats_with_last_message, users=users)
-
-
 
 @app.route('/chats/<int:chat_id>/json')
 def chat_json(chat_id):
@@ -360,7 +356,6 @@ def chat_json(chat_id):
         'messages': messages
     })
 
-
 @app.route('/chats/create', methods=['POST'])
 def create_chat():
     user_ids = request.form.getlist('user_ids')
@@ -368,31 +363,40 @@ def create_chat():
 
     if user_ids:
         users = User.query.filter(User.id.in_(user_ids)).all()
-        if len(users) == 1 and users[0] == current_user:
-            return jsonify({'error': 'Não é possível criar um chat consigo mesmo.'}), 400
-        
-        if not chat_name and len(users) > 1:
-            return jsonify({'error': 'Nome do grupo é obrigatório.'}), 400
-        
+        if not users or (len(users) == 1 and users[0] == current_user):
+            return jsonify({'error': 'Não é possível criar um chat consigo mesmo ou sem usuários válidos.'}), 400
+
         is_group = len(users) > 1
 
-        if is_group and Chat.query.filter_by(name=chat_name).first():
-            return jsonify({'error': 'Já existe um grupo com esse nome.'}), 400
+        if is_group:
+            if not chat_name:
+                return jsonify({'error': 'Nome do grupo é obrigatório.'}), 400
+            if Chat.query.filter_by(name=chat_name).first():
+                return jsonify({'error': 'Já existe um grupo com esse nome.'}), 400
+            
+            user_ids_set = set(user_ids)
+            existing_groups = Chat.query.filter(Chat.is_group == True).all()
+            for group in existing_groups:
+                group_user_ids_set = {str(user.id) for user in group.users}
+                if user_ids_set == group_user_ids_set:
+                    return jsonify({'error': 'Já existe um grupo com esses usuários.'}), 400
 
-        existing_chat = None
+
         if not is_group:
-            existing_chat = Chat.query.filter(Chat.users.any(id=current_user.id)).filter(Chat.users.any(id=users[0].id)).first()
-        
-        if existing_chat:
-            return jsonify({'error': 'Chat já existe.'}), 400
-        
+            existing_chat = Chat.query.filter(
+                Chat.is_group == False,
+                Chat.users.any(id=current_user.id),
+                Chat.users.any(id=users[0].id)
+            ).first()
+            if existing_chat:
+                return jsonify({'error': 'Chat individual já existe.'}), 400
+
         new_chat = Chat(users=[current_user] + users, is_group=is_group, name=chat_name if is_group else None)
         db.session.add(new_chat)
         db.session.commit()
         return jsonify({'success': True, 'chat_id': new_chat.id})
 
     return jsonify({'error': 'Usuários não selecionados.'}), 400
-
 
 @app.route('/chats/<int:chat_id>/send', methods=['POST'])
 def send_message(chat_id):
@@ -408,3 +412,4 @@ def send_message(chat_id):
         return jsonify({'success': True})
 
     return jsonify({'error': 'Conteúdo da mensagem vazio.'}), 400
+

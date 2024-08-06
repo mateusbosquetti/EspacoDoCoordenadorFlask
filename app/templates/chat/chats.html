@@ -9,7 +9,7 @@
 
     .col-md-3 {
         background-color: #0047B6;
-        height: 100vh;
+        height: 200vh;
         color: #fff;
     }
 
@@ -61,7 +61,6 @@
         color: rgb(194, 192, 192);
         margin: 0% 5%;
     }
-
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -78,7 +77,7 @@
             <ul>
                 <div id="menu-options" class="menu-options" style="display: none; color: rgb(194, 192, 192);">
                     <a id="botaoCriar" href="#" onclick="showCreateChatModal('chat')">Criar Chat</a>
-                    <a id="botaoCriar"href="#" onclick="showCreateChatModal('group')">Criar Grupo</a>
+                    <a id="botaoCriar" href="#" onclick="showCreateChatModal('group')">Criar Grupo</a>
                 </div>
                 {% for chat, last_message in chats %}
                 <hr>
@@ -92,7 +91,7 @@
                     {% for user in chat.users %}
                     {% if user != current_user %}
                     <div class="Name">
-                    {{ user.nome }} {{ user.sobrenome }}
+                        {{ user.nome }} {{ user.sobrenome }}
                     </div>
                     {% endif %}
                     {% endfor %}
@@ -102,7 +101,7 @@
                 <p style="font-size: small; color: rgb(194, 192, 192);">
                     <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong>
                     {{ last_message.content }}
-                    <span >({{ last_message.timestamp.strftime('%d/%m/%Y
+                    <span>({{ last_message.timestamp.strftime('%d/%m/%Y
                         %H:%M:%S') }})</span>
                 </p>
                 {% endif %}
@@ -159,11 +158,11 @@
                     <h1>${data.chat_name}</h1>
                     <div>
                         ${data.messages.map(msg => `
-                            <p>
+                            <p style="display: flex">
                                 <strong>${msg.sender_nome} ${msg.sender_sobrenome}:</strong> 
-                                ${msg.content}
+                                 ${msg.content}
                                 <span style="font-size: small; color: gray;">(${msg.timestamp})</span>
-                            </p>
+                                </p>
                         `).join('')}
                     </div>
                     <form id="send-message-form">
