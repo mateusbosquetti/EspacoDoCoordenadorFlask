@@ -137,7 +137,7 @@ def delete_setor(id):
         return redirect(url_for('confirm_delete_setor', id=id))
     else:
         db.session.delete(setor)
-        db.session()
+        db.session.commit()
         return redirect(url_for('setorLista'))
 
 @app.route('/setor/<int:id>/confirm_delete', methods=['GET', 'POST'])
