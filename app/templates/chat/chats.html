@@ -37,7 +37,8 @@
         display: flex;
     }
 
-    ol, ul {
+    ol,
+    ul {
         padding: 0%;
     }
 
@@ -53,7 +54,9 @@
         gap: 10%;
     }
 
-
+    .Name {
+        color: white;
+    }
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -64,7 +67,7 @@
                     alt="Logo Espaço do Coordenador">
                 <div class="menu-hamburguer">
                     <a class="fa-solid fa-bars" onclick="toggleMenu()"></a>
-                    
+
                 </div>
             </div>
             <ul>
@@ -74,28 +77,33 @@
                 </div>
                 {% for chat, last_message in chats %}
                 <hr>
-                    <a href="#" class="chat-link" data-chat-id="{{ chat.id }}">
-                        {% if chat.is_group %}
+                <a href="#" class="chat-link" data-chat-id="{{ chat.id }}">
+                    {% if chat.is_group %}
+                    <div class="Name">
                         {{ chat.name }}
-                        {% else %}
-                        {% for user in chat.users %}
-                        {% if user != current_user %}
-                        {{ user.nome }} {{ user.sobrenome }}
-                        {% endif %}
-                        {% endfor %}
-                        {% endif %}
-                    </a>
-                    {% if last_message %}
-                    <p>
-                        <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong>
-                        {{ last_message.content }}
-                        <span style="font-size: small; color: gray;">({{ last_message.timestamp.strftime('%d/%m/%Y
-                            %H:%M:%S') }})</span>
-                    </p>
+                    </div>
+
+                    {% else %}
+                    {% for user in chat.users %}
+                    {% if user != current_user %}
+                    <div class="Name">
+                    {{ user.nome }} {{ user.sobrenome }}
+                    </div>
                     {% endif %}
                     {% endfor %}
+                    {% endif %}
+                </a>
+                {% if last_message %}
+                <p style="font-size: small; color: rgb(194, 192, 192);">
+                    <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong>
+                    {{ last_message.content }}
+                    <span >({{ last_message.timestamp.strftime('%d/%m/%Y
+                        %H:%M:%S') }})</span>
+                </p>
+                {% endif %}
+                {% endfor %}
             </ul>
-            <!-- Modal para criação de chat/grupo -->
+
             <div id="createChatModal" style="display: none;">
                 <h2 id="modalTitle"></h2>
                 <form id="createChatForm">
@@ -122,10 +130,10 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var chatLinks = document.querySelectorAll('.chat-link');
-        chatLinks.forEach(function(link) {
-            link.addEventListener('click', function(event) {
+        chatLinks.forEach(function (link) {
+            link.addEventListener('click', function (event) {
                 event.preventDefault();
                 var chatId = this.dataset.chatId;
                 fetchChat(chatId);
@@ -158,7 +166,7 @@
                         <button type="submit">Enviar</button>
                     </form>
                 `;
-                document.getElementById('send-message-form').addEventListener('submit', function(e) {
+                document.getElementById('send-message-form').addEventListener('submit', function (e) {
                     e.preventDefault();
                     sendMessage(chatId);
                 });
@@ -172,14 +180,14 @@
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                fetchChat(chatId);
-            } else {
-                alert(data.error);
-            }
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fetchChat(chatId);
+                } else {
+                    alert(data.error);
+                }
+            });
     }
 
     function showCreateChatModal(type) {
@@ -213,7 +221,7 @@
         }
     }
 
-    document.getElementById('createChatForm').addEventListener('submit', function(e) {
+    document.getElementById('createChatForm').addEventListener('submit', function (e) {
         e.preventDefault();
         var form = document.getElementById('createChatForm');
         var formData = new FormData(form);
@@ -221,16 +229,16 @@
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                var modal = document.getElementById('createChatModal');
-                modal.style.display = 'none';
-                location.reload();
-            } else {
-                alert(data.error);
-            }
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    var modal = document.getElementById('createChatModal');
+                    modal.style.display = 'none';
+                    location.reload();
+                } else {
+                    alert(data.error);
+                }
+            });
     });
 </script>
 {% endblock %}
