@@ -44,7 +44,6 @@
 
     a {
         text-decoration: none;
-        color: var();
     }
 
     .menu-options {
@@ -57,6 +56,12 @@
     .Name {
         color: white;
     }
+
+    #botaoCriar {
+        color: rgb(194, 192, 192);
+        margin: 0% 5%;
+    }
+
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -71,9 +76,9 @@
                 </div>
             </div>
             <ul>
-                <div id="menu-options" class="menu-options" style="display: none;">
-                    <a href="#" onclick="showCreateChatModal('chat')">Criar Chat</a>
-                    <a href="#" onclick="showCreateChatModal('group')">Criar Grupo</a>
+                <div id="menu-options" class="menu-options" style="display: none; color: rgb(194, 192, 192);">
+                    <a id="botaoCriar" href="#" onclick="showCreateChatModal('chat')">Criar Chat</a>
+                    <a id="botaoCriar"href="#" onclick="showCreateChatModal('group')">Criar Grupo</a>
                 </div>
                 {% for chat, last_message in chats %}
                 <hr>
