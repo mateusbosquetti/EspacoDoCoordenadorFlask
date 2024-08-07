@@ -1,4 +1,3 @@
-<!-- main.html -->
 {% extends "base.html" %}
 {% block content %}
 <style>
@@ -7,28 +6,14 @@
         padding: 0%;
     }
 
+    .col-md-9 {
+        padding: 0%
+    }
+
     .col-md-3 {
         background-color: #0047B6;
         height: 100vh;
         color: #fff;
-    }
-
-    .header412 {
-        display: flex;
-        text-align: center;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1%;
-    }
-
-    .header412 img {
-        width: 55%;
-    }
-
-    .header412 a {
-        text-decoration: none;
-        color: rgb(255, 255, 255);
-        font-size: 1.5vw;
     }
 
     .modalBotoes {
@@ -62,24 +47,103 @@
         margin: 0% 5%;
     }
 
-    @media(max-width: 500px){
+    header {
+        display: flex;
+        background-color: #0047B6;
+        color: #fff;
+    }
+
+    @media(max-width: 766px) {
         .col-md-3 {
             height: 50%;
         }
+
+    }
+
+    .headerDesktop {
+        width: 100vw;
+        display: flex;
+    }
+
+    .headerDesktop .headerEsq {
+        display: flex;
+        max-width: 25%;
+        justify-content: space-between;
+        padding: 1% 1% 0% 1%;
+    }
+
+    .headerDesktop .headerEsq img {
+        width: 60%;
+    }
+
+    .headerEsq a {
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        font-size: 1.5vw;
+    }
+
+    .headerDir {
+        width: 75%;
+        text-align: center;
+    }
+
+    .message-container {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .message {
+        max-width: 70%;
+        padding: 10px;
+        border-radius: 10px;
+        word-wrap: break-word;
+    }
+
+    .message.current-user {
+        margin-left: auto;
+        background-color: #DCF8C6;
+        text-align: left;
+    }
+
+    .message.other-user {
+        margin-right: auto;
+        background-color: #EAEAEA;
+        text-align: left;
+    }
+
+    .timestamp {
+        display: block;
+        font-size: 0.75em;
+        color: gray;
+        margin-top: 5px;
+        text-align: right;
     }
 
 </style>
+<header>
+    <div class="headerDesktop">
+        <div class="headerEsq">
+            <a href="{{ url_for('homepage') }}" class="fa-solid fa-arrow-left"></a>
+            <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}"
+                alt="Logo Espaço do Coordenador">
+            <div class="menu-hamburguer">
+                <a class="fa-solid fa-bars" onclick="toggleMenu()"></a>
+            </div>
+        </div>
+        <div class="headerDir">
+            <h1>Chat</h1>
+        </div>
+    </div>
+    <div class="headerMobile">
+
+    </div>
+</header>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
             <div class="header412">
-                <a href="{{ url_for('homepage') }}" class="fa-solid fa-arrow-left"></a>
-                <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}"
-                    alt="Logo Espaço do Coordenador">
-                <div class="menu-hamburguer">
-                    <a class="fa-solid fa-bars" onclick="toggleMenu()"></a>
 
-                </div>
             </div>
             <ul>
                 <div id="menu-options" class="menu-options" style="display: none; color: rgb(194, 192, 192);">
@@ -108,8 +172,7 @@
                 <p style="font-size: small; color: rgb(194, 192, 192);">
                     <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong>
                     {{ last_message.content }}
-                    <span>({{ last_message.timestamp.strftime('%d/%m/%Y
-                        %H:%M:%S') }})</span>
+                    <span>({{ last_message.timestamp.strftime('%d/%m/%Y %H:%M:%S') }})</span>
                 </p>
                 {% endif %}
                 {% endfor %}
@@ -161,15 +224,15 @@
                     return;
                 }
                 var chatView = document.getElementById('chat-view');
-                chatView.innerHTML = `
-                    <h1>${data.chat_name}</h1>
-                    <div>
+                chatView.innerHTML = `  
+                    <div style= "padding: 5%;">
                         ${data.messages.map(msg => `
-                            <p style="display: flex">
-                                <strong>${msg.sender_nome} ${msg.sender_sobrenome}:</strong> 
-                                 ${msg.content}
-                                <span style="font-size: small; color: gray;">(${msg.timestamp})</span>
-                                </p>
+                            <div class="message-container">
+                                <div class="message ${msg.sender_id = {{ current_user.id }} ? 'current-user' : 'other-user'}">
+                                    <strong>${msg.sender_nome}:</strong> ${msg.content}
+                                    <span class="timestamp">${msg.timestamp}</span>
+                                </div>
+                            </div>
                         `).join('')}
                     </div>
                     <form id="send-message-form">
