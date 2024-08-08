@@ -112,6 +112,18 @@
         text-align: right;
     }
 
+    .listaMensagem {
+        display: flex;
+        gap: 3%;
+    }
+
+    .listaMensagem img {
+        height: 50px;
+        width: 50px;
+        border-radius: 100%;
+    }
+
+
     @media(max-width: 766px) {
         .col-md-3 {
             height: 50%;
@@ -172,24 +184,37 @@
                     <div class="Name">
                         {{ chat.name }}
                     </div>
+                    {% if last_message %}
+                    <p style="font-size: small; color: rgb(194, 192, 192);">
+                        <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong>
+                        {{ last_message.content }}
+                        <span>({{ last_message.timestamp.strftime('%d/%m/%Y %H:%M:%S') }})</span>
+                    </p>
+                    {% endif %}
 
                     {% else %}
                     {% for user in chat.users %}
                     {% if user != current_user %}
-                    <div class="Name">
-                        {{ user.nome }} {{ user.sobrenome }}
+                    <div class="listaMensagem">
+                        <img src="{{ user.profile_picture }}" alt="Profile Picture" id="img_circular">
+
+                        <div class="Name">
+                            {{ user.nome }} {{ user.sobrenome }}
+                            {% if last_message %}
+                            <p style="font-size: small; color: rgb(194, 192, 192);">
+                                <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong>
+                                {{ last_message.content }}
+                                <span>({{ last_message.timestamp.strftime('%d/%m/%Y %H:%M:%S') }})</span>
+                            </p>
+                            {% endif %}
+                        </div>
+
                     </div>
                     {% endif %}
                     {% endfor %}
                     {% endif %}
                 </a>
-                {% if last_message %}
-                <p style="font-size: small; color: rgb(194, 192, 192);">
-                    <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong>
-                    {{ last_message.content }}
-                    <span>({{ last_message.timestamp.strftime('%d/%m/%Y %H:%M:%S') }})</span>
-                </p>
-                {% endif %}
+
                 {% endfor %}
             </ul>
 
@@ -240,22 +265,22 @@
                 }
                 var chatView = document.getElementById('chat-view');
                 chatView.innerHTML = `  
-                    <div style= "padding: 5%;">
-                        ${data.messages.map(msg => `
-                            <div class="message-container">
-                                <div class="message ${msg.sender_id = {{ current_user.id }} ? 'current-user' : 'other-user'}">
-                                    <strong>${msg.sender_nome}:</strong> ${msg.content}
-                                    <span class="timestamp">${msg.timestamp}</span>
-                                </div>
+                <div style="padding: 5%;">
+                    ${data.messages.map(msg => `
+                        <div class="message-container">
+                            <div class="message ${msg.sender_nome === '{{ current_user.nome }}' ? 'current-user' : 'other-user'}">
+                                <strong>${msg.sender_nome} ${msg.sender_sobrenome}:</strong> ${msg.content}
+                                <span class="timestamp">${msg.timestamp}</span>
                             </div>
-                        `).join('')
-    }
-                    </div >
-        <form id="send-message-form">
-            <textarea name="content" required></textarea>
-            <button type="submit">Enviar</button>
-        </form>
-    `;
+                        </div>
+                    `).join('')}
+                </div>
+                <form id="send-message-form">
+                    <textarea name="content" required></textarea>
+                    <button type="submit">Enviar</button>
+                </form>
+
+            `;
                 document.getElementById('send-message-form').addEventListener('submit', function (e) {
                     e.preventDefault();
                     sendMessage(chatId);
@@ -266,19 +291,24 @@
     function sendMessage(chatId) {
         var form = document.getElementById('send-message-form');
         var formData = new FormData(form);
-        fetch(`/ chats / ${ chatId } /send`, {
-    method: 'POST',
-        body: formData
+        fetch(`/chats/${chatId}/send`, {
+            method: 'POST',
+            body: formData
         })
             .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                fetchChat(chatId);
-            } else {
-                alert(data.error);
-            }
-        });
+            .then(data => {
+                if (data.success) {
+                    fetchChat(chatId); // Atualiza o chat após o envio da mensagem
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocorreu um erro ao enviar a mensagem.');
+            });
     }
+
 
     function showCreateChatModal(type) {
         var modal = document.getElementById('createChatModal');

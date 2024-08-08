@@ -41,6 +41,8 @@
                 display: none;
             }
         }
+
+        
     </style>
 </head>
 
@@ -49,8 +51,8 @@
         <h1>Espaço do Coordenador</h1>
         <form action="" method="post" class="forms">
             <h3>Bem Vindo</h3>
-            <!-- {{ form.csrf_token }}  
-            {% for category, message in get_flashed_messages(with_categories=true) %}
+            {{ form.csrf_token }}  
+            <!-- {% for category, message in get_flashed_messages(with_categories=true) %}
             <div class="alert alert-{{ 'danger' if category == 'error' else category }}">{{ message }}</div>
             {% endfor %} -->
 
