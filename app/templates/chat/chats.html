@@ -12,8 +12,9 @@
 
     .col-md-3 {
         background-color: #0047B6;
-        height: 100vh;
         color: #fff;
+        min-height: 100vh;
+        
     }
 
     .modalBotoes {
@@ -123,6 +124,9 @@
         border-radius: 100%;
     }
 
+    textarea {
+        width: 100%;
+    }    
 
     @media(max-width: 766px) {
         .col-md-3 {
@@ -190,6 +194,7 @@
                         {{ last_message.content }}
                         <span>({{ last_message.timestamp.strftime('%d/%m/%Y %H:%M:%S') }})</span>
                     </p>
+                    
                     {% endif %}
 
                     {% else %}
@@ -274,11 +279,12 @@
                             </div>
                         </div>
                     `).join('')}
-                </div>
-                <form id="send-message-form">
+                    <form id="send-message-form">
                     <textarea name="content" required></textarea>
                     <button type="submit">Enviar</button>
                 </form>
+                </div>
+                
 
             `;
                 document.getElementById('send-message-form').addEventListener('submit', function (e) {
