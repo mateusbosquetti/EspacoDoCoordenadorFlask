@@ -6,6 +6,8 @@ from flask_login import UserMixin
 def load_user(user_id):
     return User.query.get(user_id)
 
+DEFAULT_PROFILE_PICTURE_URL = "https://res.cloudinary.com/dhfyfwuaf/image/upload/v1723118707/z7xfqnj8zlu7ztgfxv5e.jpg"
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=True)
@@ -13,6 +15,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String, nullable=True)
     senha = db.Column(db.String, nullable=True)
     adm = db.Column(db.Boolean, nullable=True)
+    profile_picture = db.Column(db.String, nullable=True, default=DEFAULT_PROFILE_PICTURE_URL)
     chats = db.relationship('Chat', secondary='user_chats', back_populates='users')
 
 class Suporte(db.Model):

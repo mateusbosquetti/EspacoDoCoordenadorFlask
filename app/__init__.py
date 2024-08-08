@@ -21,3 +21,13 @@ bcrypt = Bcrypt(app)
 
 from app.view import login 
 from app.models import Setor
+
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+  cloud_name = "dhfyfwuaf",
+  api_key = "525588959485955",
+  api_secret = "mmjqRhbyWSVjCxWxvJKFSQYtUlA"
+)

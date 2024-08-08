@@ -3,7 +3,7 @@ from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 
 from app import db, bcrypt
-from app.models import Setor, User
+from app.models import DEFAULT_PROFILE_PICTURE_URL, Setor, User
 
 
 class UserForm(FlaskForm):
@@ -13,6 +13,7 @@ class UserForm(FlaskForm):
     senha = PasswordField('Senha', validators=[DataRequired()])
     confirmacao_senha = PasswordField('Confimar senha', validators=[DataRequired(), EqualTo('senha')])
     adm = False
+    profile_picture=DEFAULT_PROFILE_PICTURE_URL
     btnSubmit = SubmitField('Cadastrar')
 
     def validade_email(self, email):
@@ -26,7 +27,8 @@ class UserForm(FlaskForm):
             sobrenome = self.sobrenome.data,
             email = self.email.data,
             senha = senha,
-            adm = self.adm
+            adm = self.adm,
+            profile_picture = self.profile_picture
         )
         db.session.add(user)
         db.session.commit()

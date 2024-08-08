@@ -3,10 +3,15 @@
 {% block content %}
 <div class="container">
     <h3>Editar Perfil</h3>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="nome" class="form-label">Nome Usuário</label>
             <input type="text" class="form-control" id="nome" name="nome" value="{{ perfil.nome }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="profile_picture" class="form-label">Foto de Perfil</label><br>
+            <img src="{{ perfil.profile_picture }}" alt="Foto de Perfil" width="200" class="mb-3"><br>
+            <input type="file" class="form-control" id="profile_picture" name="profile_picture">
         </div>
         <button type="submit" class="btn btn-primary">Salvar</button>
         <a href="{{ url_for('homepage') }}" class="btn btn-secondary">Cancelar</a>
@@ -14,6 +19,5 @@
 </div>
 
 <button id="dark-mode-toggle" class="dark-mode-toggle">Dark Mode</button>
-
 
 {% endblock %}

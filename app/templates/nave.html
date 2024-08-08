@@ -8,12 +8,11 @@
         <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}" alt="Logo Espaço do Coordenador"
             class="imgEspaçoCoordenador">
     </div>
-        
-    <nav class="userInfo">
-        <a href="{{url_for('homepage')}}" class="btn btn-dark">Home</a>
-        <a href="{{ url_for('edit_perfil', id=current_user.id) }}" class="btn btn-success">{{ current_user.nome }}</a>
-        <a href="{{url_for('logout')}}" class="btn btn-danger ">Sair</a>
-    </nav>
+
+    <!-- <a href="{{url_for('homepage')}}" class="btn btn-dark">Home</a> -->
+
+    <a href="{{ url_for('edit_perfil', id=current_user.id) }}"><img src="{{ current_user.profile_picture }}"
+            alt="Profile Picture" id="img_circular"></a>
 </header>
 <style>
     :root {
@@ -21,6 +20,13 @@
         --body-color: #555;
         --link-color: #222;
         --link-color-hover: #ec5840;
+    }
+
+    #img_circular {
+        width: 50%;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
     }
 
     body {

@@ -7,6 +7,7 @@ from datetime import time
 from io import BytesIO
 import pandas as pd
 import requests
+import cloudinary.uploader
 
 @app.route('/home', methods=['GET','POST'])
 def homepage():
@@ -166,7 +167,6 @@ def edit_setor(id):
         return redirect(url_for('setorLista'))
     return render_template('setor/edit_setor.html', setor=setor)
 
-
 @app.route('/professor/<int:professor_id>/aulas', methods=['GET', 'POST'])
 def manage_aulas(professor_id):
     professor = Professor.query.get_or_404(professor_id)
@@ -243,6 +243,7 @@ def delete_aula(professor_id, id):
 @app.route('/editarPerfil/<int:id>/edit', methods=['GET', 'POST'])
 def edit_perfil(id):
     perfil = User.query.get_or_404(id)
+    
     if request.method == 'POST':
         nome_antigo = perfil.nome
         nome_novo = request.form['nome']
@@ -251,11 +252,26 @@ def edit_perfil(id):
         professor = Professor.query.filter_by(nome=nome_antigo).first()
         if professor:
             professor.nome = nome_novo
-        
+
+        # Upload da nova foto de perfil, se fornecida
+        if 'profile_picture' in request.files:
+            file_to_upload = request.files['profile_picture']
+            if file_to_upload:
+                # Redimensionar a imagem para 200x200 pixels
+                upload_result = cloudinary.uploader.upload(
+                    file_to_upload,
+                    transformation=[
+                        {'width': 200, 'height': 200, 'crop': 'fill'}
+                    ]
+                )
+                perfil.profile_picture = upload_result['secure_url']
+
         db.session.commit()
+        flash('Perfil atualizado com sucesso!', 'success')
         return redirect(url_for('homepage'))
-    
+
     return render_template('edit_perfil.html', perfil=perfil)
+
 
 @app.route('/download-excel')
 def download_excel():
@@ -412,4 +428,3 @@ def send_message(chat_id):
         return jsonify({'success': True})
 
     return jsonify({'error': 'Conteúdo da mensagem vazio.'}), 400
-
