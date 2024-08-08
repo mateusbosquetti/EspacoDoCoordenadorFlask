@@ -8,6 +8,7 @@
             <label for="nome" class="form-label">Nome Usuário</label>
             <input type="text" class="form-control" id="nome" name="nome" value="{{ perfil.nome }}" required>
         </div>
+        <a href="{{url_for('logout')}}" class="btn btn-danger ">Sair</a>
         <div class="mb-3">
             <label for="profile_picture" class="form-label">Foto de Perfil</label><br>
             <img src="{{ perfil.profile_picture }}" alt="Foto de Perfil" width="200" class="mb-3"><br>
