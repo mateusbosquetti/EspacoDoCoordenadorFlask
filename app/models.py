@@ -47,7 +47,6 @@ class Aula(db.Model):
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
     professor = db.relationship('Professor', back_populates='aulas')
 
-# models.py
 class Chat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
