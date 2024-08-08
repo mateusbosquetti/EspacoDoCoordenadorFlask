@@ -53,13 +53,6 @@
         color: #fff;
     }
 
-    @media(max-width: 766px) {
-        .col-md-3 {
-            height: 50%;
-        }
-
-    }
-
     .headerDesktop {
         width: 100vw;
         display: flex;
@@ -119,6 +112,28 @@
         text-align: right;
     }
 
+    @media(max-width: 766px) {
+        .col-md-3 {
+            height: 50%;
+        }
+
+        .headerDir {
+            display: none;
+        }
+
+        .headerEsq {
+            width: 100%;
+        }
+
+        .headerDesktop .headerEsq {
+            max-width: 100%;
+            padding: 3%;
+        }
+
+        .headerEsq a {
+            font-size: 7vw;
+        }
+    }
 </style>
 <header>
     <div class="headerDesktop">
@@ -127,7 +142,7 @@
             <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}"
                 alt="Logo Espaço do Coordenador">
             <div class="menu-hamburguer">
-                <a class="fa-solid fa-bars" onclick="toggleMenu()"></a>
+                <a class="fa-solid fa-bars" onclick="toggleMenu()" href="#"></a>
             </div>
         </div>
         <div class="headerDir">
@@ -233,13 +248,14 @@
                                     <span class="timestamp">${msg.timestamp}</span>
                                 </div>
                             </div>
-                        `).join('')}
-                    </div>
-                    <form id="send-message-form">
-                        <textarea name="content" required></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                `;
+                        `).join('')
+    }
+                    </div >
+        <form id="send-message-form">
+            <textarea name="content" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+    `;
                 document.getElementById('send-message-form').addEventListener('submit', function (e) {
                     e.preventDefault();
                     sendMessage(chatId);
@@ -250,18 +266,18 @@
     function sendMessage(chatId) {
         var form = document.getElementById('send-message-form');
         var formData = new FormData(form);
-        fetch(`/chats/${chatId}/send`, {
-            method: 'POST',
-            body: formData
+        fetch(`/ chats / ${ chatId } /send`, {
+    method: 'POST',
+        body: formData
         })
             .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    fetchChat(chatId);
-                } else {
-                    alert(data.error);
-                }
-            });
+        .then(data => {
+            if (data.success) {
+                fetchChat(chatId);
+            } else {
+                alert(data.error);
+            }
+        });
     }
 
     function showCreateChatModal(type) {
