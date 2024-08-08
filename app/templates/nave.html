@@ -7,12 +7,11 @@
         <img src="{{ url_for('static', filename='img/logoSenai.png') }}" alt="Logo senai" class="imgLogoSenai">
         <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}" alt="Logo Espaço do Coordenador"
             class="imgEspaçoCoordenador">
+        <a href="{{ url_for('edit_perfil', id=current_user.id) }}"><img src="{{ current_user.profile_picture }}"
+                alt="Profile Picture" id="img_circular"></a>
     </div>
-
-    <!-- <a href="{{url_for('homepage')}}" class="btn btn-dark">Home</a> -->
-
-    <a href="{{ url_for('edit_perfil', id=current_user.id) }}"><img src="{{ current_user.profile_picture }}"
-            alt="Profile Picture" id="img_circular"></a>
+    <a class="imgPerfilDesktop" href="{{ url_for('edit_perfil', id=current_user.id) }}"><img
+            src="{{ current_user.profile_picture }}" alt="Profile Picture" id="img_circular"></a>
 </header>
 <style>
     :root {
@@ -51,6 +50,7 @@
     header {
         padding: 2% 2%;
         background-color: #0047B6;
+        display: flex;
     }
 
     img {
@@ -78,12 +78,23 @@
         display: none;
     }
 
+    .imgLogoSenai {
+        display: none;
+    }
+
     .imgEspaçoCoordenador2 {
         display: none;
     }
 
+    .imgPerfilDesktop {
+        display: none;
+    }
 
     @media (min-width: 800px) {
+        .imgPerfilDesktop {
+            display: flex;
+        }
+
         header {
             display: flex;
             justify-content: space-between;
@@ -96,12 +107,12 @@
 
         .imgLogoSenai2 {
             display: flex;
-            width: 4%;
+            width: 3%;
         }
 
         .imgEspaçoCoordenador2 {
             display: flex;
-            width: 26%;
+            width: 20%;
         }
 
         .userInfo {
