@@ -52,6 +52,7 @@ class Chat(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_group = db.Column(db.Boolean, default=False)
     name = db.Column(db.String, nullable=True)  # Nome do grupo
+    
     users = db.relationship('User', secondary='user_chats', back_populates='chats')
     messages = db.relationship('Message', back_populates='chat', cascade='all, delete-orphan')
 
