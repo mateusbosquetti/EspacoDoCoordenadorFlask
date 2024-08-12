@@ -186,7 +186,8 @@
                 <a href="#" class="chat-link" data-chat-id="{{ chat.id }}">
                     {% if chat.is_group %}
                     <div class="listaMensagem">
-                        <img src="https://res.cloudinary.com/dhfyfwuaf/image/upload/v1723249850/edvlyv77oqvoqzxcecyo.png" alt="Group image">
+                        <img src="https://res.cloudinary.com/dhfyfwuaf/image/upload/v1723249850/edvlyv77oqvoqzxcecyo.png"
+                            alt="Group image">
                         <div>
                             <div class="Name">
                                 {{ chat.name }}
@@ -205,7 +206,6 @@
                     {% if user != current_user %}
                     <div class="listaMensagem">
                         <img src="{{ user.profile_picture }}" alt="Profile Picture" id="img_circular">
-
                         <div class="Name">
                             {{ user.nome }} {{ user.sobrenome }}
                             {% if last_message %}
@@ -273,7 +273,7 @@
                 chatView.innerHTML = `  
                 <div style="padding: 5%;">
                     ${data.messages.map(msg => `
-                        <div class="message-container">
+                        <div class="message-container" style="color: #000">
                             <div class="message ${msg.sender_nome === '{{ current_user.nome }}' ? 'current-user' : 'other-user'}">
                                 <strong>${msg.sender_nome} ${msg.sender_sobrenome}:</strong> ${msg.content}
                                 <span class="timestamp">${msg.timestamp}</span>
@@ -281,7 +281,7 @@
                         </div>
                     `).join('')}
                     <form id="send-message-form">
-                    <textarea name="content" required></textarea>
+                    <textarea name="content" style="align-content:center" placeholder="Digite sua mensagem!" required></textarea>
                     <button type="submit">Enviar</button>
                 </form>
                 </div>

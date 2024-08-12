@@ -12,7 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Adicionar um event listener para alternar o dark mode
-    $button.addEventListener('click', function () {
+    $button.addEventListener('click', function (event) {
+        // Evitar qualquer comportamento padrão do botão
+        event.preventDefault();
+
         $html.classList.toggle('dark-mode');
         if ($html.classList.contains('dark-mode')) {
             localStorage.setItem('dark-mode', 'enabled');
