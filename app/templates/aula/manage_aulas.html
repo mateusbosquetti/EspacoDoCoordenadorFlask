@@ -2,64 +2,69 @@
 {% include 'nave.html' %}
 
 {% block content %}
-    <div class="container mt-4">
-        <h1>Gerenciar Aulas para {{ professor.nome }}</h1>
+<div class="container mt-4">
+    <h1>Gerenciar Aulas para {{ professor.nome }}</h1>
 
-        {# Bloco para exibir mensagens flash #}
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1 %}
-            <form method="POST">
-                <div class="form-group">
-                    <label for="materia">Matéria:</label>
-                    <input type="text" class="form-control" id="materia" name="materia" required>
-                </div>
-                <div class="form-group">
-                    <label for="sala">Sala:</label>
-                    <input type="text" class="form-control" id="sala" name="sala" required>
-                </div>
-                <div class="form-group">
-                    <label for="dia">Dia:</label>
-                    <input type="date" class="form-control" id="dia" name="dia" required>
-                </div>
-                <div class="form-group">
-                    <label for="horario_inicio">Horário de Início:</label>
-                    <input type="time" class="form-control" id="horario_inicio" name="horario_inicio" required>
-                </div>
-                <div class="form-group">
-                    <label for="horario_fim">Horário de Fim:</label>
-                    <input type="time" class="form-control" id="horario_fim" name="horario_fim" required>
-                </div>
-                <button type="submit" class="btn btn-primary mt-4">Adicionar Aula</button>
-            </form>
-        {% endif %}  
-        
-
-        <h2 class="mt-4">Aulas</h2>
-        <ul class="list-group">
-            {% if not aulas %}
-                <h6>Sem aulas</h6>
-            {% endif %}  
-            {% for aula in aulas %}
-                <li class="list-group-item">
-                    {{ aula.materia }} - Sala: {{ aula.sala }} - Dia: {{ aula.dia }} - Horário de Início: {{ aula.horario_inicio.strftime('%H:%M') }} - Horário de Fim: {{ aula.horario_fim.strftime('%H:%M') }}
-                    {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1 %}
-                        <a href="{{ url_for('edit_aula', professor_id=professor.id, id=aula.id) }}" class="btn btn-warning btn-sm ml-2">Editar</a>
-                        <form method="POST" action="{{ url_for('delete_aula', professor_id=professor.id, id=aula.id) }}" style="display:inline;">
-                            <button type="submit" class="btn btn-danger btn-sm ml-2">Deletar</button>
-                        </form>
-                    {% endif %}  
-                </li>
-            {% endfor %}
-        </ul>
-
-        <a href="{{ url_for('manage_professores', setor_id=professor.setor_id) }}" class="btn btn-secondary mt-3">Voltar</a>
+    {# Bloco para exibir mensagens flash #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+        {{ message }}
     </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1 %}
+    <form method="POST">
+        <div class="form-group">
+            <label for="materia">Matéria:</label>
+            <input type="text" class="form-control" id="materia" name="materia" required>
+        </div>
+        <div class="form-group">
+            <label for="sala">Sala:</label>
+            <input type="text" class="form-control" id="sala" name="sala" required>
+        </div>
+        <div class="form-group">
+            <label for="dia">Dia:</label>
+            <input type="date" class="form-control" id="dia" name="dia" required>
+        </div>
+        <div class="form-group">
+            <label for="horario_inicio">Horário de Início:</label>
+            <input type="time" class="form-control" id="horario_inicio" name="horario_inicio" required>
+        </div>
+        <div class="form-group">
+            <label for="horario_fim">Horário de Fim:</label>
+            <input type="time" class="form-control" id="horario_fim" name="horario_fim" required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">Adicionar Aula</button>
+    </form>
+    {% endif %}
+
+
+    <h2 class="mt-4">Aulas</h2>
+    <ul class="list-group">
+        {% if not aulas %}
+        <h6>Sem aulas</h6>
+        {% endif %}
+        {% for aula in aulas %}
+        <li class="list-group-item">
+            {{ aula.materia }} - Sala: {{ aula.sala }} - Dia: {{ aula.dia }} - Horário de Início: {{
+            aula.horario_inicio.strftime('%H:%M') }} - Horário de Fim: {{ aula.horario_fim.strftime('%H:%M') }}
+            {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1
+            %}
+            <a href="{{ url_for('edit_aula', professor_id=professor.id, id=aula.id) }}"
+                class="btn btn-warning btn-sm ml-2">Editar</a>
+            <form action="{{ url_for('delete_aula', professor_id=professor.id, id=aula.id) }}" method="POST"
+                onsubmit="return confirm('Tem certeza que deseja deletar esta aula?');">
+                <button type="submit" class="btn btn-danger">Deletar Aula</button>
+            </form>
+
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('manage_professores', setor_id=professor.setor_id) }}" class="btn btn-secondary mt-3">Voltar</a>
+</div>
 {% endblock %}

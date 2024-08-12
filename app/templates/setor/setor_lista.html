@@ -2,45 +2,48 @@
 {% include 'nave.html' %}
 
 {% block content %}
-    <div class="container mt-4">
-        <h3>Lista de Setores</h3>
-        <form method="get" class="row mb-3">
-            <div class="col-9">
-                <input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar por nome do setor">
-            </div>
-            <div class="col-3">
-                <button type="submit" class="btn btn-primary">Pesquisar</button>
-            </div>
+<div class="container mt-4">
+    <h3>Lista de Setores</h3>
+    <form method="get" class="row mb-3">
+        <div class="col-9">
+            <input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar por nome do setor">
+        </div>
+        <div class="col-3">
+            <button type="submit" class="btn btn-primary">Pesquisar</button>
+        </div>
 
-        </form>
-        {% if current_user.adm == 1 %}
-            <a href="{{url_for('setor')}}"class="btn btn-primary">Adicionar Setor</a>
-        {% endif %}
+    </form>
+    {% if current_user.adm == 1 %}
+    <a href="{{url_for('setor')}}" class="btn btn-primary">Adicionar Setor</a>
+    {% endif %}
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nome do Setor</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for setor in setores %}
-                <tr>
-                    <td>{{ setor.nome }}</td>
-                    <td>
-                        <a href="{{ url_for('manage_professores', setor_id=setor.id) }}" class="btn btn-success">Visualizar Professores</a>
-                        {% if current_user.adm == 1 %}
-                            <a href="{{ url_for('edit_setor', id=setor.id) }}" class="btn btn-warning">Editar</a>
-                            <form action="{{ url_for('delete_setor', id=setor.id) }}" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </form>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="{{ url_for('homepage') }}" class="btn btn-secondary">Voltar</a>
-    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome do Setor</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for setor in setores %}
+            <tr>
+                <td>{{ setor.nome }}</td>
+                <td>
+                    <a href="{{ url_for('manage_professores', setor_id=setor.id) }}" class="btn btn-success">Visualizar
+                        Professores</a>
+                    {% if current_user.adm == 1 %}
+                    <a href="{{ url_for('edit_setor', id=setor.id) }}" class="btn btn-warning">Editar</a>
+                    <form action="{{ url_for('delete_setor', id=setor.id) }}" method="POST"
+                        onsubmit="return confirm('Tem certeza que deseja deletar este setor?');">
+                        <button type="submit" class="btn btn-danger">Deletar Setor</button>
+                    </form>
+
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('homepage') }}" class="btn btn-secondary">Voltar</a>
+</div>
 {% endblock %}

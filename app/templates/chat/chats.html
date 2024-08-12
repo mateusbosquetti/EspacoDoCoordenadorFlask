@@ -193,7 +193,6 @@
                             </div>
                             {% if last_message %}
                             <p style="font-size: small; color: rgb(194, 192, 192);">
-                                <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong>
                                 {{ last_message.content }}
                                 <span>({{ last_message.timestamp.strftime('%d/%m/%Y %H:%M:%S') }})</span>
                             </p>
@@ -211,7 +210,6 @@
                             {{ user.nome }} {{ user.sobrenome }}
                             {% if last_message %}
                             <p style="font-size: small; color: rgb(194, 192, 192);">
-                                <strong>{{ last_message.sender.nome }} {{ last_message.sender.sobrenome }}:</strong>
                                 {{ last_message.content }}
                                 <span>({{ last_message.timestamp.strftime('%d/%m/%Y %H:%M:%S') }})</span>
                             </p>

@@ -134,28 +134,9 @@ def delete_professor(setor_id, id):
 @app.route('/setor/<int:id>/delete', methods=['POST'])
 def delete_setor(id):
     setor = Setor.query.get_or_404(id)
-    if setor.professores:
-        return redirect(url_for('confirm_delete_setor', id=id))
-    else:
-        db.session.delete(setor)
-        db.session.commit()
-        return redirect(url_for('setorLista'))
-
-@app.route('/setor/<int:id>/confirm_delete', methods=['GET', 'POST'])
-def confirm_delete_setor(id):
-    setor = Setor.query.get_or_404(id)
-    professores = Professor.query.filter_by(setor_id=id).all()
-    if request.method == 'POST':
-        if 'confirm' in request.form:
-            # Deleta todos os professores associados ao setor
-            for professor in professores:
-                db.session.delete(professor)
-
-            db.session.delete(setor)
-            db.session.commit()
-            return redirect(url_for('setorLista'))
-        return redirect(url_for('setorLista'))
-    return render_template('setor/confirm_delete_setor.html', setor=setor, professores=professores)
+    db.session.delete(setor)
+    db.session.commit()
+    return redirect(url_for('setorLista'))
 
 
 @app.route('/setor/<int:id>/edit', methods=['GET', 'POST'])
@@ -351,10 +332,15 @@ def chats():
     chats_with_last_message = []
     for chat in chats:
         last_message = Message.query.filter_by(chat_id=chat.id).order_by(Message.timestamp.desc()).first()
+        if last_message:
+            # Limita a última mensagem a 35 caracteres e adiciona "..." se necessário
+            truncated_message = (last_message.content[:35] + '...') if len(last_message.content) > 35 else last_message.content
+            last_message.content = truncated_message
         chats_with_last_message.append((chat, last_message))
 
     users = User.query.filter(User.id != current_user.id).all()
     return render_template('chat/chats.html', chats=chats_with_last_message, users=users)
+
 
 @app.route('/chats/<int:chat_id>/json')
 def chat_json(chat_id):

@@ -3,15 +3,30 @@
 {% include 'nave.html' %}
 {% block content %}
 
-<div class="container btn-container">
-    <a href="{{url_for('setorLista')}}" class="btnBlue">Setores</a>
-    <a href="{{url_for('suporte')}}" class="btnBlue">Suporte</a>
-    {% if current_user.adm == 1 %}
-    <a href="{{ url_for('download_excel') }}" class="btnBlue">Relatório Geral</a>
-    {% else %}
-    <a href="{{ url_for('download_excel_professor') }}" class="btnBlue">Relatório de Aulas</a>
-    {% endif %}
+<div class="container d-flex justify-content-center">
+    <div class="row justify-content-center w-100">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
+            <a href="{{ url_for('setorLista') }}" class="btnBlue">Setores</a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
+            <a href="{{ url_for('suporte') }}" class="btnBlue">Suporte</a>
+        </div>
+        {% if current_user.adm == 1 %}
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
+            <a href="{{ url_for('download_excel') }}" class="btnBlue">Relatório Geral</a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
+            <a href="{{ url_for('cadastro') }}" class="btnBlue">Adicionar Usuário</a>
+        </div>
+        {% else %}
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
+            <a href="{{ url_for('download_excel_professor') }}" class="btnBlue">Relatório de Aulas</a>
+        </div>
+        {% endif %}
+    </div>
 </div>
+
+
 
 <section class="aboutUs">
     <h1>Sobre Nós</h1>
@@ -56,6 +71,40 @@
 </section>
 
 <style>
+    .container {
+        margin-top: 3%;
+    }
+
+    .btnBlue {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 250px;
+        height: 250px;
+        background-color: #0047B6;
+        color: white;
+        text-decoration: none;
+        margin: 10px 0;
+        font-size: 2rem;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+        text-align: center;
+    }
+
+    @media (max-width: 991.98px) {
+        .row .col-md-4 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .row .col-sm-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+
+
     .aboutUs {
         position: relative;
     }
@@ -87,20 +136,6 @@
         gap: 10%;
     }
 
-    .btnBlue {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 250px;
-        height: 250px;
-        background-color: #0047B6;
-        color: white;
-        text-decoration: none;
-        margin: 10px 0;
-        font-size: 2rem;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-        text-align: center;
-    }
 
     .btnBlue:hover {
         color: #0047B6;
@@ -193,13 +228,12 @@
 
     }
 
-    @media (max-width: 700px){
+    @media (max-width: 700px) {
         .absoluta a {
             font-size: 4vw;
             padding: 2.5%;
         }
     }
-
 </style>
 
 
