@@ -108,11 +108,27 @@ def add_professor(setor_id):
 def manage_professores(setor_id):
     setor = Setor.query.get_or_404(setor_id)
     pesquisa = request.args.get('pesquisa', '')
+    professor_data = []
+
     if pesquisa:
         professores = Professor.query.filter(Professor.nome.ilike(f"%{pesquisa}%"), Professor.setor_id == setor_id).order_by(Professor.nome).all()
     else:
         professores = setor.professores
-    return render_template('professor/manage_professores.html', setor=setor, professores=professores)
+
+    for professor in professores:
+        user = User.query.filter_by(email=professor.email, nome=professor.nome).first()
+        if user:
+            profile_picture = user.profile_picture
+        else:
+            profile_picture = DEFAULT_PROFILE_PICTURE_URL
+        professor_data.append({
+            'id': professor.id,
+            'nome': professor.nome,
+            'email': professor.email,
+            'profile_picture': profile_picture
+        })
+
+    return render_template('professor/manage_professores.html', setor=setor, professores=professor_data)
 
 @app.route('/setor/<int:setor_id>/professor/<int:id>/edit', methods=['GET', 'POST'])
 def edit_professor(setor_id, id):
@@ -122,7 +138,12 @@ def edit_professor(setor_id, id):
         professor.email = request.form['email']
         db.session.commit()
         return redirect(url_for('manage_professores', setor_id=setor_id))
-    return render_template('professor/edit_professor.html', professor=professor)
+    
+    # Buscar o usuário para obter a foto
+    user = User.query.filter_by(email=professor.email, nome=professor.nome).first()
+    profile_picture = user.profile_picture if user else DEFAULT_PROFILE_PICTURE_URL
+
+    return render_template('professor/edit_professor.html', professor=professor, profile_picture=profile_picture)
 
 @app.route('/setor/<int:setor_id>/professor/<int:id>/delete', methods=['POST'])
 def delete_professor(setor_id, id):
@@ -324,7 +345,7 @@ def download_excel_professor():
     return send_file(output, download_name="aulas_professor.xlsx", as_attachment=True, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
-from .models import Chat, Message, User, db
+from .models import DEFAULT_PROFILE_PICTURE_URL, Chat, Message, User, db
 
 @app.route('/chats')
 def chats():

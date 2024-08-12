@@ -28,7 +28,7 @@
             {% for setor in setores %}
             <tr>
                 <td>{{ setor.nome }}</td>
-                <td>
+                <td style="display: flex; gap: 2%;">
                     <a href="{{ url_for('manage_professores', setor_id=setor.id) }}" class="btn btn-success">Visualizar
                         Professores</a>
                     {% if current_user.adm == 1 %}

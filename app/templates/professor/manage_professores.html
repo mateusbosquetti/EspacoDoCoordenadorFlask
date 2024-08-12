@@ -19,6 +19,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Foto</th>
                 <th>Nome</th>
                 <th>Ações</th>
             </tr>
@@ -26,8 +27,10 @@
         <tbody>
             {% for professor in professores %}
             <tr>
+                <td><img src="{{ professor.profile_picture }}" alt="Foto de {{ professor.nome }}"
+                        style="width: 35px; height: 35px; border-radius: 50%;"></td>
                 <td>{{ professor.nome }}</td>
-                <td>
+                <td style="display: flex; gap: 2%;">
                     <a href="{{ url_for('manage_aulas', professor_id=professor.id) }}"
                         class="btn btn-success">Visualizar Grade Horária</a>
                     {% if current_user.adm == 1 %}
