@@ -30,7 +30,6 @@ def cadastro():
     form = UserForm()
     if form.validate_on_submit():
         user = form.save()
-        login_user(user, remember=True)
         return redirect(url_for('homepage'))
     return render_template('cadastro.html', form=form)
 
@@ -42,11 +41,10 @@ def logout():
 @app.route('/setor/', methods=['GET', 'POST'])
 def setor():
     form = SetorForm()
-    context = {}
     if form.validate_on_submit():
         form.save()
         return redirect(url_for('setorLista'))
-    return render_template('setor/setores.html', context=context, form=form)
+    return render_template('setor/setores.html', form=form)
 
 @app.route('/setor/lista/')
 def setorLista():
