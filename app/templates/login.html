@@ -41,8 +41,6 @@
                 display: none;
             }
         }
-
-        
     </style>
 </head>
 
@@ -51,8 +49,11 @@
         <h1>Espaço do Coordenador</h1>
         <form action="" method="post" class="forms">
             <h3>Bem Vindo</h3>
-            {{ form.csrf_token }}  
-    
+            {% if error_message %}
+            <div class="alert alert-danger">{{ error_message }}</div>
+            {% endif %}
+            {{ form.csrf_token }}
+
             {{ form.email.label() }}
             {{ form.email(class="form-control") }}
 

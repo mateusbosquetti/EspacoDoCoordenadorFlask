@@ -1,4 +1,4 @@
-from app import app, db
+from app import app, db, bcrypt
 from flask import jsonify, render_template, url_for, request, redirect, flash, send_file
 from app.forms import SetorForm, UserForm, LoginForm, ProfessorForm
 from app.models import Setor, User, Suporte, Professor, Aula, Chat, Message
@@ -16,22 +16,40 @@ def homepage():
 @app.route('/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    error_message = None  # Initialize error message variable
+
     if form.validate_on_submit():
-        try:
-            user = form.login()
+        # Try to find the user by email
+        user = User.query.filter_by(email=form.email.data).first()
+        
+        if user is None:
+            error_message = 'Usuário não encontrado.'
+        elif not bcrypt.check_password_hash(user.senha, form.senha.data):
+            error_message = 'Senha incorreta.'
+        else:
+            # If no errors, log the user in
             login_user(user, remember=True)
             return redirect(url_for('homepage'))
-        except Exception as e:
-            flash(str(e), 'error')
-    return render_template('login.html', form=form)
+
+    return render_template('login.html', form=form, error_message=error_message)
 
 @app.route('/cadastro/', methods=['GET', 'POST'])
 def cadastro():
     form = UserForm()
+    error_message = None 
+
     if form.validate_on_submit():
-        user = form.save()
-        return redirect(url_for('homepage'))
-    return render_template('cadastro.html', form=form)
+        existing_user = User.query.filter_by(email=form.email.data).first()
+        if existing_user:
+            error_message = "O email já está em uso. Por favor, escolha outro email."
+        elif form.senha.data != form.confirmacao_senha.data:
+            error_message = "As senhas não correspondem. Por favor, tente novamente."   
+        else:
+            user = form.save()
+            return redirect(url_for('homepage'))
+
+    return render_template('cadastro.html', form=form, error_message=error_message)
+
 
 @app.route('/sair/')
 def logout():

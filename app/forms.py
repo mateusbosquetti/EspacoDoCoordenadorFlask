@@ -11,14 +11,11 @@ class UserForm(FlaskForm):
     sobrenome = StringField('Sobrenome', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(),Email()]) 
     senha = PasswordField('Senha', validators=[DataRequired()])
-    confirmacao_senha = PasswordField('Confimar senha', validators=[DataRequired(), EqualTo('senha')])
+    confirmacao_senha = PasswordField('Confimar senha', validators=[DataRequired()])
     adm = False
     profile_picture=DEFAULT_PROFILE_PICTURE_URL
     btnSubmit = SubmitField('Cadastrar')
 
-    def validade_email(self, email):
-        if User.query.filter(email=email.data).first():
-            return ValidationError('Usuário já cadastradado com esse E-mail!!!')
 
     def save(self):
         senha = bcrypt.generate_password_hash(self.senha.data.encode('utf-8'))
@@ -50,17 +47,6 @@ class LoginForm(FlaskForm):
     email = StringField('E-Mail', validators=[DataRequired(), Email()])
     senha = PasswordField('Senha', validators=[DataRequired()])
     btnSubmit = SubmitField('Login')
-
-    def login(self):
-        user = User.query.filter_by(email=self.email.data).first()
-        if user:
-            if bcrypt.check_password_hash(user.senha, 
-                self.senha.data.encode('utf-8')):
-                return user
-            else:
-                raise Exception('Senha Incorreta!!!')
-        else:
-            raise Exception('Usuario nao encontrado')
         
 class ProfessorForm(FlaskForm):
     nome = StringField('Nome do Professor', validators=[DataRequired()])

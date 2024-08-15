@@ -4,8 +4,10 @@
 <div class="container">
     <div class="row mt-4">
         <h3>Cadastrar Novo Usuário</h3>
-
     </div>
+    {% if error_message %}
+    <div class="alert alert-danger">{{ error_message }}</div>
+    {% endif %}
     <form action="" method="post" class="row mt-4 p-4 round border shadow">
         {{form.csrf_token}}
 
