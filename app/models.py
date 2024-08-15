@@ -52,7 +52,7 @@ class Chat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('America/Sao_Paulo')))
     is_group = db.Column(db.Boolean, default=False)
-    name = db.Column(db.String, nullable=True)  # Nome do grupo
+    name = db.Column(db.String, nullable=True) 
     
     users = db.relationship('User', secondary='user_chats', back_populates='chats')
     messages = db.relationship('Message', back_populates='chat', cascade='all, delete-orphan')
