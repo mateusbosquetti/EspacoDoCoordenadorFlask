@@ -1,29 +1,52 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container">
-        <div class="row mt-4">
-            <h3>Cadastrar Novo Usuário</h3>
-        </div>
-        <form action="" method="post" class="row mt-4 p-4 round border shadow">
-            {{form.csrf_token}}
+<div class="container">
+    <div class="row mt-4">
+        <h3>Cadastrar Novo Usuário</h3>
 
-            {{form.nome.label()}}
-            {{form.nome(class="form-control")}}
-
-            {{form.sobrenome.label()}}
-            {{form.sobrenome(class="form-control")}}
-
-            {{form.email.label()}}
-            {{form.email(class="form-control")}}
-
-            {{form.senha.label()}}
-            {{form.senha(class="form-control")}}
-            
-            {{form.confirmacao_senha.label()}}
-            {{form.confirmacao_senha(class="form-control")}}
-
-            {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
-        </form>
     </div>
+    <form action="" method="post" class="row mt-4 p-4 round border shadow">
+        {{form.csrf_token}}
+
+        {{form.nome.label()}}
+        {{form.nome(class="form-control")}}
+
+        {{form.sobrenome.label()}}
+        {{form.sobrenome(class="form-control")}}
+
+        {{form.email.label()}}
+        {{form.email(class="form-control")}}
+
+        {{form.senha.label()}}
+        {{form.senha(class="form-control")}}
+
+        {{form.confirmacao_senha.label()}}
+        {{form.confirmacao_senha(class="form-control")}}
+
+        {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
+        <a href="{{ url_for('homepage') }}" class="btn btn-secondary mt-4">Cancelar</a>
+    </form>
+</div>
+
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #0047B6;
+    }
+
+    h3 {
+        text-align: center;
+        color: white;
+    }
+
+    form {
+        background-color: #fff;
+        border-radius: 20px;
+        color: black;
+    }
+</style>
 {% endblock %}
