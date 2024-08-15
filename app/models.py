@@ -1,6 +1,7 @@
 from app import db, login_manager
 from datetime import datetime
 from flask_login import UserMixin
+import pytz
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -49,7 +50,7 @@ class Aula(db.Model):
 
 class Chat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('America/Sao_Paulo')))
     is_group = db.Column(db.Boolean, default=False)
     name = db.Column(db.String, nullable=True)  # Nome do grupo
     
@@ -59,7 +60,7 @@ class Chat(db.Model):
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('America/Sao_Paulo')))
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'), nullable=False)
     sender = db.relationship('User')
