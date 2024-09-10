@@ -11,150 +11,154 @@
 <body>
     <section>
         <h2>Contato</h2>
-        
+
+        {% if error_message %}
+        <div class="alert alert-danger">{{ error_message }}</div>
+        {% endif %}
+
         <form action="{{ url_for('suporte') }}" method="post">
             <label for="message">Mensagem</label>
-            <textarea id="message" name="message" cols="30" rows="10" placeholder="Digite sua mensagem" required></textarea>
-        
+            <textarea id="message" name="message" cols="30" rows="10" placeholder="Digite sua mensagem"
+                required></textarea>
+
             <div class="botao">
-                <button class="sucess" type="submit">Enviar</button>  
+                <button class="sucess" type="submit">Enviar</button>
                 <button class="info" type="button" onclick="location.href='{{ url_for('homepage') }}'">Inicio</button>
             </div>
         </form>
     </section>
-    
+
 </body>
 
 </html>
 
 <style>
     * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
-
-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0047B6;
-}
-
-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 10px 45px;
-    background: #f1f1f1;
-    width: 500px;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    border: solid 3px black;
-}
-
-section h2 {
-    color: #000000;
-    font-size: 2.5rem;
-    margin: 2rem;
-}
-
-section form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-
-}
-
-form label {
-    color: #000000;
-    font-size: 17px;
-    margin-bottom: 4px;
-    text-align: center;
-
-}
-
-form input {
-    padding: 15px;
-    outline: none;
-    border: 0;
-    margin-bottom: 20px;
-    font-size: 15px;
-    transition: all 0.5s;
-}
-
-form input:focus {
-    border-radius: 16px;
-}
-
-form textarea {
-    padding: 10px;
-    outline: none;
-    border: 0;
-    font-size: 15px;
-    margin-bottom: 30px;
-    transition: all 0.5s;
-    resize: none;
-
-}
-
-form textarea:focus {
-    border-radius: 16px;
-}
-
-.botao {
-    margin: 0 auto;
-}
-
-form .sucess {
-    padding: 15px;
-    cursor: pointer;
-    font-size: 16px;
-    background-color: #4BB563;
-    border: 1px solid transparent;
-    color: #f5f5f5;
-    transition: all 1s;
-    margin-bottom: 20px;
-    width: 100%;
-    text-align: center;
-}
-
-
-form .sucess:hover {
-    background: #389b4f;
-    border-radius: 16px;
-    border-color: #000000;
-}
-
-form .info {
-    padding: 15px;
-    cursor: pointer;
-    font-size: 16px;
-    background-color: #0556d9;
-    border: 1px solid transparent;
-    color: #f5f5f5;
-    transition: all 1s;
-    margin-bottom: 20px;
-    width: 100%;
-    text-align: center;
-}
-
-
-form .info:hover {
-    background: #0047B6;
-    border-radius: 16px;
-    border-color: #000000;
-
-}
-
-@media (min-width: 800px){
-    .botao {
-        display: flex;
-        gap: 50%;
-        justify-content: center;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
     }
-}
 
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #0047B6;
+    }
+
+    section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 10px 45px;
+        background: #f1f1f1;
+        width: 500px;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        border: solid 3px black;
+    }
+
+    section h2 {
+        color: #000000;
+        font-size: 2.5rem;
+        margin: 2rem;
+    }
+
+    section form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+    }
+
+    form label {
+        color: #000000;
+        font-size: 17px;
+        margin-bottom: 4px;
+        text-align: center;
+
+    }
+
+    form input {
+        padding: 15px;
+        outline: none;
+        border: 0;
+        margin-bottom: 20px;
+        font-size: 15px;
+        transition: all 0.5s;
+    }
+
+    form input:focus {
+        border-radius: 16px;
+    }
+
+    form textarea {
+        padding: 10px;
+        outline: none;
+        border: 0;
+        font-size: 15px;
+        margin-bottom: 30px;
+        transition: all 0.5s;
+        resize: none;
+
+    }
+
+    form textarea:focus {
+        border-radius: 16px;
+    }
+
+    .botao {
+        margin: 0 auto;
+    }
+
+    form .sucess {
+        padding: 15px;
+        cursor: pointer;
+        font-size: 16px;
+        background-color: #4BB563;
+        border: 1px solid transparent;
+        color: #f5f5f5;
+        transition: all 1s;
+        margin-bottom: 20px;
+        width: 100%;
+        text-align: center;
+    }
+
+
+    form .sucess:hover {
+        background: #389b4f;
+        border-radius: 16px;
+        border-color: #000000;
+    }
+
+    form .info {
+        padding: 15px;
+        cursor: pointer;
+        font-size: 16px;
+        background-color: #0556d9;
+        border: 1px solid transparent;
+        color: #f5f5f5;
+        transition: all 1s;
+        margin-bottom: 20px;
+        width: 100%;
+        text-align: center;
+    }
+
+
+    form .info:hover {
+        background: #0047B6;
+        border-radius: 16px;
+        border-color: #000000;
+
+    }
+
+    @media (min-width: 800px) {
+        .botao {
+            display: flex;
+            gap: 50%;
+            justify-content: center;
+        }
+    }
 </style>

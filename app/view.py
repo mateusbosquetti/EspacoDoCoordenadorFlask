@@ -75,9 +75,11 @@ def setorLista():
 
 @app.route('/suporte', methods=['GET', 'POST'])
 def suporte():
+    error_message = None  # Inicializa fora do bloco POST
+
     if request.method == 'POST':
         nome = current_user.nome
-        email =  current_user.email
+        email = current_user.email
         mensagem = request.form['message']
 
         novo_suporte = Suporte(nome=nome, email=email, mensagem=mensagem)
@@ -92,17 +94,17 @@ def suporte():
             "message": mensagem,
             "redirectTo": url_for('suporte', _external=True)
         }
-        
+
         response = requests.post(staticforms_url, data=data)
-        
+
         if response.status_code == 200:
-            flash('Sua mensagem foi enviada com sucesso! Fique atento no seu email', 'success')
+            error_message = "Enviado com Sucesso!"
         else:
-            flash('Ocorreu um erro ao enviar a mensagem. Tente novamente.', 'error')
+            error_message = "Erro! Mensagem não enviada"
 
-        return redirect(url_for('suporte'))
+        return render_template('suporte.html', error_message=error_message)  # Renderiza a página novamente com a mensagem
 
-    return render_template('suporte.html')
+    return render_template('suporte.html', error_message=error_message)
 
 
 @app.route('/setor/<int:setor_id>/add_professor', methods=['GET', 'POST'])
