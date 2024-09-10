@@ -7,7 +7,11 @@
     <form method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="nome" class="form-label">Nome Usuário</label>
-            <input type="text" class="form-control" id="nome" name="nome" value="{{ perfil.nome }}" required>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ perfil.nome }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" class="form-control" id="email" value="{{ perfil.email }}" disabled>
         </div>
         <div class="mb-3">
             <label for="profile_picture" class="form-label">Foto de Perfil</label><br>
@@ -18,7 +22,7 @@
             <div>
                 <button type="submit" class="btn btn-primary">Salvar</button>
                 <a href="{{ url_for('homepage') }}" class="btn btn-secondary">Cancelar</a>
-                <a href="{{url_for('logout')}}" class="btn btn-danger ">Logout</a>
+                <a href="{{url_for('logout')}}" class="btn btn-danger">Logout</a>
             </div>
             <button id="dark-mode-toggle" class="dark-mode-toggle">Dark Mode</button>
         </section>

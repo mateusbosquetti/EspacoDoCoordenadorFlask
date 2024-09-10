@@ -5,16 +5,6 @@
 <div class="container mt-4">
     <h1>Gerenciar Aulas para {{ professor.nome }}</h1>
 
-    {# Bloco para exibir mensagens flash #}
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
     {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1 %}
     <form method="POST">
         <div class="form-group">
