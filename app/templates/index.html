@@ -1,219 +1,246 @@
-{% extends 'base.html' %}
-
-{% include 'nave.html' %}
-{% block content %}
-
-<div class="container d-flex justify-content-center">
-    <div class="row justify-content-center w-100">
-        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
-            <a href="{{ url_for('setorLista') }}" class="btnBlue">Setores</a>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
-            <a href="{{ url_for('suporte') }}" class="btnBlue">Suporte</a>
-        </div>
-        {% if current_user.adm == 1 %}
-        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
-            <a href="{{ url_for('download_excel') }}" class="btnBlue">Relatório Geral</a>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
-            <a href="{{ url_for('cadastro') }}" class="btnBlue">Adicionar Usuário</a>
-        </div>
-        {% else %}
-        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
-            <a href="{{ url_for('download_excel_professor') }}" class="btnBlue">Relatório de Aulas</a>
-        </div>
-        {% endif %}
-    </div>
+{% extends 'base.html' %} {% include 'nave.html' %} {% block content %}
+<div class="welcome">
+  <h5>Bem-vindo</h5>
+  <p>ao Espaço do Coordenador</p>
 </div>
 
-
+<div class="container d-flex justify-content-center">
+  <div class="row justify-content-center w-100">
+    <div
+      class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center"
+    >
+      <a href="{{ url_for('setorLista') }}" class="btnBlue">Setores</a>
+    </div>
+    <div
+      class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center"
+    >
+      <a href="{{ url_for('suporte') }}" class="btnBlue">Suporte</a>
+    </div>
+    {% if current_user.adm == 1 %}
+    <div
+      class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center"
+    >
+      <a href="{{ url_for('download_excel') }}" class="btnBlue"
+        >Relatório Geral</a
+      >
+    </div>
+    <div
+      class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center"
+    >
+      <a href="{{ url_for('cadastro') }}" class="btnBlue">Adicionar Usuário</a>
+    </div>
+    {% else %}
+    <div
+      class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center"
+    >
+      <a href="{{ url_for('download_excel_professor') }}" class="btnBlue"
+        >Relatório de Aulas</a
+      >
+    </div>
+    {% endif %}
+  </div>
+</div>
 
 <section class="aboutUs">
-    <h1>Sobre Nós</h1>
-    <hr class="line">
-    <div class="content">
-        <img src="{{ url_for('static', filename='img/Secretaria.png') }}" alt="" class="img1">
-        <div class="textContent">
-            <h4>A Equipe</h4>
-            <p>Composta por Mateus Henrique Bosquetti, Enzo Tulio Wagner e Johan Peter Follmann Steckling, nossa equipe
-                fez este projeto para sanar uma necessidade em nossa escola, o projeto foi proposto pelo nosso professor
-                Fabiano da Silva Luiz junto do nosso Coordenador. Elaborado como um trabalho escolar para a matéria de
-                Desenvolvimento de Sistemas.</p>
-        </div>
+  <h1>Sobre Nós</h1>
+  <hr class="line" />
+  <div class="content">
+    <img
+      src="{{ url_for('static', filename='img/Secretaria.png') }}"
+      alt=""
+      class="img1"
+    />
+    <div class="textContent">
+      <h4>A Equipe</h4>
+      <p>
+        Composta por Mateus Henrique Bosquetti, Enzo Tulio Wagner e Johan Peter
+        Follmann Steckling, nossa equipe fez este projeto para sanar uma
+        necessidade em nossa escola, o projeto foi proposto pelo nosso professor
+        Fabiano da Silva Luiz junto do nosso Coordenador. Elaborado como um
+        trabalho escolar para a matéria de Desenvolvimento de Sistemas.
+      </p>
     </div>
-    
+  </div>
 
-    <div class="absoluta">
-        <a href="{{ url_for('chats') }}" class="fa-regular fa-message"></a>
-    </div>
-
+  <div class="absoluta">
+    <a href="{{ url_for('chats') }}" class="fa-regular fa-message"></a>
+  </div>
 </section>
 
 <style>
-    .container {
-        margin-top: 3%;
+  .welcome {
+    text-align: center;
+    margin: 3% 0;
+}
+
+.welcome h5 {
+    font-size: 1.75rem;
+}
+
+.welcome p {
+    font-size: 1rem;
+    color: gray;
+}
+
+  .container {
+    margin-top: 3%;
+  }
+
+  .btnBlue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 250px;
+    background-color: #0047b6;
+    color: white;
+    text-decoration: none;
+    margin: 10px 0;
+    font-size: 2rem;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+      rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    text-align: center;
+  }
+
+  @media (max-width: 991.98px) {
+    .row .col-md-4 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .row .col-sm-6 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+
+  .aboutUs {
+    position: relative;
+  }
+
+  .absoluta a {
+    text-decoration: none;
+    font-size: 1.75vw;
+    color: white;
+    padding: 1.5%;
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    background-color: #0047b6;
+    border-radius: 100px;
+  }
+
+  .absoluta :hover {
+    scale: 1.2;
+    transition: 0.3s;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+      rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  }
+
+  .btn-container {
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10%;
+  }
+
+  .btnBlue:hover {
+    color: #0047b6;
+    background-color: var(--body-bgHover);
+    border: solid 2px #0047b6;
+    transition: 0.2s;
+  }
+
+  @media (min-width: 800px) {
+    .btn-container {
+      flex-direction: row;
     }
 
     .btnBlue {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 250px;
-        height: 250px;
-        background-color: #0047B6;
-        color: white;
-        text-decoration: none;
-        margin: 10px 0;
-        font-size: 2rem;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-        text-align: center;
+      margin: 0 10px;
+    }
+  }
+
+  .aboutUs {
+    margin: 5%;
+  }
+
+  .img1 {
+    width: 100%;
+    text-align: center;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 7vw;
+  }
+
+  h4 {
+    font-size: 7vw;
+  }
+
+  p {
+    font-size: 3vw;
+  }
+
+  .textContent {
+    margin: 5% 0% 15% 0%;
+  }
+
+  .content3 {
+    display: none;
+  }
+
+  .line {
+    border: solid 1px var(--body-line);
+    margin-bottom: 10%;
+  }
+
+  @media (min-width: 800px) {
+    .content {
+      display: flex;
+      gap: 5%;
     }
 
-    @media (max-width: 991.98px) {
-        .row .col-md-4 {
-            flex: 0 0 100%;
-            max-width: 100%;
-        }
-    }
-
-    @media (max-width: 575.98px) {
-        .row .col-sm-6 {
-            flex: 0 0 100%;
-            max-width: 100%;
-        }
-    }
-
-
-    .aboutUs {
-        position: relative;
-    }
-
-    .absoluta a {
-        text-decoration: none;
-        font-size: 1.75vw;
-        color: white;
-        padding: 1.5%;
-        position: fixed;
-        right: 50px;
-        bottom: 50px;
-        background-color: #0047B6;
-        border-radius: 100px;
-    }
-
-    .absoluta :hover {
-        scale: 1.2;
-        transition: .3s;
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-    }
-
-    .btn-container {
-        margin-top: 5%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 10%;
-    }
-
-
-    .btnBlue:hover {
-        color: #0047B6;
-        background-color: var(--body-bgHover);
-        border: solid 2px #0047B6;
-        transition: 0.2s;
-    }
-
-
-    @media (min-width: 800px) {
-        .btn-container {
-            flex-direction: row;
-        }
-
-        .btnBlue {
-            margin: 0 10px;
-        }
-    }
-
-    .aboutUs {
-        margin: 5%;
-    }
-
-    .img1 {
-        width: 100%;
-        text-align: center;
-    }
-
-    h1 {
-        text-align: center;
-        font-size: 7vw;
-    }
-
-    h4 {
-        font-size: 7vw;
-    }
-
-    p {
-        font-size: 3vw;
-    }
-
-    .textContent {
-        margin: 5% 0% 15% 0%;
+    .content2 {
+      display: none;
     }
 
     .content3 {
-        display: none;
+      display: flex;
+      margin-top: 10%;
+      text-align: end;
+      gap: 5%;
     }
 
-    .line {
-        border: solid 1px var(--body-line);
-        margin-bottom: 10%;
+    h1 {
+      text-align: start;
+      font-size: 4vw;
     }
 
-
-
-    @media (min-width: 800px) {
-        .content {
-            display: flex;
-            gap: 5%;
-        }
-
-        .content2 {
-            display: none;
-        }
-
-        .content3 {
-            display: flex;
-            margin-top: 10%;
-            text-align: end;
-            gap: 5%;
-        }
-
-        h1 {
-            text-align: start;
-            font-size: 4vw;
-        }
-
-        h4 {
-            font-size: 3vw;
-        }
-
-        p {
-            font-size: 1vw;
-        }
-
-        .img1 {
-            min-width: 50%;
-        }
-
+    h4 {
+      font-size: 3vw;
     }
 
-    @media (max-width: 700px) {
-        .absoluta a {
-            font-size: 4vw;
-            padding: 2.5%;
-        }
+    p {
+      font-size: 1vw;
     }
+
+    .img1 {
+      min-width: 50%;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .absoluta a {
+      font-size: 4vw;
+      padding: 2.5%;
+    }
+  }
 </style>
-
 
 {% endblock %}

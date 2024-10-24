@@ -16,7 +16,7 @@ def homepage():
 @app.route('/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    error_message = None  # Initialize error message variable
+    error_message = None 
 
     if form.validate_on_submit():
         # Try to find the user by email
@@ -265,19 +265,11 @@ def edit_perfil(id):
     perfil = User.query.get_or_404(id)
     
     if request.method == 'POST':
-        nome_antigo = perfil.nome
-        nome_novo = request.form['nome']
-        perfil.nome = nome_novo
 
-        professor = Professor.query.filter_by(nome=nome_antigo).first()
-        if professor:
-            professor.nome = nome_novo
-
-        # Upload da nova foto de perfil, se fornecida
         if 'profile_picture' in request.files:
             file_to_upload = request.files['profile_picture']
             if file_to_upload:
-                # Redimensionar a imagem para 200x200 pixels
+
                 upload_result = cloudinary.uploader.upload(
                     file_to_upload,
                     transformation=[
@@ -287,37 +279,29 @@ def edit_perfil(id):
                 perfil.profile_picture = upload_result['secure_url']
 
         db.session.commit()
-        flash('Perfil atualizado com sucesso!', 'success')
-        return redirect(url_for('homepage'))
 
     return render_template('edit_perfil.html', perfil=perfil)
 
 
 @app.route('/download-excel')
 def download_excel():
-    # Consultar dados dos setores
     setores = Setor.query.all()
     setores_list = [{'Nome': setor.nome} for setor in setores]
 
-    # Consultar dados dos professores
     professores = Professor.query.all()
     professores_list = [{'Nome': professor.nome, 'Email': professor.email, 'Setor': professor.setor.nome} for professor in professores]
 
-    # Consultar dados das aulas
     aulas = Aula.query.all()
     aulas_list = [{'Matéria': aula.materia, 'Sala': aula.sala, 'Dia': aula.dia, 'Horário Início': aula.horario_inicio, 'Horário Fim': aula.horario_fim, 'Professor': aula.professor.nome} for aula in aulas]
 
-    # Consultar dados do suporte
     suportes = Suporte.query.all()
     suportes_list = [{'Nome': suporte.nome, 'Email': suporte.email, 'Mensagem': suporte.mensagem} for suporte in suportes]
     
-    # Converter os dados em DataFrames do pandas
     df_setores = pd.DataFrame(setores_list)
     df_professores = pd.DataFrame(professores_list)
     df_aulas = pd.DataFrame(aulas_list)
     df_suportes = pd.DataFrame(suportes_list)
 
-    # Salvar os DataFrames em um arquivo Excel na memória, cada um em uma aba
     output = BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
         df_setores.to_excel(writer, index=False, sheet_name='Setores')
@@ -326,42 +310,33 @@ def download_excel():
         df_suportes.to_excel(writer, index=False, sheet_name='Suportes')
     output.seek(0)
 
-    # Enviar o arquivo para o cliente
     return send_file(output, download_name="dados.xlsx", as_attachment=True, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 @app.route('/download-excel-professor')
 def download_excel_professor():
-    # Consultar o professor com o mesmo email do usuário logado
+
     professor = Professor.query.filter_by(email=current_user.email).first()
     if not professor:
         return "Usuário logado não é um professor", 403
 
-    # Consultar dados das aulas do professor logado
     aulas = Aula.query.filter_by(professor_id=professor.id).all()
     
-    # Debug: verificar os dados retornados
     print("Aulas do professor logado:", aulas)
 
     aulas_list = [{'Matéria': aula.materia, 'Sala': aula.sala, 'Dia': aula.dia, 'Horário Início': aula.horario_inicio, 'Horário Fim': aula.horario_fim} for aula in aulas]
     
-    # Debug: verificar a lista de aulas
     print("Lista de aulas formatada:", aulas_list)
 
-    # Converter os dados em um DataFrame do pandas
     df_aulas = pd.DataFrame(aulas_list)
     
-    # Debug: verificar o DataFrame
     print("DataFrame das aulas:", df_aulas)
 
-    # Salvar o DataFrame em um arquivo Excel na memória
     output = BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
         df_aulas.to_excel(writer, index=False, sheet_name='Aulas')
     output.seek(0)
 
-    # Enviar o arquivo para o cliente
     return send_file(output, download_name="aulas_professor.xlsx", as_attachment=True, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-
 
 from .models import DEFAULT_PROFILE_PICTURE_URL, Chat, Message, User, db
 
@@ -372,7 +347,6 @@ def chats():
     for chat in chats:
         last_message = Message.query.filter_by(chat_id=chat.id).order_by(Message.timestamp.desc()).first()
         if last_message:
-            # Limita a última mensagem a 35 caracteres e adiciona "..." se necessário
             truncated_message = (last_message.content[:35] + '...') if len(last_message.content) > 35 else last_message.content
             last_message.content = truncated_message
         chats_with_last_message.append((chat, last_message))
