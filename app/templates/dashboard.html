@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% include 'nave.html' %} {% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Dashboard</h1>
+
+    <!-- Cards de Resumo -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Setores</h5>
+                    <p class="card-text">{{ total_setores }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Professores</h5>
+                    <p class="card-text">{{ total_professores }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Aulas</h5>
+                    <p class="card-text">{{ total_aulas }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Suportes</h5>
+                    <p class="card-text">{{ total_suportes }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dados Recentes -->
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Últimos Suportes</h3>
+            <ul class="list-group">
+                {% for suporte in recentes_suportes %}
+                    <li class="list-group-item">
+                        <strong>{{ suporte.nome }}</strong> - {{ suporte.mensagem }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col-md-6">
+            <h3>Últimos Chats</h3>
+            <ul class="list-group">
+                {% for chat in recentes_chats %}
+                    <li class="list-group-item">
+                        <strong>Chat {{ chat.id }}</strong> - {{ chat.name or 'Sem Nome' }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

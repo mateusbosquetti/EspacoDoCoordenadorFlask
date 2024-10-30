@@ -427,3 +427,21 @@ def send_message(chat_id):
         return jsonify({'success': True})
 
     return jsonify({'error': 'Conteúdo da mensagem vazio.'}), 400
+
+@app.route('/dashboard')
+def dashboard():
+    total_setores = Setor.query.count()
+    total_professores = Professor.query.count()
+    total_aulas = Aula.query.count()
+    total_suportes = Suporte.query.count()
+    
+    recentes_suportes = Suporte.query.order_by(Suporte.id.desc()).limit(5).all()
+    recentes_chats = Chat.query.order_by(Chat.id.desc()).limit(5).all()
+
+    return render_template('dashboard.html', 
+                           total_setores=total_setores, 
+                           total_professores=total_professores,
+                           total_aulas=total_aulas, 
+                           total_suportes=total_suportes,
+                           recentes_suportes=recentes_suportes,
+                           recentes_chats=recentes_chats)
