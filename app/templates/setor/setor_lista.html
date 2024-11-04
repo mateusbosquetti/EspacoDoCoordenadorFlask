@@ -2,48 +2,71 @@
 {% include 'nave.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h3>Lista de Setores</h3>
-    <form method="get" class="row mb-3">
-        <div class="col-9">
-            <input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar por nome do setor">
-        </div>
-        <div class="col-3">
-            <button type="submit" class="btn btn-primary">Pesquisar</button>
-        </div>
+<div class="container mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
+    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Lista de Setores</h3>
 
+    <!-- Formulário de Pesquisa -->
+    <form method="get" class="flex flex-wrap gap-4 mb-6">
+        <input type="text" name="pesquisa" placeholder="Pesquisar por nome do setor"
+               class="w-full md:w-3/4 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+               required>
+        <button type="submit"
+                class="w-full md:w-1/4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+            Pesquisar
+        </button>
     </form>
+
+    <!-- Botão de Adicionar Setor (somente para admins) -->
     {% if current_user.adm == 1 %}
-    <a href="{{url_for('setor')}}" class="btn btn-primary">Adicionar Setor</a>
+    <a href="{{ url_for('setor') }}"
+       class="inline-block px-4 py-2 mb-4 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+        Adicionar Setor
+    </a>
     {% endif %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nome do Setor</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for setor in setores %}
-            <tr>
-                <td>{{ setor.nome }}</td>
-                <td style="display: flex; gap: 2%;">
-                    <a href="{{ url_for('manage_professores', setor_id=setor.id) }}" class="btn btn-success">Visualizar
-                        Professores</a>
-                    {% if current_user.adm == 1 %}
-                    <a href="{{ url_for('edit_setor', id=setor.id) }}" class="btn btn-warning">Editar</a>
-                    <form action="{{ url_for('delete_setor', id=setor.id) }}" method="POST"
-                        onsubmit="return confirm('Tem certeza que deseja deletar este setor?');">
-                        <button type="submit" class="btn btn-danger">Deletar Setor</button>
-                    </form>
+    <!-- Tabela de Setores -->
+    <div class="overflow-x-auto">
+        <table class="w-full text-left bg-gray-50 border border-gray-200 rounded-md shadow-sm">
+            <thead>
+                <tr class="bg-gray-200 text-gray-700">
+                    <th class="px-6 py-3 font-medium">Nome do Setor</th>
+                    <th class="px-6 py-3 font-medium">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for setor in setores %}
+                <tr class="border-b border-gray-200">
+                    <td class="px-6 py-4">{{ setor.nome }}</td>
+                    <td class="px-6 py-4 flex flex-wrap gap-2">
+                        <a href="{{ url_for('manage_professores', setor_id=setor.id) }}"
+                           class="px-3 py-1 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            Visualizar Professores
+                        </a>
+                        {% if current_user.adm == 1 %}
+                        <a href="{{ url_for('edit_setor', id=setor.id) }}"
+                           class="px-3 py-1 text-sm font-semibold text-white bg-yellow-500 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition">
+                            Editar
+                        </a>
+                        <form action="{{ url_for('delete_setor', id=setor.id) }}" method="POST"
+                              onsubmit="return confirm('Tem certeza que deseja deletar este setor?');"
+                              class="inline-block">
+                            <button type="submit"
+                                    class="px-3 py-1 text-sm font-semibold text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition">
+                                Deletar Setor
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ url_for('homepage') }}" class="btn btn-secondary">Voltar</a>
+    <!-- Botão Voltar -->
+    <a href="{{ url_for('homepage') }}"
+       class="inline-block mt-4 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition">
+        Voltar
+    </a>
 </div>
 {% endblock %}
