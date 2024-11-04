@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+{% include 'nave.html' %} 
 <section class="bg-gray-100 text-gray-800">
 
-    <section class="flex items-center justify-center py-10 bg-blue-600 text-white">
+    <section class="flex items-center justify-center py-10  text-black">
         <div class="text-center">
             <h1 class="text-3xl font-semibold">Centro de Suporte</h1>
             <p class="mt-2">Estamos aqui para ajudar! Consulte as perguntas frequentes ou envie uma mensagem para nossa equipe.</p>
@@ -23,7 +23,7 @@
                     <span x-show="openQuestion !== 1">&#9660;</span>
                 </button>
                 <p x-show="openQuestion === 1" class="mt-2 text-gray-600">
-                    Para redefinir sua senha, vá para a página de login e clique em "Esqueceu sua senha?". Siga as instruções para criar uma nova senha.
+                    Para redefinir sua senha, entre em contato com seu superior que o cadastrou no sistema, ele tomará as devidas providências.
                 </p>
             </div>
 
@@ -35,7 +35,7 @@
                     <span x-show="openQuestion !== 2">&#9660;</span>
                 </button>
                 <p x-show="openQuestion === 2" class="mt-2 text-gray-600">
-                    Acesse sua conta, vá até o menu "Perfil" e escolha a opção "Editar Perfil". Lá, você poderá alterar suas informações pessoais.
+                    Acesse sua conta clicando no seu icone de perfil no canto superior direito, lá você poderá alterar apenas sua foto de perfil. Caso queira alterar algum dado pessoal, contate seu superior que o cadastrou no sistema.
                 </p>
             </div>
 
@@ -47,19 +47,19 @@
                     <span x-show="openQuestion !== 3">&#9660;</span>
                 </button>
                 <p x-show="openQuestion === 3" class="mt-2 text-gray-600">
-                    Você pode enviar uma mensagem através do formulário abaixo ou enviar um e-mail diretamente para suporte@exemplo.com.
+                    Você pode enviar uma mensagem através do formulário abaixo ou enviar um e-mail diretamente para espacodocoordenador@gmail.com.
                 </p>
             </div>
 
             <div>
                 <button @click="openQuestion === 4 ? openQuestion = null : openQuestion = 4"
                     class="flex justify-between w-full text-left text-lg font-medium text-blue-600 hover:text-blue-800">
-                    Posso cancelar minha assinatura a qualquer momento?
+                    Coordenadores tem quais permissões em relações ao professor?
                     <span x-show="openQuestion === 4" class="transform rotate-180">&#9650;</span>
                     <span x-show="openQuestion !== 4">&#9660;</span>
                 </button>
                 <p x-show="openQuestion === 4" class="mt-2 text-gray-600">
-                    Sim, é possível cancelar sua assinatura a qualquer momento nas configurações da sua conta. No entanto, verifique as políticas de reembolso.
+                    Coordenadores assim como qualquer outro professor, podem ver todas as suas aulas cadastradas. Além disso podem também cadastrar aulas, editar e excluir. Permissão Completa⚠️
                 </p>
             </div>
         </div>

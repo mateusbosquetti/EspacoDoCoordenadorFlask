@@ -3,36 +3,50 @@
 
 {% block content %}
 <div class="container" style="margin-top: 2%;">
-    <h3>Editar Perfil</h3>
-    <form method="post" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="nome" class="form-label">Nome Usuário</label>
-            <input type="text" class="form-control" id="nome" name="nome" value="{{ perfil.nome }}" disabled>
+    <section class="flex items-center justify-start py-10">
+        <div class="text-center">
+            <h1 class="text-3xl font-semibold">Editar Perfil</h1>
         </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="text" class="form-control" id="email" value="{{ perfil.email }}" disabled>
+    </section>    <form method="post" enctype="multipart/form-data">
+        <div>
+            <label for="nome" class="block text-sm font-medium">Nome Usuário</label>
+            <input type="text" id="nome" name="nome" value="{{ perfil.nome }}" disabled
+                class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-gray-100 text-gray-800 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
         </div>
-        <div class="mb-3">
-            <label for="profile_picture" class="form-label">Foto de Perfil</label><br>
-            <img src="{{ perfil.profile_picture }}" alt="Foto de Perfil" width="200" class="mb-3"><br>
-            <input type="file" class="form-control" id="profile_picture" name="profile_picture">
+        <!-- Email -->
+        <div>
+            <label for="email" class="block text-sm font-medium mt-3">Email</label>
+            <input type="text" id="email" value="{{ perfil.email }}" disabled
+                class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-gray-100 text-gray-800 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
         </div>
-        <section class="sameLine">
-            <div>
-                <button type="submit" class="btn btn-primary">Salvar</button>
-                <a href="{{ url_for('homepage') }}" class="btn btn-secondary">Cancelar</a>
-                <a href="{{url_for('logout')}}" class="btn btn-danger">Logout</a>
+
+        <div>
+            <label for="profile_picture" class="block text-sm font-medium  mt-3">Foto de Perfil</label>
+            <img src="{{ perfil.profile_picture }}" alt="Foto de Perfil" width="200" class="mt-2 mb-3 rounded-md">
+            <input type="file" id="profile_picture" name="profile_picture"
+                class="mt-2 block w-full text-gray-800 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-white">
+        </div>
+            <div class="flex justify-between items-center mt-6">
+                <div>
+                    <button type="submit"
+                        class="px-4 py-2 font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-500 focus:ring-offset-2 transition">
+                        Salvar
+                    </button>
+                    <a href="{{ url_for('homepage') }}"
+                        class="ml-3 px-4 py-2 font-medium text-white bg-gray-500 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-500 focus:ring-offset-2 transition">
+                        Cancelar
+                    </a>
+                    <a href="{{ url_for('logout') }}"
+                        class="ml-3 px-4 py-2 font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring focus:ring-red-500 focus:ring-offset-2 transition">
+                        Logout
+                    </a>
+                </div>
+                <button id="dark-mode-toggle" class="dark-mode-toggle">Dark Mode</button>
             </div>
-            <button id="dark-mode-toggle" class="dark-mode-toggle">Dark Mode</button>
-        </section>
     </form>
 </div>
 <style>
-    .sameLine {
-        display: flex;
-        justify-content: space-between;
-    }
+    
 </style>
 
 {% endblock %}

@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const $html = document.querySelector('html');
     const $button = document.querySelector('#dark-mode-toggle');
 
-    // Carregar a preferência de dark mode do localStorage
     const darkMode = localStorage.getItem('dark-mode');
     if (darkMode === 'enabled') {
         $html.classList.add('dark-mode');
@@ -11,9 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $button.textContent = 'Dark Mode';
     }
 
-    // Adicionar um event listener para alternar o dark mode
     $button.addEventListener('click', function (event) {
-        // Evitar qualquer comportamento padrão do botão
         event.preventDefault();
 
         $html.classList.toggle('dark-mode');
