@@ -3,58 +3,34 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1>Gerenciar Aulas para {{ professor.nome }}</h1>
+    <h1 class="mb-4">Gerenciar Aulas para {{ professor.nome }}</h1>
 
     {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1 %}
-    <form method="POST">
-        <div class="form-group">
-            <label for="materia">Matéria:</label>
-            <input type="text" class="form-control" id="materia" name="materia" required>
-        </div>
-        <div class="form-group">
-            <label for="sala">Sala:</label>
-            <input type="text" class="form-control" id="sala" name="sala" required>
-        </div>
-        <div class="form-group">
-            <label for="dia">Dia:</label>
-            <input type="date" class="form-control" id="dia" name="dia" required>
-        </div>
-        <div class="form-group">
-            <label for="horario_inicio">Horário de Início:</label>
-            <input type="time" class="form-control" id="horario_inicio" name="horario_inicio" required>
-        </div>
-        <div class="form-group">
-            <label for="horario_fim">Horário de Fim:</label>
-            <input type="time" class="form-control" id="horario_fim" name="horario_fim" required>
-        </div>
-        <button type="submit" class="btn btn-primary mt-4">Adicionar Aula</button>
-    </form>
+    <a href="{{ url_for('adicionar_aula', professor_id=professor.id) }}" class="btn btn-success mb-4">Adicionar Aula</a>
     {% endif %}
 
-
-    <h2 class="mt-4">Aulas</h2>
-    <ul class="list-group">
+    <h2 class="mt-5">Aulas</h2>
+    <ul class="list-group mt-3">
         {% if not aulas %}
-        <h6>Sem aulas</h6>
+        <li class="list-group-item text-muted">Sem aulas</li>
         {% endif %}
         {% for aula in aulas %}
-        <li class="list-group-item">
-            {{ aula.materia }} - Sala: {{ aula.sala }} - Dia: {{ aula.dia }} - Horário de Início: {{
-            aula.horario_inicio.strftime('%H:%M') }} - Horário de Fim: {{ aula.horario_fim.strftime('%H:%M') }}
-            {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1
-            %}
-            <a href="{{ url_for('edit_aula', professor_id=professor.id, id=aula.id) }}"
-                class="btn btn-warning btn-sm ml-2">Editar</a>
-            <form action="{{ url_for('delete_aula', professor_id=professor.id, id=aula.id) }}" method="POST"
-                onsubmit="return confirm('Tem certeza que deseja deletar esta aula?');">
-                <button type="submit" class="btn btn-danger">Deletar Aula</button>
-            </form>
-
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>{{ aula.materia }}</strong> - Sala: {{ aula.sala }} - Dia: {{ aula.dia }} - Horário de Início: {{ aula.horario_inicio.strftime('%H:%M') }} - Horário de Fim: {{ aula.horario_fim.strftime('%H:%M') }}
+            </div>
+            {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1 %}
+            <div class="d-flex align-items-center">
+                <a href="{{ url_for('edit_aula', professor_id=professor.id, id=aula.id) }}" class="btn btn-warning btn-sm me-2">Editar</a>
+                <form action="{{ url_for('delete_aula', professor_id=professor.id, id=aula.id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar esta aula?');">
+                    <button type="submit" class="btn btn-danger btn-sm">Deletar Aula</button>
+                </form>
+            </div>
             {% endif %}
         </li>
         {% endfor %}
     </ul>
 
-    <a href="{{ url_for('manage_professores', setor_id=professor.setor_id) }}" class="btn btn-secondary mt-3">Voltar</a>
+    <a href="{{ url_for('manage_professores', setor_id=professor.setor_id) }}" class="btn btn-secondary mt-4">Voltar</a>
 </div>
 {% endblock %}
