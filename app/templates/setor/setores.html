@@ -1,19 +1,27 @@
 {% extends 'base.html' %}
-{%include 'nave.html' %}
+{% include 'nave.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="row mt-4">
-        <h3>Adicionar Setor</h3>
+<div class="container mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
+    <div class="mb-6">
+        <h3 class="text-2xl font-semibold text-gray-800">Adicionar Setor</h3>
     </div>
-    <form action="" method="post" class="row mt-4 p-4 round border shadow">
-        {{form.csrf_token}}
+    <form action="" method="post" class="p-6 bg-gray-50 rounded-md shadow-sm border border-gray-200">
+        {{ form.csrf_token }}
 
-        {{form.nome.label()}}
-        {{form.nome(class="form-control")}}
+        <div class="mb-4">
+            {{ form.nome.label(class_="block text-gray-700 text-sm font-medium mb-2") }}
+            {{ form.nome(class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
+        </div>
 
-        {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
+        <div class="">
+            {{ form.btnSubmit(class="w-full md:w-auto px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition") }}
+        </div>
     </form>
-    <a href="{{ url_for('setorLista') }}" class="btn btn-secondary mt-4">Voltar</a>
+
+    <a href="{{ url_for('setorLista') }}"
+       class="inline-block mt-6 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition">
+        Voltar
+    </a>
 </div>
 {% endblock %}
