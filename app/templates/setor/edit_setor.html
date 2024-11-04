@@ -2,15 +2,18 @@
 {% include 'nave.html' %}
 
 {% block content %}
-    <div class="container">
-        <h3>Editar Setor</h3>
-        <form method="post">
-            <div class="mb-3">
-                <label for="nome" class="form-label">Nome do Setor</label>
-                <input type="text" class="form-control" id="nome" name="nome" value="{{ setor.nome }}" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            <a href="{{ url_for('setorLista') }}" class="btn btn-secondary">Cancelar</a>
-        </form>
-    </div>
+<div class="container mt-4">
+    <h3 class="text-2xl font-semibold mb-4">Editar Setor</h3>
+    <form method="post" class="bg-white p-6 rounded-lg shadow-md">
+        <div class="mb-4">
+            <label for="nome" class="block text-gray-700 text-sm font-bold mb-2">Nome do Setor</label>
+            <input type="text" class="form-control border border-gray-300 rounded-lg py-2 px-3 w-full" id="nome" name="nome" value="{{ setor.nome }}" required>
+        </div>
+
+        <div class="flex justify-between">
+            <button type="submit" class="btn btn-primary bg-blue-500 text-white font-bold py-2 px-4 rounded">Salvar</button>
+            <a href="{{ url_for('setorLista') }}" class="btn btn-secondary bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Cancelar</a>
+        </div>
+    </form>
+</div>
 {% endblock %}
