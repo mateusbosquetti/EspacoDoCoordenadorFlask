@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suporte</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.2/cdn.min.js"></script>
-</head>
+{% block content %}
 
-<body class="bg-gray-100 text-gray-800">
+<section class="bg-gray-100 text-gray-800">
 
-    <!-- Introdução -->
     <section class="flex items-center justify-center py-10 bg-blue-600 text-white">
         <div class="text-center">
             <h1 class="text-3xl font-semibold">Centro de Suporte</h1>
@@ -20,12 +11,10 @@
         </div>
     </section>
 
-    <!-- FAQ -->
     <section class="max-w-3xl mx-auto my-10 p-6 bg-white rounded-lg shadow-md">
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Perguntas Frequentes</h2>
 
         <div class="space-y-4" x-data="{ openQuestion: null }">
-            <!-- Pergunta 1 -->
             <div>
                 <button @click="openQuestion === 1 ? openQuestion = null : openQuestion = 1"
                     class="flex justify-between w-full text-left text-lg font-medium text-blue-600 hover:text-blue-800">
@@ -38,7 +27,6 @@
                 </p>
             </div>
 
-            <!-- Pergunta 2 -->
             <div>
                 <button @click="openQuestion === 2 ? openQuestion = null : openQuestion = 2"
                     class="flex justify-between w-full text-left text-lg font-medium text-blue-600 hover:text-blue-800">
@@ -51,7 +39,6 @@
                 </p>
             </div>
 
-            <!-- Pergunta 3 -->
             <div>
                 <button @click="openQuestion === 3 ? openQuestion = null : openQuestion = 3"
                     class="flex justify-between w-full text-left text-lg font-medium text-blue-600 hover:text-blue-800">
@@ -64,7 +51,6 @@
                 </p>
             </div>
 
-            <!-- Pergunta 4 -->
             <div>
                 <button @click="openQuestion === 4 ? openQuestion = null : openQuestion = 4"
                     class="flex justify-between w-full text-left text-lg font-medium text-blue-600 hover:text-blue-800">
@@ -79,12 +65,11 @@
         </div>
     </section>
 
-    <!-- Formulário de Suporte -->
     <section class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Envie uma Mensagem para o Suporte</h2>
 
         {% if error_message %}
-        <div class="mb-4 p-3 text-red-700 bg-red-100 rounded-lg">
+        <div class="mb-4 p-3 text-white bg-blue-400 rounded-lg">
             {{ error_message }}
         </div>
         {% endif %}
@@ -105,6 +90,5 @@
         </form>
     </section>
 
-</body>
-
-</html>
+</section>
+{% endblock %}
