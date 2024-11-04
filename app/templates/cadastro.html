@@ -1,54 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="row mt-4">
-        <h3>Cadastrar Novo Usuário</h3>
+<div class="flex items-center justify-center min-h-screen bg-blue-800">
+    <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <h3 class="text-2xl font-semibold text-center text-blue-800 mb-6">Cadastrar Novo Usuário</h3>
+        {% if error_message %}
+            <div class="mb-4 text-red-600 bg-red-100 p-3 rounded">{{ error_message }}</div>
+        {% endif %}
+        <form action="" method="post" class="space-y-4">
+            {{ form.csrf_token() }}
+            
+            <div>
+                {{ form.nome.label(class="block text-sm font-medium text-gray-700") }}
+                {{ form.nome(class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50") }}
+            </div>
+
+            <div>
+                {{ form.sobrenome.label(class="block text-sm font-medium text-gray-700") }}
+                {{ form.sobrenome(class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50") }}
+            </div>
+
+            <div>
+                {{ form.email.label(class="block text-sm font-medium text-gray-700") }}
+                {{ form.email(class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50") }}
+            </div>
+
+            <div>
+                {{ form.senha.label(class="block text-sm font-medium text-gray-700") }}
+                {{ form.senha(class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50") }}
+            </div>
+
+            <div>
+                {{ form.confirmacao_senha.label(class="block text-sm font-medium text-gray-700") }}
+                {{ form.confirmacao_senha(class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50") }}
+            </div>
+
+            <div class="pt-4">
+                {{ form.btnSubmit(class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-200") }}
+            </div>
+            <div class="pt-2">
+                <a href="{{ url_for('homepage') }}" class="block text-center bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-gray-600 transition duration-200">Cancelar</a>
+            </div>
+        </form>
     </div>
-    {% if error_message %}
-    <div class="alert alert-danger">{{ error_message }}</div>
-    {% endif %}
-    <form action="" method="post" class="row mt-4 p-4 round border shadow">
-        {{form.csrf_token}}
-
-        {{form.nome.label()}}
-        {{form.nome(class="form-control")}}
-
-        {{form.sobrenome.label()}}
-        {{form.sobrenome(class="form-control")}}
-
-        {{form.email.label()}}
-        {{form.email(class="form-control")}}
-
-        {{form.senha.label()}}
-        {{form.senha(class="form-control")}}
-
-        {{form.confirmacao_senha.label()}}
-        {{form.confirmacao_senha(class="form-control")}}
-
-        {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
-        <a href="{{ url_for('homepage') }}" class="btn btn-secondary mt-4">Cancelar</a>
-    </form>
 </div>
-
-<style>
-    body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: #0047B6;
-    }
-
-    h3 {
-        text-align: center;
-        color: white;
-    }
-
-    form {
-        background-color: #fff;
-        border-radius: 20px;
-        color: black;
-    }
-</style>
 {% endblock %}
