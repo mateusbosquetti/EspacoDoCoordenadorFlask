@@ -13,7 +13,11 @@ import cloudinary.uploader
 def homepage():
     return render_template('index.html')
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
+def landing_page():
+    return render_template('landing.html')
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     error_message = None 
