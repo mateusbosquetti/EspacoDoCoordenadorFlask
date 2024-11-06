@@ -486,3 +486,7 @@ def dashboard():
                            total_suportes=total_suportes,
                            recentes_suportes=recentes_suportes,
                            recentes_chats=recentes_chats)
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')

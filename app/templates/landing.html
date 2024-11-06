@@ -5,37 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Espaço do Coordenador</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@heroicons/vue@2.0.13/dist/heroicons.min.js"></script>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
-
+  
   <header class="bg-white shadow-sm p-4 flex justify-between items-center">
-    <div class="text-blue-700 font-bold text-lg">Espaço do Coordenador</div>
-    <button class="bg-blue-700 text-white py-2 px-4 rounded">Comece a Usar!</button>
+    <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}" alt="Logo Espaço do Coordenador" width="30%" >
+    <a class="bg-blue-700 text-white py-2 px-6 mr-6 rounded" href="{{ url_for('login') }}">Login</a>
   </header>
 
   <section class="bg-white text-center py-12">
-    <h1 class="text-3xl font-bold mb-4">Software para Instituições de Educação</h1>
+    <h1 class="text-3xl font-bold mb-4">Gerenciamento de Professores Nunca foi tão Fácil</h1>
     <button class="bg-blue-700 text-white py-2 px-6 rounded">Ingressar Agora Mesmo</button>
-    <p class="text-sm text-gray-500 mt-2">Gerenciamento de Professores Nunca foi tão Fácil</p>
+    <p class="text-sm text-gray-500 mt-2">Software para Instituições de Educação</p>
   </section>
-
   <section class="max-w-6xl mx-auto text-center py-12">
     <h2 class="text-2xl font-semibold mb-8">Melhore a Gestão dos seus Coordenadores</h2>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
       <div>
-        <img src="https://via.placeholder.com/50" alt="On-Demand Learning Icon" class="mx-auto mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-12 w-12 mx-auto mb-4 text-blue-700">
+          <path fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 1 1 7.5 0 3.75 3.75 0 0 1-7.5 0ZM15.75 9.75a3 3 0 1 1 6 0 3 3 0 0 1-6 0ZM2.25 9.75a3 3 0 1 1 6 0 3 3 0 0 1-6 0ZM6.31 15.117A6.745 6.745 0 0 1 12 12a6.745 6.745 0 0 1 6.709 7.498.75.75 0 0 1-.372.568A12.696 12.696 0 0 1 12 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 0 1-.372-.568 6.787 6.787 0 0 1 1.019-4.38Z" clip-rule="evenodd" />
+          <path d="M5.082 14.254a8.287 8.287 0 0 0-1.308 5.135 9.687 9.687 0 0 1-1.764-.44l-.115-.04a.563.563 0 0 1-.373-.487l-.01-.121a3.75 3.75 0 0 1 3.57-4.047ZM20.226 19.389a8.287 8.287 0 0 0-1.308-5.135 3.75 3.75 0 0 1 3.57 4.047l-.01.121a.563.563 0 0 1-.373.486l-.115.04c-.567.2-1.156.349-1.764.441Z" />
+        </svg>
         <p class="font-semibold">Gerenciamento Flexível de Setores</p>
       </div>
       <div>
-        <img src="https://via.placeholder.com/50" alt="Monthly InMail Icon" class="mx-auto mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-12 w-12 mx-auto mb-4 text-blue-700">
+          <path d="M5.25 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM2.25 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM18.75 7.5a.75.75 0 0 0-1.5 0v2.25H15a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H21a.75.75 0 0 0 0-1.5h-2.25V7.5Z" />
+        </svg>
         <p class="font-semibold">Criação Ilimitada de Professores</p>
       </div>
       <div>
-        <img src="https://via.placeholder.com/50" alt="Profile Views Icon" class="mx-auto mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-12 w-12 mx-auto mb-4 text-blue-700">
+          <path d="M5.566 4.657A4.505 4.505 0 0 1 6.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0 0 15.75 3h-7.5a3 3 0 0 0-2.684 1.657ZM2.25 12a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3v-6ZM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 0 1 6.75 6h10.5a3 3 0 0 1 2.683 1.657A4.505 4.505 0 0 0 18.75 7.5H5.25Z" />
+        </svg>        
         <p class="font-semibold">A Melhor Gestão de Aulas</p>
       </div>
       <div>
-        <img src="https://via.placeholder.com/50" alt="Applicant Insights Icon" class="mx-auto mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-12 w-12 mx-auto mb-4 text-blue-700">
+          <path fill-rule="evenodd" d="M2.25 13.5a8.25 8.25 0 0 1 8.25-8.25.75.75 0 0 1 .75.75v6.75H18a.75.75 0 0 1 .75.75 8.25 8.25 0 0 1-16.5 0Z" clip-rule="evenodd" />
+          <path fill-rule="evenodd" d="M12.75 3a.75.75 0 0 1 .75-.75 8.25 8.25 0 0 1 8.25 8.25.75.75 0 0 1-.75.75h-7.5a.75.75 0 0 1-.75-.75V3Z" clip-rule="evenodd" />
+        </svg>        
         <p class="font-semibold">Dashboards Intuitivos</p>
       </div>
     </div>
@@ -43,54 +53,56 @@
     <div class="flex flex-col md:flex-row items-center mb-16">
       <div class="md:w-1/2 p-4">
         <h3 class="text-xl font-bold mb-4">Tenha Controle de Seus Professores</h3>
-        <p class="text-gray-600">Access over 15,000 expert-led LinkedIn Learning courses to hone your skills or learn something new.</p>
-        <button class="bg-blue-700 text-white py-2 px-4 rounded mt-4">Upgrade free for 1 month</button>
+        <p class="text-gray-600 mb-6 mb-6 mb-6 mb-6 mb-6 mb-6">Com nosso sistema, você coordenador terá acesso a todo o etinerário letivo de seus professores.
+        </p>
+        <a class="bg-blue-700 text-white py-2 px-4 rounded" href="{{ url_for('contact') }}">Entre em contato</a>
+
       </div>
       <div class="md:w-1/2">
-        <img src="https://via.placeholder.com/400x250" alt="Learning Courses Preview" class="mx-auto">
+        <img src="{{ url_for('static', filename='img/groupTeacher.jpg') }}" alt="Grupo de Professores">
       </div>
     </div>
 
     <div class="flex flex-col md:flex-row items-center mb-16">
       <div class="md:w-1/2">
-        <img src="https://via.placeholder.com/400x250" alt="InMail Preview" class="mx-auto">
+        <img src="{{ url_for('static', filename='img/teacherTime.jpg') }}" alt="Professor Não Perdendo Tempo">
       </div>
       <div class="md:w-1/2 p-4">
         <h3 class="text-xl font-bold mb-4">Evite Perdas de Tempo</h3>
-        <p class="text-gray-600">Reach out to hiring managers and recruiters via InMail to indicate interest in an open role.</p>
-        <button class="bg-blue-700 text-white py-2 px-4 rounded mt-4">Upgrade free for 1 month</button>
+        <p class="text-gray-600 mb-6 mb-6 mb-6 mb-6 mb-6 mb-6">Cansado de ter que pedir para seus professores o que iram fazer pelo dia? Nosso sistema prioriza seu tempo.</p>
+        <a class="bg-blue-700 text-white py-2 px-4 rounded" href="{{ url_for('contact') }}">Entre em contato</a>
       </div>
     </div>
 
     <div class="flex flex-col md:flex-row items-center mb-16">
       <div class="md:w-1/2 p-4">
-        <h3 class="text-xl font-bold mb-4">Your profile is gaining traction</h3>
-        <p class="text-gray-600">Find out whether a hiring manager or recruiter has viewed your profile.</p>
-        <button class="bg-blue-700 text-white py-2 px-4 rounded mt-4">Upgrade free for 1 month</button>
+        <h3 class="text-xl font-bold mb-4">Dashboard e Relatórios</h3>
+        <p class="text-gray-600 mb-6 mb-6 mb-6 mb-6 mb-6">Relatórios em planilhas, e dashboards para melhor visualização de seus dados.</p>
+        <a class="bg-blue-700 text-white py-2 px-4 rounded" href="{{ url_for('contact') }}">Entre em contato</a>
       </div>
       <div class="md:w-1/2">
-        <img src="https://via.placeholder.com/400x250" alt="Profile Views" class="mx-auto">
+        <img src="{{ url_for('static', filename='img/dashboard.jpg') }}" alt="Dashboard">
       </div>
     </div>
 
     <div class="flex flex-col md:flex-row items-center mb-16">
       <div class="md:w-1/2">
-        <img src="https://via.placeholder.com/400x250" alt="Job Insights" class="mx-auto">
+        <img src="{{ url_for('static', filename='img/chat.jpg') }}" alt="Dashboard">
       </div>
       <div class="md:w-1/2 p-4">
-        <h3 class="text-xl font-bold mb-4">Find a job that fits</h3>
-        <p class="text-gray-600">Get directed to open positions you're a fit based on your skills, past experience, salary requirements, and education.</p>
-        <button class="bg-blue-700 text-white py-2 px-4 rounded mt-4">Upgrade free for 1 month</button>
+        <h3 class="text-xl font-bold mb-4">Chat entre todos os usuários</h3>
+        <p class="text-gray-600 mb-6 mb-6 mb-6 mb-6 mb-6">Uma ótima opção de comunicação, crie chats e grupos com qualquer usuário do seu ecossistema.</p>
+        <a class="bg-blue-700 text-white py-2 px-4 rounded" href="{{ url_for('contact') }}">Entre em contato</a>
       </div>
     </div>
   </section>
 
-  <footer class="bg-gray-800 text-white py-12 text-center">
-    <h3 class="text-xl font-semibold mb-4">Grow professionally with Premium Career</h3>
-    <p>Try it for free. Cancel at any time.</p>
-    <button class="bg-blue-700 text-white py-2 px-6 rounded mt-4">Try Premium Career</button>
-    <p class="text-xs mt-4">*Free trial eligibility determined on log-in.</p>
-    <p class="text-xs text-gray-400 mt-2">© LinkedIn Corporation 2023</p>
+  <footer class="bg-blue-700 text-white py-12 text-center">
+    <h3 class="text-xl font-semibold mb-4">Seja Mais Efetivo em Seu Trabalho</h3>
+    <p>Entre em Contato e Não se Arrependerá</p>
+    <button class="bg-white text-blue-700 py-2 px-6 rounded mt-4">Entrar em Contato</button>
+    <p class="text-xs mt-4">Todos os Direitos Reservados</p>
+    <p class="text-xs text-gray-400 mt-2">© Espaço do Coordenador 2024</p>
   </footer>
 
 </body>
