@@ -1,31 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasky Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="flex items-center justify-center min-h-screen bg-gray-100">
+{% extends 'base.html' %} {% block content %}
+
+<section class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="flex max-w-7xl bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="w-1/2 p-8">
             <div class="flex items-center mb-8">
-                <img src="{{ url_for('static', filename='img/espacoAZUL.png') }}" alt="Logo Espaço do Coordenador" >
+                <img src="{{ url_for('static', filename='img/espacoAZUL.png') }}" alt="Logo Espaço do Coordenador">
             </div>
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Bem Vindo</h2>
-            
+
 
             <form action="" method="post" class="forms">
                 {{ form.csrf_token }}
 
                 <div class="mb-4">
                     {{ form.email.label(class="block text-gray-600 mb-2") }}
-                    {{ form.email(class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+                    {{ form.email(class="w-full px-2 py-2 border rounded-lg focus:outline-none focus:ring-2
+                    focus:ring-blue-600") }}
                 </div>
-                
+
                 <div class="mb-4">
                     {{ form.senha.label(class="block text-gray-600 mb-2") }}
-                    {{ form.senha(class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600") }}
+                    {{ form.senha(class="w-full px-2 py-2 border rounded-lg focus:outline-none focus:ring-2
+                    focus:ring-blue-600") }}
                 </div>
 
                 {% if error_message %}
@@ -34,17 +30,19 @@
                 </div>
                 {% endif %}
 
-                {{ form.btnSubmit(class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-300") }}
+                {{ form.btnSubmit(class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700
+                transition duration-300") }}
             </form>
-            
+
             <p class="mt-6 text-sm text-center text-gray-600">ou</p>
-            <p class="mt-6 text-sm text-center text-gray-600">Quer gerenciar sua instituição? <a href="#" class="text-blue-600 hover:underline">Clique Aqui</a></p>
+            <p class="mt-6 text-sm text-center text-gray-600">Quer gerenciar sua instituição? <a href="#"
+                    class="text-blue-600 hover:underline">Clique Aqui</a></p>
         </div>
 
-        
+
         <div class="w-1/2 bg-blue-700 flex items-center justify-center ">
-            <img src="{{ url_for('static', filename='img/loginPage2.png') }}" alt="Logo Espaço do Coordenador" >
+            <img src="{{ url_for('static', filename='img/loginPage2.png') }}" alt="Logo Espaço do Coordenador">
         </div>
     </div>
-</body>
-</html>
+</section>
+{% endblock %}
