@@ -487,6 +487,36 @@ def dashboard():
                            recentes_suportes=recentes_suportes,
                            recentes_chats=recentes_chats)
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html')
+    error_message = None  # Inicializa a mensagem de erro fora do bloco POST
+
+    if request.method == 'POST':
+        institution_name = request.form['institution_name']
+        contact_name = request.form['contact_name']
+        email = request.form['email']
+        phone = request.form['phone']
+        message = request.form['message']
+
+        # Envia os dados para o Static Forms
+        staticforms_url = "https://api.staticforms.xyz/submit"
+        data = {
+            "accessKey": "c9e5c3a3-07ee-4249-8818-e89aab33b38f",  # Substitua com sua chave do Static Forms
+            "institution_name": institution_name,
+            "name": contact_name,
+            "email": email,
+            "phone": phone,
+            "message": message,
+            "redirectTo": url_for('contact', _external=True)
+        }
+        # Faz o POST request para Static Forms
+        response = requests.post(staticforms_url, data=data)
+
+        if response.status_code == 200:
+            error_message = "Mensagem enviada com sucesso!"
+        else:
+            error_message = "Erro! Mensagem não enviada."
+
+        return render_template('contact.html', error_message=error_message)
+
+    return render_template('contact.html', error_message=error_message)
