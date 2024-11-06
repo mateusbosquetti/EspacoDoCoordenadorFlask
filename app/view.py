@@ -31,7 +31,6 @@ def login():
         elif not bcrypt.check_password_hash(user.senha, form.senha.data):
             error_message = 'Senha incorreta.'
         else:
-            # If no errors, log the user in
             login_user(user, remember=True)
             return redirect(url_for('homepage'))
 
