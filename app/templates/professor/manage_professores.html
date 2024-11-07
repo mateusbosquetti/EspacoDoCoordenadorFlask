@@ -5,7 +5,6 @@
 <div class="container mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
     <h3 class="text-2xl font-semibold mb-6 text-gray-800">Professores do Setor: {{ setor.nome }}</h3>
 
-    <!-- Formulário de Pesquisa -->
     <form method="get" class="flex flex-wrap gap-4 mb-6">
         <div class="relative w-full">
             <input type="text" name="pesquisa" placeholder="Pesquisar por nome do setor"
@@ -19,7 +18,6 @@
         </div>
     </form>
 
-    <!-- Botão de Adicionar Professor (somente para admins) -->
     {% if current_user.adm == 1 %}
     <a href="{{ url_for('add_professor', setor_id=setor.id) }}"
        class="inline-block px-4 py-2 mb-4 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition">
@@ -27,7 +25,6 @@
     </a>
     {% endif %}
 
-    <!-- Tabela de Professores -->
     <div class="overflow-x-auto">
         <table class="w-full text-left bg-gray-50 border border-gray-200 rounded-md shadow-sm">
             <thead>
@@ -46,14 +43,12 @@
                     </td>
                     <td class="px-6 py-4">{{ professor.nome }}</td>
                     <td class="px-6 py-4 flex items-center gap-2">
-                        <!-- Botão Visualizar Professores -->
                         <a href="{{ url_for('manage_aulas', professor_id=professor.id) }}"
                             class="px-3 py-2 flex items-center justify-center text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                             <span>Visualizar Professores</span>
                         </a>
 
                         {% if current_user.adm == 1 %}
-                        <!-- Botão Editar com ícone -->
                         <a href="{{ url_for('edit_professor', setor_id=setor.id, id=professor.id) }}"
                             class="flex items-center justify-center w-8 h-8 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition">
 
@@ -64,7 +59,6 @@
                             </svg>
                         </a>
 
-                        <!-- Botão Deletar com ícone como link -->
                         <a href="{{ url_for('delete_professor', setor_id=setor.id, id=professor.id) }}""
                             onclick="return confirm('Tem certeza que deseja deletar este professor?');"
                             class="flex items-center justify-center w-8 h-8 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition">
@@ -82,7 +76,6 @@
         </table>
     </div>
 
-    <!-- Botão Voltar -->
     <a href="{{ url_for('setorLista') }}"
        class="inline-block mt-4 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition">
         Voltar
