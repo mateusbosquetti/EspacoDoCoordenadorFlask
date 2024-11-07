@@ -392,7 +392,7 @@ def chats():
         chats_with_last_message.append((chat, last_message))
 
     users = User.query.filter(User.id != current_user.id).all()
-    return render_template('chat/chats.html', chats=chats_with_last_message, users=users)
+    return render_template('chat/chats.html', chats=chats_with_last_message, user=users)
 
 
 @app.route('/chats/<int:chat_id>/json')
