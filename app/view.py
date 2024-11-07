@@ -166,7 +166,7 @@ def edit_professor(setor_id, id):
 
     return render_template('professor/edit_professor.html', professor=professor, profile_picture=profile_picture)
 
-@app.route('/setor/<int:setor_id>/professor/<int:id>/delete', methods=['POST'])
+@app.route('/setor/<int:setor_id>/professor/<int:id>/delete', methods=['GET'])
 def delete_professor(setor_id, id):
     professor = Professor.query.get_or_404(id)
     db.session.delete(professor)
