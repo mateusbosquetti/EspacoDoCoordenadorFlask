@@ -6,36 +6,22 @@
 
 <div class="container d-flex justify-content-center">
   <div class="row justify-content-center w-100">
-    <div
-      class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center"
-    >
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
       <a href="{{ url_for('setorLista') }}" class="btnBlue">Setores</a>
     </div>
-    <div
-      class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center"
-    >
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
       <a href="{{ url_for('suporte') }}" class="btnBlue">Suporte</a>
     </div>
     {% if current_user.adm == 1 %}
-    <div
-      class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center"
-    >
-      <a href="{{ url_for('download_excel') }}" class="btnBlue"
-        >Relatório Geral</a
-      >
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
+      <a href="{{ url_for('download_excel') }}" class="btnBlue">Relatório Geral</a>
     </div>
-    <div
-      class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center"
-    >
-      <a href="{{ url_for('cadastro') }}" class="btnBlue">Adicionar Usuário</a>
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
+      <a href="{{ url_for('listar_usuarios') }}" class="btnBlue">Listar Usuário</a>
     </div>
     {% else %}
-    <div
-      class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center"
-    >
-      <a href="{{ url_for('download_excel_professor') }}" class="btnBlue"
-        >Relatório de Aulas</a
-      >
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3 d-flex justify-content-center">
+      <a href="{{ url_for('download_excel_professor') }}" class="btnBlue">Relatório de Aulas</a>
     </div>
     {% endif %}
   </div>
@@ -45,11 +31,7 @@
   <h1>Sobre Nós</h1>
   <hr class="line" />
   <div class="content">
-    <img
-      src="{{ url_for('static', filename='img/Secretaria.png') }}"
-      alt=""
-      class="img1"
-    />
+    <img src="{{ url_for('static', filename='img/Secretaria.png') }}" alt="" class="img1" />
     <div class="textContent">
       <h4>A Equipe</h4>
       <p>
@@ -67,23 +49,23 @@
   </div>
   <a href="{{ url_for('dashboard') }}">Acessar o Dashboard</a>
 
-  
+
 </section>
 
 <style>
   .welcome {
     text-align: center;
     margin: 3% 0;
-}
+  }
 
-.welcome h5 {
+  .welcome h5 {
     font-size: 1.75rem;
-}
+  }
 
-.welcome p {
+  .welcome p {
     font-size: 1rem;
     color: gray;
-}
+  }
 
   .container {
     margin-top: 3%;

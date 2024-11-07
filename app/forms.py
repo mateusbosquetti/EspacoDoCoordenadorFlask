@@ -44,7 +44,7 @@ class SetorForm(FlaskForm):
         db.session.commit()
 
 class LoginForm(FlaskForm):
-    email = StringField('E-Mail', validators=[DataRequired(), Email()])
+    email = StringField('E-Mail', validators=[DataRequired()])
     senha = PasswordField('Senha', validators=[DataRequired()])
     btnSubmit = SubmitField('Login')
         

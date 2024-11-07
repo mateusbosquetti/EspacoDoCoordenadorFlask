@@ -1,0 +1,48 @@
+{% extends 'base.html' %} {% include 'nave.html' %} {% block content %}
+<section class="bg-gray-100 p-6">
+
+    <div class="container mx-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-semibold text-gray-800">Lista de Usuários</h2>
+            <a href="{{ url_for('cadastro') }}"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
+                Adicionar Usuário
+            </a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white shadow-md rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="py-3 px-6 bg-gray-200 text-gray-600 font-bold uppercase text-sm text-center">Foto
+                        </th>
+                        <th class="py-3 px-6 bg-gray-200 text-gray-600 font-bold uppercase text-sm text-center">Nome
+                        </th>
+                        <th class="py-3 px-6 bg-gray-200 text-gray-600 font-bold uppercase text-sm text-center">Ações
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr class="border-b hover:bg-gray-100">
+                        <td class="py-4 px-6 ">
+                            <img src="{{ usuario.profile_picture }}" alt="Profile Picture"
+                                class="w-12 h-12 rounded-full mx-auto">
+                        </td>
+                        <td class="py-4 px-6 text-gray-700 text-center">{{ usuario.nome }} {{ usuario.sobrenome }}</td>
+                        <td class="py-4 px-6 text-center">
+                            {% if not usuario.adm %}
+                            <a href="{{ url_for('editar_usuario', id=usuario.id) }}"
+                                class="text-blue-500 hover:text-blue-700 font-semibold">Editar</a>
+                            <a href="{{ url_for('excluir_usuario', id=usuario.id) }}"
+                                class="text-red-500 hover:text-red-700 font-semibold ml-2">Excluir</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+{% endblock %}

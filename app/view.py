@@ -517,3 +517,35 @@ def contact():
         return render_template('contact.html', error_message=error_message)
 
     return render_template('contact.html', error_message=error_message)
+
+@app.route('/usuarios')
+def listar_usuarios():
+    # Obtém todos os usuários, ordenando administradores primeiro
+    usuarios = User.query.order_by(User.adm.desc()).all()
+    return render_template('usuario/listar_usuarios.html', usuarios=usuarios)
+
+@app.route('/usuarios/excluir/<int:id>')
+def excluir_usuario(id):
+    usuario = User.query.get(id)
+    if usuario.adm:
+        flash('Não é possível excluir um administrador.')
+        return redirect(url_for('listar_usuarios'))
+    db.session.delete(usuario)
+    db.session.commit()
+    flash('Usuário excluído com sucesso!')
+    return redirect(url_for('listar_usuarios'))
+
+@app.route('/usuarios/editar/<int:id>', methods=['GET', 'POST'])
+def editar_usuario(id):
+    usuario = User.query.get_or_404(id)
+    if request.method == 'POST':
+        usuario.nome = request.form['nome']
+        usuario.sobrenome = request.form['sobrenome']
+        usuario.email = request.form['email']
+        # Atualize a senha se necessário
+        if request.form['senha']:
+            usuario.senha = request.form['senha']
+        db.session.commit()
+        flash('Usuário atualizado com sucesso!')
+        return redirect(url_for('listar_usuarios'))
+    return render_template('usuario/editar_usuario.html', usuario=usuario)
