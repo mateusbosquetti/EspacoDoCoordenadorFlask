@@ -173,7 +173,7 @@ def delete_professor(setor_id, id):
     db.session.commit()
     return redirect(url_for('manage_professores', setor_id=setor_id))
 
-@app.route('/setor/<int:id>/delete', methods=['POST'])
+@app.route('/setor/<int:id>/delete', methods=['GET'])
 def delete_setor(id):
     setor = Setor.query.get_or_404(id)
     db.session.delete(setor)
