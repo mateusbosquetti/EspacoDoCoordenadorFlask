@@ -467,7 +467,9 @@ from flask_login import current_user
 @app.route('/chat')
 def chat():
     messages = db.session.query(Message, User).join(User, Message.user_id == User.id).order_by(Message.timestamp).all()
-    return render_template('chat.html', messages=messages)
+    users = User.query.all()  # Carrega todos os usuários para a sidebar
+    return render_template('chat.html', messages=messages, users=users)
+
 
 # Evento para enviar uma nova mensagem
 @socketio.on('send_message')
