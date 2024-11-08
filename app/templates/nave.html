@@ -1,55 +1,11 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='css/nave.css') }}">
-<style>
-    header {
-        background-color: #0047B6;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-    }
-
-    .homepage img {
-        height: auto;
-        width: 55%;
-    }
-
-    .imgPerfilDesktop img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: 2px solid rgb(0, 0, 0);
-        object-fit: cover; 
-    }
-
-    @media (max-width: 768px) {
-        .homepage img {
-            max-width: 400px;
-        }
-
-        .imgPerfilDesktop img {
-            width: 40px;
-            height: 40px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .homepage img {
-            max-width: 300px;
-        }
-
-        .imgPerfilDesktop img {
-            width: 35px;
-            height: 35px;
-        }
-    }
-</style>
-
-<header>
-    <a class="homepage" href="{{ url_for('homepage') }}">
-        <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}" alt="Logo Espaço do Coordenador">
+<header class="bg-blue-700 flex justify-between items-center p-3">
+    <a href="{{ url_for('homepage') }}" class="flex-shrink-0">
+        <img src="{{ url_for('static', filename='img/Espaço_do_Coordenador.png') }}" alt="Logo Espaço do Coordenador" 
+             class="w-1/2 sm:w-50 md:w-58 lg:w-66">
     </a>
 
-    <a class="imgPerfilDesktop" href="{{ url_for('edit_perfil', id=current_user.id) }}">
-        <img src="{{ current_user.profile_picture }}" alt="Profile Picture" id="img_circular">
+    <a href="{{ url_for('edit_perfil', id=current_user.id) }}" class="flex-shrink-0">
+        <img src="{{ current_user.profile_picture }}" alt="Profile Picture" 
+             class="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full border-2 border-black object-cover">
     </a>
 </header>

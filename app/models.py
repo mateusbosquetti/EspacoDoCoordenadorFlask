@@ -17,7 +17,6 @@ class User(db.Model, UserMixin):
     senha = db.Column(db.String, nullable=True)
     adm = db.Column(db.Boolean, nullable=True)
     profile_picture = db.Column(db.String, nullable=True, default=DEFAULT_PROFILE_PICTURE_URL)
-    chats = db.relationship('Chat', secondary='user_chats', back_populates='users')
 
 class Suporte(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -48,25 +47,3 @@ class Aula(db.Model):
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
     professor = db.relationship('Professor', back_populates='aulas')
 
-class Chat(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('America/Sao_Paulo')))
-    is_group = db.Column(db.Boolean, default=False)
-    name = db.Column(db.String, nullable=True) 
-    
-    users = db.relationship('User', secondary='user_chats', back_populates='chats')
-    messages = db.relationship('Message', back_populates='chat', cascade='all, delete-orphan')
-
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String, nullable=False)
-    timestamp = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('America/Sao_Paulo')))
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'), nullable=False)
-    sender = db.relationship('User')
-    chat = db.relationship('Chat', back_populates='messages')
-
-user_chats = db.Table('user_chats',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('chat_id', db.Integer, db.ForeignKey('chat.id'), primary_key=True)
-)

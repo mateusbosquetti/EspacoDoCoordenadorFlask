@@ -33,7 +33,8 @@
                             {% if not usuario.adm %}
                             <a href="{{ url_for('editar_usuario', id=usuario.id) }}"
                                 class="text-blue-500 hover:text-blue-700 font-semibold">Editar</a>
-                            <a href="{{ url_for('excluir_usuario', id=usuario.id) }}"
+                            <a href="{{ url_for('excluir_usuario', id=usuario.id) }}""
+                            onclick="return confirm('Tem certeza que deseja deletar este professor?');"
                                 class="text-red-500 hover:text-red-700 font-semibold ml-2">Excluir</a>
                             {% endif %}
                         </td>

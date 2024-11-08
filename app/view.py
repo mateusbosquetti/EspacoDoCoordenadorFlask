@@ -1,7 +1,7 @@
 from app import app, db, bcrypt
 from flask import jsonify, render_template, url_for, request, redirect, flash, send_file
 from app.forms import SetorForm, UserForm, LoginForm, ProfessorForm
-from app.models import Setor, User, Suporte, Professor, Aula, Chat, Message
+from app.models import Setor, User, Suporte, Professor, Aula
 from flask_login import login_user, logout_user, current_user
 from datetime import time
 from io import BytesIO
@@ -378,96 +378,6 @@ def download_excel_professor():
 
     return send_file(output, download_name="aulas_professor.xlsx", as_attachment=True, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
-from .models import DEFAULT_PROFILE_PICTURE_URL, Chat, Message, User, db
-
-@app.route('/chats')
-def chats():
-    chats = current_user.chats
-    chats_with_last_message = []
-    for chat in chats:
-        last_message = Message.query.filter_by(chat_id=chat.id).order_by(Message.timestamp.desc()).first()
-        if last_message:
-            truncated_message = (last_message.content[:35] + '...') if len(last_message.content) > 35 else last_message.content
-            last_message.content = truncated_message
-        chats_with_last_message.append((chat, last_message))
-
-    users = User.query.filter(User.id != current_user.id).all()
-    return render_template('chat/chats.html', chats=chats_with_last_message, user=users)
-
-
-@app.route('/chats/<int:chat_id>/json')
-def chat_json(chat_id):
-    chat = Chat.query.get_or_404(chat_id)
-    if current_user not in chat.users:
-        return jsonify({'error': 'Você não tem permissão para acessar este chat.'}), 403
-    messages = [{
-        'sender_nome': msg.sender.nome,
-        'sender_sobrenome': msg.sender.sobrenome,
-        'content': msg.content,
-        'timestamp': msg.timestamp.strftime('%d/%m/%Y %H:%M:%S')
-    } for msg in chat.messages]
-    return jsonify({
-        'chat_name': chat.name if chat.is_group else 'Chat',
-        'messages': messages
-    })
-
-@app.route('/chats/create', methods=['POST'])
-def create_chat():
-    user_ids = request.form.getlist('user_ids')
-    chat_name = request.form.get('chat_name')
-
-    if user_ids:
-        users = User.query.filter(User.id.in_(user_ids)).all()
-        if not users or (len(users) == 1 and users[0] == current_user):
-            return jsonify({'error': 'Não é possível criar um chat consigo mesmo ou sem usuários válidos.'}), 400
-
-        is_group = len(users) > 1
-
-        if is_group:
-            if not chat_name:
-                return jsonify({'error': 'Nome do grupo é obrigatório.'}), 400
-            if Chat.query.filter_by(name=chat_name).first():
-                return jsonify({'error': 'Já existe um grupo com esse nome.'}), 400
-            
-            user_ids_set = set(user_ids)
-            existing_groups = Chat.query.filter(Chat.is_group == True).all()
-            for group in existing_groups:
-                group_user_ids_set = {str(user.id) for user in group.users}
-                if user_ids_set == group_user_ids_set:
-                    return jsonify({'error': 'Já existe um grupo com esses usuários.'}), 400
-
-
-        if not is_group:
-            existing_chat = Chat.query.filter(
-                Chat.is_group == False,
-                Chat.users.any(id=current_user.id),
-                Chat.users.any(id=users[0].id)
-            ).first()
-            if existing_chat:
-                return jsonify({'error': 'Chat individual já existe.'}), 400
-
-        new_chat = Chat(users=[current_user] + users, is_group=is_group, name=chat_name if is_group else None)
-        db.session.add(new_chat)
-        db.session.commit()
-        return jsonify({'success': True, 'chat_id': new_chat.id})
-
-    return jsonify({'error': 'Usuários não selecionados.'}), 400
-
-@app.route('/chats/<int:chat_id>/send', methods=['POST'])
-def send_message(chat_id):
-    chat = Chat.query.get_or_404(chat_id)
-    if current_user not in chat.users:
-        return jsonify({'error': 'Você não tem permissão para acessar este chat.'}), 403
-
-    content = request.form.get('content')
-    if content:
-        new_message = Message(content=content, sender=current_user, chat=chat)
-        db.session.add(new_message)
-        db.session.commit()
-        return jsonify({'success': True})
-
-    return jsonify({'error': 'Conteúdo da mensagem vazio.'}), 400
-
 @app.route('/dashboard')
 def dashboard():
     total_setores = Setor.query.count()
@@ -476,15 +386,13 @@ def dashboard():
     total_suportes = Suporte.query.count()
     
     recentes_suportes = Suporte.query.order_by(Suporte.id.desc()).limit(5).all()
-    recentes_chats = Chat.query.order_by(Chat.id.desc()).limit(5).all()
 
     return render_template('dashboard.html', 
                            total_setores=total_setores, 
                            total_professores=total_professores,
                            total_aulas=total_aulas, 
                            total_suportes=total_suportes,
-                           recentes_suportes=recentes_suportes,
-                           recentes_chats=recentes_chats)
+                           recentes_suportes=recentes_suportes)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
