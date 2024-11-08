@@ -11,7 +11,6 @@
     />
   </head>
   <body class="bg-gray-100 h-screen flex">
-    <!-- Sidebar de usuários -->
     <aside class="w-1/4 bg-blue-600 text-white p-4 flex flex-col">
       <h2 class="text-xl font-semibold mb-4">Usuários</h2>
       <ul class="space-y-2 overflow-y-auto flex-grow">
@@ -48,9 +47,7 @@
       </button>
     </aside>
 
-    <!-- Seção de mensagens -->
     <div class="w-3/4 flex flex-col h-full">
-      <!-- Cabeçalho do chat -->
       <header class="p-4 bg-white shadow flex items-center justify-between">
         <h2 class="text-lg font-semibold">Chat Geral</h2>
         <a
@@ -61,7 +58,6 @@
         </a>
       </header>
 
-      <!-- Área de mensagens -->
       <div id="messages" class="flex-grow p-4 overflow-y-auto">
         {% for message, user in messages %}
         <div
@@ -79,7 +75,6 @@
         {% endfor %}
       </div>
 
-      <!-- Campo de envio de mensagem -->
       <div class="p-4 bg-white flex items-center">
         <input
           type="text"
@@ -104,10 +99,9 @@
         if (content.trim() === "") return;
 
         socket.emit("send_message", { content: content });
-        document.getElementById("messageInput").value = ""; // Limpa o campo de entrada
+        document.getElementById("messageInput").value = "";
       }
 
-      // Recebe e exibe novas mensagens
       socket.on("receive_message", function (data) {
         var messagesDiv = document.getElementById("messages");
         var newMessage = document.createElement("div");
