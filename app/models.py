@@ -17,6 +17,18 @@ class User(db.Model, UserMixin):
     senha = db.Column(db.String, nullable=True)
     adm = db.Column(db.Boolean, nullable=True)
     profile_picture = db.Column(db.String, nullable=True, default=DEFAULT_PROFILE_PICTURE_URL)
+    
+    # Relacionamento com mensagens
+    messages = db.relationship('Message', back_populates='user', cascade='all, delete-orphan')
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(500), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Chave estrangeira para o usuário
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', back_populates='messages')
 
 class Suporte(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -46,9 +58,3 @@ class Aula(db.Model):
     horario_fim = db.Column(db.Time, nullable=False)
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
     professor = db.relationship('Professor', back_populates='aulas')
-
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String, nullable=True) 
-    content = db.Column(db.String(500), nullable=False) 
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)

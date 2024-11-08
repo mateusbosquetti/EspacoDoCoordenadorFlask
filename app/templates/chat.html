@@ -9,8 +9,8 @@
     <h1>Chat Geral</h1>
 
     <div id="messages">
-        {% for message in messages %}
-            <p><strong>{{ message.user_name }}</strong>: {{ message.content }} <small>{{ message.timestamp }}</small></p>
+        {% for message, user in messages %}
+            <p><strong>{{ user.nome }}</strong>: {{ message.content }} <small>{{ message.timestamp }}</small></p>
         {% endfor %}
     </div>
 
