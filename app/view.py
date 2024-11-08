@@ -475,16 +475,16 @@ def chat():
 @socketio.on('send_message')
 def handle_send_message(data):
     content = data.get('content')
-    user_id = current_user.id  # Obtém o ID do usuário logado
+    user_name = current_user.nome  # Obtém o ID do usuário logado
 
     # Salva a mensagem no banco de dados
-    message = Message(content=content, user_id=user_id)
+    message = Message(content=content, user_name=user_name)
     db.session.add(message)
     db.session.commit()
 
     # Emite a mensagem para todos os clientes conectados
     emit('receive_message', {
-        'user_id': user_id,
+        'user_name': user_name,
         'content': content,
         'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
     }, broadcast=True)
