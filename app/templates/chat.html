@@ -1,79 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat Geral</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 h-screen flex">
-
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 h-screen flex">
     <!-- Sidebar de usuários -->
     <aside class="w-1/4 bg-blue-600 text-white p-4 flex flex-col">
-        <h2 class="text-xl font-semibold mb-4">Usuários</h2>
-        <ul class="space-y-2 overflow-y-auto flex-grow">
-            {% for user in users %}
-            <li class="flex items-center space-x-3 hover:bg-blue-500 p-2 rounded-lg cursor-pointer">
-                <img src="{{ user.profile_picture }}" alt="{{ user.nome }}" class="w-8 h-8 rounded-full">
-                <span>{{ user.nome }} {{ user.sobrenome }}</span>
-            </li>
-            {% endfor %}
-        </ul>
-        <button class="flex items-center justify-center mt-4 p-2 bg-blue-500 hover:bg-blue-700 rounded-full">
-            <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-        </button>
+      <h2 class="text-xl font-semibold mb-4">Usuários</h2>
+      <ul class="space-y-2 overflow-y-auto flex-grow">
+        {% for user in users %}
+        <li
+          class="flex items-center space-x-3 hover:bg-blue-500 p-2 rounded-lg cursor-pointer"
+        >
+          <img
+            src="{{ user.profile_picture }}"
+            alt="{{ user.nome }}"
+            class="w-8 h-8 rounded-full"
+          />
+          <span>{{ user.nome }} {{ user.sobrenome }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      <button
+        class="flex items-center justify-center mt-4 p-2 bg-blue-500 hover:bg-blue-700 rounded-full"
+      >
+        <svg
+          class="h-6 w-6 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </button>
     </aside>
 
     <!-- Seção de mensagens -->
     <div class="w-3/4 flex flex-col h-full">
-        <!-- Cabeçalho do chat -->
-        <header class="p-4 bg-white shadow flex items-center justify-between">
-            <h2 class="text-lg font-semibold">Chat Geral</h2>
-        </header>
+      <!-- Cabeçalho do chat -->
+      <header class="p-4 bg-white shadow flex items-center justify-between">
+        <h2 class="text-lg font-semibold">Chat Geral</h2>
+      </header>
 
-        <!-- Área de mensagens -->
-        <div id="messages" class="flex-grow p-4 overflow-y-auto">
-            {% for message, user in messages %}
-            <div class="mb-4">
-                <p><strong>{{ user.nome }}</strong>: {{ message.content }}</p>
-                <small class="text-gray-500">{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
-            </div>
-            {% endfor %}
+      <!-- Área de mensagens -->
+      <div id="messages" class="flex-grow p-4 overflow-y-auto">
+        {% for message, user in messages %}
+        <div
+          class="mb-4 {% if user.nome == current_user_name %}text-right{% endif %}"
+        >
+          <p
+            class="{% if user.nome == current_user_name %}bg-green-100 text-green-900 p-2 rounded-lg inline-block{% else %}bg-gray-100 text-gray-900 p-2 rounded-lg inline-block{% endif %}"
+          >
+            <strong>{{ user.nome }}</strong>: {{ message.content }}
+          </p>
+          <small class="text-gray-500"
+            >{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small
+          >
         </div>
+        {% endfor %}
+      </div>
 
-        <!-- Campo de envio de mensagem -->
-        <div class="p-4 bg-white flex items-center">
-            <input type="text" id="messageInput" placeholder="Digite sua mensagem" class="flex-grow p-2 border rounded-lg">
-            <button onclick="sendMessage()" class="ml-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">Enviar</button>
-        </div>
+      <!-- Campo de envio de mensagem -->
+      <div class="p-4 bg-white flex items-center">
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Digite sua mensagem"
+          class="flex-grow p-2 border rounded-lg"
+        />
+        <button
+          onclick="sendMessage()"
+          class="ml-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+        >
+          Enviar
+        </button>
+      </div>
     </div>
 
     <script>
-        var socket = io();
+      var socket = io();
 
-        function sendMessage() {
-            var content = document.getElementById("messageInput").value;
-            if (content.trim() === "") return;
+      function sendMessage() {
+        var content = document.getElementById("messageInput").value;
+        if (content.trim() === "") return;
 
-            socket.emit('send_message', { content: content });
-            document.getElementById("messageInput").value = '';  // Limpa o campo de entrada
+        socket.emit("send_message", { content: content });
+        document.getElementById("messageInput").value = ""; // Limpa o campo de entrada
+      }
+
+      // Recebe e exibe novas mensagens
+      socket.on("receive_message", function (data) {
+        var messagesDiv = document.getElementById("messages");
+        var newMessage = document.createElement("div");
+        newMessage.classList.add("mb-4");
+
+        if (data.user_name === "{{ current_user_name }}") {
+          newMessage.classList.add("text-right");
+          newMessage.innerHTML = `
+            <p class="bg-green-100 text-green-900 p-2 rounded-lg inline-block">
+                <strong>${data.user_name}</strong>: ${data.content}
+            </p>
+            <small class="text-gray-500">${data.timestamp}</small>
+        `;
+        } else {
+          newMessage.innerHTML = `
+            <p class="bg-gray-100 text-gray-900 p-2 rounded-lg inline-block">
+                <strong>${data.user_name}</strong>: ${data.content}
+            </p>
+            <small class="text-gray-500">${data.timestamp}</small>
+        `;
         }
 
-        // Recebe e exibe novas mensagens
-        socket.on('receive_message', function(data) {
-            var messagesDiv = document.getElementById("messages");
-            var newMessage = document.createElement("div");
-            newMessage.classList.add("mb-4");
-            newMessage.innerHTML = `
-                <p><strong>${data.user_name}</strong>: ${data.content}</p>
-                <small class="text-gray-500">${data.timestamp}</small>
-            `;
-            messagesDiv.appendChild(newMessage);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;  // Rolagem automática para a última mensagem
-        });
+        messagesDiv.appendChild(newMessage);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      });
     </script>
-</body>
+  </body>
 </html>

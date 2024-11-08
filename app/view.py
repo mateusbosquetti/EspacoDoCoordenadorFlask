@@ -468,7 +468,9 @@ from flask_login import current_user
 def chat():
     messages = db.session.query(Message, User).join(User, Message.user_id == User.id).order_by(Message.timestamp).all()
     users = User.query.all()  # Carrega todos os usuários para a sidebar
-    return render_template('chat.html', messages=messages, users=users)
+    current_user_name = current_user.nome  # Nome do usuário logado
+    return render_template('chat.html', messages=messages, users=users, current_user_name=current_user_name)
+
 
 
 # Evento para enviar uma nova mensagem
