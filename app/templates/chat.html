@@ -12,7 +12,7 @@
   </head>
   <body class="bg-gray-100 h-screen flex">
     <aside class="w-1/4 bg-blue-600 text-white p-4 flex flex-col">
-      <h2 class="text-xl font-semibold mb-4">Usuários</h2>
+      <h2 class="text-xl font-semibold mb-4">Usuários No Chat</h2>
       <ul class="space-y-2 overflow-y-auto flex-grow">
         {% for user in users %}
         <li
@@ -27,24 +27,7 @@
         </li>
         {% endfor %}
       </ul>
-      <button
-        class="flex items-center justify-center mt-4 p-2 bg-blue-500 hover:bg-blue-700 rounded-full"
-      >
-        <svg
-          class="h-6 w-6 text-white"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
-      </button>
+      
     </aside>
 
     <div class="w-3/4 flex flex-col h-full">
