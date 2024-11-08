@@ -457,3 +457,34 @@ def editar_usuario(id):
         flash('Usuário atualizado com sucesso!')
         return redirect(url_for('listar_usuarios'))
     return render_template('usuario/editar_usuario.html', usuario=usuario)
+
+from flask import render_template, request
+from flask_socketio import emit
+from app import db, socketio
+from app.models import Message
+from flask_login import current_user
+
+# Rota para a página do chat
+@app.route('/chat')
+def chat():
+    # Carrega as mensagens do banco para exibir o histórico
+    messages = Message.query.order_by(Message.timestamp).all()
+    return render_template('chat.html', messages=messages)
+
+# Evento para enviar uma nova mensagem
+@socketio.on('send_message')
+def handle_send_message(data):
+    content = data.get('content')
+    user_id = current_user.id  # Obtém o ID do usuário logado
+
+    # Salva a mensagem no banco de dados
+    message = Message(content=content, user_id=user_id)
+    db.session.add(message)
+    db.session.commit()
+
+    # Emite a mensagem para todos os clientes conectados
+    emit('receive_message', {
+        'user_id': user_id,
+        'content': content,
+        'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+    }, broadcast=True)

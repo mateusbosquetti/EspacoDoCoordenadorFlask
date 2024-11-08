@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from flask_socketio import SocketIO  # Importa o SocketIO
 
 import os
 load_dotenv('.env')
@@ -18,8 +19,9 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'Login'
 bcrypt = Bcrypt(app)
+socketio = SocketIO(app)  # Inicializa o SocketIO
 
-from app.view import homepage 
+from app.view import homepage
 
 import cloudinary
 import cloudinary.uploader

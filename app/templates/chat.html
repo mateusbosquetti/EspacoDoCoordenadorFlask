@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Geral</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Chat Geral</h1>
+
+    <div id="messages">
+        {% for message in messages %}
+            <p><strong>{{ message.user_id }}</strong>: {{ message.content }} <small>{{ message.timestamp }}</small></p>
+        {% endfor %}
+    </div>
+
+    <input type="text" id="messageInput" placeholder="Digite sua mensagem">
+    <button onclick="sendMessage()">Enviar</button>
+
+    <script>
+        var socket = io();
+
+        function sendMessage() {
+            var content = document.getElementById("messageInput").value;
+
+            socket.emit('send_message', { content: content });
+            document.getElementById("messageInput").value = '';  // Limpa o campo de entrada
+        }
+
+        // Recebe e exibe novas mensagens
+        socket.on('receive_message', function(data) {
+            var messagesDiv = document.getElementById("messages");
+            var newMessage = document.createElement("p");
+            newMessage.innerHTML = `<strong>${data.user_id}</strong>: ${data.content} <small>${data.timestamp}</small>`;
+            messagesDiv.appendChild(newMessage);
+        });
+    </script>
+</body>
+</html>

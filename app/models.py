@@ -47,3 +47,8 @@ class Aula(db.Model):
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.id'), nullable=False)
     professor = db.relationship('Professor', back_populates='aulas')
 
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False) 
+    content = db.Column(db.String(500), nullable=False) 
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
