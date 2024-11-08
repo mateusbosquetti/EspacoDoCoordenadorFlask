@@ -466,7 +466,6 @@ from flask_login import current_user
 
 @app.route('/chat')
 def chat():
-    # Carrega as mensagens do banco de dados com join para obter o nome do usuário
     messages = db.session.query(Message, User).join(User, Message.user_id == User.id).order_by(Message.timestamp).all()
     return render_template('chat.html', messages=messages)
 
