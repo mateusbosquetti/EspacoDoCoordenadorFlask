@@ -292,7 +292,7 @@ def edit_aula(professor_id, id):
     
     return render_template('aula/edit_aula.html', aula=aula)
 
-@app.route('/professor/<int:professor_id>/aula/<int:id>/delete', methods=['POST'])
+@app.route('/professor/<int:professor_id>/aula/<int:id>/delete', methods=['GET'])
 def delete_aula(professor_id, id):
     aula = Aula.query.get_or_404(id)
     db.session.delete(aula)
