@@ -491,3 +491,7 @@ def handle_send_message(data):
         'content': content,
         'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
     }, broadcast=True)
+
+@app.route('/sobre', methods=['GET'])
+def sobre():
+    return render_template('sobre_nos.html')
