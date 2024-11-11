@@ -1,17 +1,11 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre Nós</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'nave.html' %} 
 <body class="bg-gray-100">
 
     <!-- Header -->
-    <header class="bg-blue-600 py-6">
-        <h1 class="text-center text-white text-3xl font-bold">Sobre Nós</h1>
-    </header>
+        <h1 class="text-center text-black text-3xl font-bold my-6">Sobre Nós</h1>
 
     <!-- Section: Introdução -->
     <section class="max-w-screen-lg mx-auto p-6 mt-8 bg-white rounded-lg shadow-lg">
@@ -96,10 +90,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-blue-600 py-6 mt-8">
-        <p class="text-center text-white">© 2024 Nossa Empresa. Todos os direitos reservados.</p>
-    </footer>
-
 </body>
-</html>
+    {% include 'footer.html' %}
+
+{% endblock %}
