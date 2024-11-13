@@ -29,7 +29,7 @@
 
                 {% for aula in aulas %}
                     {% if aula.dia == date_str %}
-                    <div class="bg-pink-200 p-2 mb-2 rounded-lg text-sm flex justify-between items-center">
+                    <div class="bg-blue-100 p-2 mb-2 rounded-lg text-sm flex justify-between items-center">
                         <div>
                             <p class="font-semibold">{{ aula.materia }}</p>
                             <p>{{ aula.professor.nome }}</p>
@@ -40,18 +40,21 @@
                         <div class="flex space-x-2">
                             <a href="{{ url_for('edit_aula', professor_id=professor.id, id=aula.id) }}" 
                                class="text-blue-500 hover:text-blue-700" title="Editar">
-                                <!-- Ícone de Edição -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4h2M4 6.667V17.334A2.667 2.667 0 006.667 20h10.666A2.667 2.667 0 0020 17.334V6.667A2.667 2.667 0 0017.333 4H6.667A2.667 2.667 0 004 6.667z"/>
-                                </svg>
+                            
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="h-5 w-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                            </svg>
                             </a>
                             <a href="{{ url_for('delete_aula', professor_id=professor.id, id=aula.id) }}" 
                                class="text-red-500 hover:text-red-700" title="Excluir" 
                                onclick="return confirm('Tem certeza que deseja excluir esta aula?');">
-                                <!-- Ícone de Exclusão -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
                             </a>
                         </div>
                         {% endif %}
