@@ -1,73 +1,81 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% include 'nave.html' %} 
+{% include 'nave.html' %}
+
 <body class="bg-gray-100">
 
-    <!-- Header -->
-        <h1 class="text-center text-black text-3xl font-bold my-6">Sobre Nós</h1>
 
-    <!-- Section: Introdução -->
+    <h1 class="text-center text-black text-3xl font-bold my-6">Sobre Nós</h1>
+
+
     <section class="max-w-screen-lg mx-auto p-6 mt-8 bg-white rounded-lg shadow-lg">
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Nossa História</h2>
         <p class="text-gray-700 leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam venenatis, felis ac vulputate gravida, ligula est vehicula erat, sit amet ullamcorper urna lorem et dolor. Vivamus facilisis ex at libero cursus, a dapibus justo posuere.
+            Um grupo de 3 jovens estudantes, foi escalado e proposto a desenvolver um software para facilitar a vida dos
+            coordenadores e professores de sua escola.
+            A Escola Sesi de Jaraguá do Sul tinha uma necessidade evidente, mas nenhuma solução existia.
+            <br>Agrademos ao professor que nos concedeu a oportunidade de desenvolver este sistema, Fabiano Luiz da
+            Silva.
         </p>
     </section>
 
-    <!-- Section: Equipe -->
+
     <section class="max-w-screen-lg mx-auto p-6 mt-8 bg-white rounded-lg shadow-lg">
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Nossa Equipe</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <!-- Card de Equipe -->
+
             <div class="flex flex-col items-center text-center">
-                <img class="w-32 h-32 rounded-full shadow-md" src="https://via.placeholder.com/150" alt="Foto do membro da equipe">
-                <h3 class="text-xl font-medium text-gray-800 mt-4">Nome da Pessoa</h3>
-                <p class="text-gray-600">Cargo/Posição</p>
+                <img class="w-32 h-32 rounded-full shadow-md" src="https://via.placeholder.com/150"
+                    alt="Foto do membro da equipe">
+                <h3 class="text-xl font-medium text-gray-800 mt-4">Mateus Henrique Bosquetti</h3>
+                <p class="text-gray-600">17  Anos</p>
             </div>
-            <!-- Repita o card para outros membros -->
+
             <div class="flex flex-col items-center text-center">
-                <img class="w-32 h-32 rounded-full shadow-md" src="https://via.placeholder.com/150" alt="Foto do membro da equipe">
-                <h3 class="text-xl font-medium text-gray-800 mt-4">Nome da Pessoa</h3>
-                <p class="text-gray-600">Cargo/Posição</p>
+                <img class="w-32 h-32 rounded-full shadow-md" src="https://via.placeholder.com/150"
+                    alt="Foto do membro da equipe">
+                <h3 class="text-xl font-medium text-gray-800 mt-4">Enzo Túlio Wagner</h3>
+                <p class="text-gray-600">17  Anos</p>
             </div>
             <div class="flex flex-col items-center text-center">
-                <img class="w-32 h-32 rounded-full shadow-md" src="https://via.placeholder.com/150" alt="Foto do membro da equipe">
-                <h3 class="text-xl font-medium text-gray-800 mt-4">Nome da Pessoa</h3>
-                <p class="text-gray-600">Cargo/Posição</p>
+                <img class="w-32 h-32 rounded-full shadow-md" src="https://via.placeholder.com/150"
+                    alt="Foto do membro da equipe">
+                <h3 class="text-xl font-medium text-gray-800 mt-4">Johan Peter Follmann Steckling</h3>
+                <p class="text-gray-600">17  Anos</p>
             </div>
         </div>
     </section>
 
-    <!-- Section: Missão, Visão e Valores -->
+
     <section class="max-w-screen-lg mx-auto p-6 mt-8 bg-white rounded-lg shadow-lg">
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Missão, Visão e Valores</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <!-- Missão -->
+
             <div>
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">Nossa Missão</h3>
                 <p class="text-gray-700 leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan semper orci, ut aliquet ex aliquet non.
+                    Criar uma solução para nossa instituição que facilite a vida dos professores e coordenadores.
                 </p>
             </div>
-            <!-- Visão -->
+
             <div>
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">Nossa Visão</h3>
                 <p class="text-gray-700 leading-relaxed">
-                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce lobortis.
+                    No início 3 jovens iniciantes, hoje 3 jovens realizados.
                 </p>
             </div>
-            <!-- Valores -->
+
             <div>
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">Nossos Valores</h3>
                 <p class="text-gray-700 leading-relaxed">
-                    Morbi sollicitudin cursus dui, et fermentum ligula vestibulum ut. Vivamus non metus vel dolor suscipit varius.
+                    Usabilidade e Escalabilidade. Queremos que todo o sistema seja intuitivo e consiga se adaptar a
+                    qualquer necessidade.
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- Section: Contato -->
     <section class="max-w-screen-lg mx-auto p-6 mt-8 bg-white rounded-lg shadow-lg">
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Entre em Contato</h2>
         <p class="text-gray-700 mb-4">
@@ -76,16 +84,18 @@
         <div class="flex flex-col md:flex-row md:justify-between text-gray-600">
             <div class="mb-4 md:mb-0">
                 <h3 class="font-semibold text-gray-800">Endereço</h3>
-                <p>Rua Exemplo, 123</p>
-                <p>Cidade, Estado</p>
+                <p>R. Isidoro Pedri, 263</p>
+                <p>Jaraguá do Sul - SC</p>
+                <p>CEP 89259-590</p>
             </div>
             <div class="mb-4 md:mb-0">
                 <h3 class="font-semibold text-gray-800">Telefone</h3>
-                <p>(00) 1234-5678</p>
+                <p>Escola Sesi (47) 3372-9563</p>
+                <p>Sesi (47) 3372-9400</p>
             </div>
             <div>
                 <h3 class="font-semibold text-gray-800">Email</h3>
-                <p>contato@exemplo.com</p>
+                <p>espacodocoordenador@gmail.com</p>
             </div>
         </div>
     </section>
