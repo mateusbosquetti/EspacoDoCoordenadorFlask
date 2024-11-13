@@ -247,7 +247,7 @@ def adicionar_aula(professor_id):
     professor = Professor.query.get_or_404(professor_id)
     if request.method == 'POST':
         materia = request.form['materia']
-        sala = request.form['sala']
+        sala = request.form['sala'] 
         dia = request.form['dia']
         horario_inicio = time.fromisoformat(request.form['horario_inicio'])
         horario_fim = time.fromisoformat(request.form['horario_fim'])

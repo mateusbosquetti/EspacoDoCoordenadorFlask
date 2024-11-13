@@ -1,85 +1,53 @@
-{% extends 'base.html' %} {% include 'nave.html' %} {% block content %}
-<div class="container mt-4">
-  <h1 class="mb-4">Gerenciar Aulas para {{ professor.nome }}</h1>
-
-  {% if current_user.nome == professor.nome and current_user.email ==
-  professor.email or current_user.adm == 1 %}
-  <a
-    href="{{ url_for('adicionar_aula', professor_id=professor.id) }}"
-    class="btn btn-success mb-4"
-    >Adicionar Aula</a
-  >
-  {% endif %}
-
-  <h2 class="mt-5">Aulas</h2>
-  <ul class="list-group mt-3">
-    {% if not aulas %}
-    <li class="list-group-item text-muted">Sem aulas</li>
-    {% endif %} {% for aula in aulas %}
-    <li
-      class="list-group-item d-flex justify-content-between align-items-center"
-    >
-      <div>
-        <strong>{{ aula.materia }}</strong> - Sala: {{ aula.sala }} - Dia: {{
-        aula.dia }} - Horário de Início: {{
-        aula.horario_inicio.strftime('%H:%M') }} - Horário de Fim: {{
-        aula.horario_fim.strftime('%H:%M') }}
-      </div>
-      {% if current_user.nome == professor.nome and current_user.email ==
-      professor.email or current_user.adm == 1 %}
-      <div class="d-flex gap-2">
-        <a
-          href="{{ url_for('edit_aula', professor_id=professor.id, id=aula.id) }}"
-          class="flex items-center justify-center w-8 h-8 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="h-5 w-5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-            />
-          </svg>
+{% extends 'base.html' %}
+{% include 'nave.html' %}
+{% block content %}
+<div class="container mx-auto p-4">
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-semibold mb-4">Quadro de Horários - {{ professor.nome }}</h1>
+        {% if current_user.nome == professor.nome and current_user.email == professor.email or current_user.adm == 1 %}
+        <a href="{{ url_for('adicionar_aula', professor_id=professor.id) }}" 
+           class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+           Adicionar Aula
         </a>
+        {% endif %}
+    </div>
 
-        <a
-          href="{{ url_for('delete_aula', professor_id=professor.id, id=aula.id) }}"
-          onclick="return confirm('Tem certeza que deseja deletar este setor?');"
-          class="flex items-center justify-center w-8 h-8 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </a>
-      </div>
-      {% endif %}
-    </li>
-    {% endfor %}
-  </ul>
+    <div class="grid grid-cols-7 gap-2 bg-gray-100 p-4 rounded-lg">
+        {% for day in ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"] %}
+            <div class="text-center font-semibold">{{ day }}</div>
+        {% endfor %}
 
-  <a
-    href="{{ url_for('manage_professores', setor_id=professor.setor_id) }}"
-    class="btn btn-secondary mt-4"
-    >Voltar</a
-  >
+        {% for i in range(1, 32) %}
+            {# Formatando o dia para 'DD' #}
+            {% set day_str = i | string %}
+            {% if day_str | length == 1 %}
+                {% set day_str = '0' + day_str %}
+            {% endif %}
+
+            {# Criando a data completa para o formato 'AAAA-MM-DD' #}
+            {% set date_str = '2024-11-' + day_str %} {# Substitua '2024-11' pelo mês e ano atual #}
+
+            <div class="bg-white border border-gray-200 p-2 rounded-lg">
+                <div class="text-gray-600 font-bold mb-1">Dia {{ i }}</div>
+
+                {% for aula in aulas %}
+                    {% if aula.dia == date_str %}
+                    <div class="bg-pink-200 p-2 mb-2 rounded-lg text-sm">
+                        <p class="font-semibold">{{ aula.materia }}</p>
+                        <p>{{ aula.professor.nome }}</p>
+                        <p>{{ aula.sala }}</p>
+                        <p>{{ aula.horario_inicio.strftime('%H:%M') }} - {{ aula.horario_fim.strftime('%H:%M') }}</p>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <a href="{{ url_for('manage_professores', setor_id=professor.setor_id) }}" 
+       class="mt-4 inline-block bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">
+       Voltar
+    </a>
 </div>
 {% include 'footer.html' %}
-
 {% endblock %}
