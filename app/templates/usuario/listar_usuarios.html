@@ -28,7 +28,7 @@
                             <img src="{{ usuario.profile_picture }}" alt="Profile Picture"
                                 class="w-12 h-12 rounded-full mx-auto">
                         </td>
-                        <td class="py-4 px-6 text-gray-700 text-center">{{ usuario.nome }} {{ usuario.sobrenome }}</td>
+                        <td class="py-4 px-6 text-gray-700 text-center">{{ usuario.nome }}</td>
                         <td class="py-4 px-6 text-center">
                             {% if not usuario.adm %}
                             <a href="{{ url_for('editar_usuario', id=usuario.id) }}"

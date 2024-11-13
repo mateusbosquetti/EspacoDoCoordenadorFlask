@@ -8,7 +8,6 @@ from app.models import DEFAULT_PROFILE_PICTURE_URL, Setor, User
 
 class UserForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
-    sobrenome = StringField('Sobrenome', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(),Email()]) 
     senha = PasswordField('Senha', validators=[DataRequired()])
     confirmacao_senha = PasswordField('Confimar senha', validators=[DataRequired()])
@@ -21,7 +20,6 @@ class UserForm(FlaskForm):
         senha = bcrypt.generate_password_hash(self.senha.data.encode('utf-8'))
         user = User(
             nome = self.nome.data,
-            sobrenome = self.sobrenome.data,
             email = self.email.data,
             senha = senha,
             adm = self.adm,

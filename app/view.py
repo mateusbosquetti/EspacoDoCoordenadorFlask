@@ -120,7 +120,7 @@ def add_professor(setor_id):
     ).all()
     
     form = ProfessorForm()
-    form.usuario.choices = [(user.id, f"{user.nome} {user.sobrenome}") for user in usuarios_elegiveis]
+    form.usuario.choices = [(user.id, f"{user.nome}") for user in usuarios_elegiveis]
 
     if form.validate_on_submit():
         # Busca o usuário selecionado
@@ -463,7 +463,6 @@ def editar_usuario(id):
     usuario = User.query.get_or_404(id)
     if request.method == 'POST':
         usuario.nome = request.form['nome']
-        usuario.sobrenome = request.form['sobrenome']
         usuario.email = request.form['email']
         # Atualize a senha se necessário
         if request.form['senha']:
