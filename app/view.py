@@ -23,7 +23,6 @@ def login():
     error_message = None 
 
     if form.validate_on_submit():
-        # Try to find the user by email
         user = User.query.filter_by(email=form.email.data).first()
         
         if user is None:
@@ -78,7 +77,7 @@ def setorLista():
 
 @app.route('/suporte', methods=['GET', 'POST'])
 def suporte():
-    error_message = None  # Inicializa fora do bloco POST
+    error_message = None 
 
     if request.method == 'POST':
         nome = current_user.nome
@@ -105,7 +104,7 @@ def suporte():
         else:
             error_message = "Erro! Mensagem não enviada"
 
-        return render_template('suporte.html', error_message=error_message)  # Renderiza a página novamente com a mensagem
+        return render_template('suporte.html', error_message=error_message) 
 
     return render_template('suporte.html', error_message=error_message)
 
@@ -123,7 +122,6 @@ def add_professor(setor_id):
     form.usuario.choices = [(user.id, f"{user.nome}") for user in usuarios_elegiveis]
 
     if form.validate_on_submit():
-        # Busca o usuário selecionado
         usuario_selecionado = User.query.get(form.usuario.data)
         if usuario_selecionado:
             novo_professor = Professor(
@@ -175,7 +173,6 @@ def edit_professor(setor_id, id):
         db.session.commit()
         return redirect(url_for('manage_professores', setor_id=setor_id))
     
-    # Buscar o usuário para obter a foto
     user = User.query.filter_by(email=professor.email, nome=professor.nome).first()
     profile_picture = user.profile_picture if user else DEFAULT_PROFILE_PICTURE_URL
 
@@ -215,7 +212,6 @@ def manage_aulas(professor_id):
         horario_inicio = time.fromisoformat(request.form['horario_inicio'])
         horario_fim = time.fromisoformat(request.form['horario_fim'])
 
-        # Verificação de conflito de horário na mesma sala
         conflito = Aula.query.filter(
             Aula.sala == sala,
             Aula.dia == dia,
@@ -252,7 +248,6 @@ def adicionar_aula(professor_id):
         horario_inicio = time.fromisoformat(request.form['horario_inicio'])
         horario_fim = time.fromisoformat(request.form['horario_fim'])
         
-        # Verifique se existe um conflito de horários
         conflito = Aula.query.filter(
             Aula.sala == sala,
             Aula.dia == dia,
@@ -443,7 +438,7 @@ def contact():
 
 @app.route('/usuarios')
 def listar_usuarios():
-    # Obtém todos os usuários, ordenando administradores primeiro
+
     usuarios = User.query.order_by(User.adm.desc()).all()
     return render_template('usuario/listar_usuarios.html', usuarios=usuarios)
 
@@ -464,7 +459,7 @@ def editar_usuario(id):
     if request.method == 'POST':
         usuario.nome = request.form['nome']
         usuario.email = request.form['email']
-        # Atualize a senha se necessário
+
         if request.form['senha']:
             usuario.senha = request.form['senha']
         db.session.commit()
@@ -481,25 +476,20 @@ from flask_login import current_user
 @app.route('/chat')
 def chat():
     messages = db.session.query(Message, User).join(User, Message.user_id == User.id).order_by(Message.timestamp).all()
-    users = User.query.all()  # Carrega todos os usuários para a sidebar
-    current_user_name = current_user.nome  # Nome do usuário logado
+    users = User.query.all() 
+    current_user_name = current_user.nome
     return render_template('chat.html', messages=messages, users=users, current_user_name=current_user_name)
 
-
-
-# Evento para enviar uma nova mensagem
 @socketio.on('send_message')
 def handle_send_message(data):
     content = data.get('content')
-    user_id = current_user.id  # Obtém o ID do usuário logado
-    user_name = current_user.nome  # Obtém o nome do usuário logado
+    user_id = current_user.id  
+    user_name = current_user.nome  
 
-    # Salva a mensagem no banco de dados
     message = Message(content=content, user_id=user_id)
     db.session.add(message)
     db.session.commit()
 
-    # Emite a mensagem para todos os clientes conectados
     emit('receive_message', {
         'user_name': user_name,
         'content': content,

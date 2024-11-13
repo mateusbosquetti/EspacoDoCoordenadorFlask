@@ -17,7 +17,6 @@ class User(db.Model, UserMixin):
     adm = db.Column(db.Boolean, nullable=True)
     profile_picture = db.Column(db.String, nullable=True, default=DEFAULT_PROFILE_PICTURE_URL)
     
-    # Relacionamento com mensagens
     messages = db.relationship('Message', back_populates='user', cascade='all, delete-orphan')
 
 class Message(db.Model):
@@ -25,7 +24,6 @@ class Message(db.Model):
     content = db.Column(db.String(500), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     
-    # Chave estrangeira para o usuário
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', back_populates='messages')
 
