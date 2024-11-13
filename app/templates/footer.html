@@ -11,20 +11,24 @@
       <!-- Links de navegação -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm text-end">
         <div>
-          <a href="#" class="block hover:text-gray-300">WEEBLY THEMES</a>
-          <a href="#" class="block hover:text-gray-300">PRE-SALE FAQS</a>
-          <a href="#" class="block hover:text-gray-300">SUBMIT A TICKET</a>
+          <a href="{{ url_for('setorLista') }}" class="block hover:text-gray-300">SETORES</a>
+          <a href="{{ url_for('chat') }}" class="block hover:text-gray-300">CHAT</a>
+          {% if current_user.adm == 1 %}
+          <a href="{{ url_for('download_excel') }}" class="block hover:text-gray-300">RELATÓRIO</a>
+          {% else %}
+          <a href="{{ url_for('download_excel_professor') }}" class="block hover:text-gray-300">RELATÓRIO</a>
+          {% endif %}
         </div>
         <div>
-          <a href="#" class="block hover:text-gray-300">SHOWCASE</a>
-          <a href="#" class="block hover:text-gray-300">WIDGETKIT</a>
-          <a href="#" class="block hover:text-gray-300">SUPPORT</a>
+          <a href="{{ url_for('suporte') }}" class="block hover:text-gray-300">SUPORTE</a>
+          <a href="{{ url_for('sobre') }}" class="block hover:text-gray-300">SOBRE NÓS</a>
+          <a href="{{ url_for('edit_perfil', id=current_user.id) }}" class="block hover:text-gray-300">PERFIL</a>
         </div>
         <div>
-          <a href="#" class="block hover:text-gray-300">ABOUT US</a>
-          <a href="#" class="block hover:text-gray-300">CONTACT US</a>
-          <a href="#" class="block hover:text-gray-300">AFFILIATES</a>
-          <a href="#" class="block hover:text-gray-300">RESOURCES</a>
+          <a href="https://sc.senai.br/" class="block hover:text-gray-300">SENAI</a>
+          <a href="https://sesisc.org.br/" class="block hover:text-gray-300">SESI</a>
+          <a href="https://www.escolasesisc.com.br/" class="block hover:text-gray-300">ESCOLA SESI</a>
+          <a href="{{ url_for('landing_page') }}" class="block hover:text-gray-300">INICIO</a>
         </div>
       </div>
     </div>

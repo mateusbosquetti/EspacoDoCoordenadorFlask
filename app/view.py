@@ -1,7 +1,7 @@
 from app import app, db, bcrypt
 from flask import jsonify, render_template, url_for, request, redirect, flash, send_file
 from app.forms import SetorForm, UserForm, LoginForm, ProfessorForm
-from app.models import Setor, User, Suporte, Professor, Aula
+from app.models import Setor, User, Suporte, Professor, Aula, DEFAULT_PROFILE_PICTURE_URL
 from flask_login import login_user, logout_user, current_user
 from datetime import time
 from io import BytesIO
@@ -112,18 +112,33 @@ def suporte():
 
 @app.route('/setor/<int:setor_id>/add_professor', methods=['GET', 'POST'])
 def add_professor(setor_id):
-    form = ProfessorForm()
     setor = Setor.query.get_or_404(setor_id)
+    
+    usuarios_elegiveis = User.query.filter(
+        User.adm == False,
+        ~User.id.in_([professor.id for professor in setor.professores])
+    ).all()
+    
+    form = ProfessorForm()
+    form.usuario.choices = [(user.id, f"{user.nome} {user.sobrenome}") for user in usuarios_elegiveis]
+
     if form.validate_on_submit():
-        novo_professor = Professor(
-            nome=form.nome.data,
-            email=form.email.data,
-            setor_id=setor_id
-        )
-        db.session.add(novo_professor)
-        db.session.commit()
-        return redirect(url_for('manage_professores', setor_id=setor_id))
+        # Busca o usuário selecionado
+        usuario_selecionado = User.query.get(form.usuario.data)
+        if usuario_selecionado:
+            novo_professor = Professor(
+                nome=usuario_selecionado.nome,
+                email=usuario_selecionado.email,
+                setor_id=setor_id
+            )
+            db.session.add(novo_professor)
+            db.session.commit()
+            return redirect(url_for('manage_professores', setor_id=setor_id))
+        else:
+            flash("Usuário selecionado não encontrado.", "danger")
+    
     return render_template('professor/add_professor.html', form=form, setor=setor)
+
 
 @app.route('/setor/<int:setor_id>/professores', methods=['GET'])
 def manage_professores(setor_id):

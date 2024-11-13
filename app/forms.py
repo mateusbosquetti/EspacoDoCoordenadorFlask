@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 
 from app import db, bcrypt
@@ -48,7 +48,7 @@ class LoginForm(FlaskForm):
     senha = PasswordField('Senha', validators=[DataRequired()])
     btnSubmit = SubmitField('Login')
         
+
 class ProfessorForm(FlaskForm):
-    nome = StringField('Nome do Professor', validators=[DataRequired()])
-    email = StringField('E-mail do Professor', validators=[DataRequired(), Email()])
+    usuario = SelectField('Selecione o Professor', coerce=int)
     btnSubmit = SubmitField('Adicionar Professor')
